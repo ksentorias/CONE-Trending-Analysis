@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:padding="@dimen/main_whole_layout_padding"
+    tools:context=".MainActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/fullscreen_content_controls"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal|bottom"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/ImageLogo"
+            android:layout_width="@dimen/image_logo_width"
+            android:layout_height="@dimen/image_logo_height"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginTop="@dimen/brand_logo_marginTop"
+            android:onClick="doTest"
+            android:src="@drawable/logo" />
+
+        <LinearLayout
+            android:id="@+id/titleLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ImageLogo"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/title_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/login_title_margin_top"
+                android:orientation="horizontal">
+
+
+                <com.example.paul.cone_trading.RobotoTextViewBold
+                    android:id="@+id/appTextTrend"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_weight="1"
+                    android:text="Trend"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/green_dark_theme"
+                    android:textSize="@dimen/h3_text" />
+
+                <com.example.paul.cone_trading.RobotoTextViewRegular
+                    android:id="@+id/appTextAnalysis"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ImageLogo"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
+                    android:text=" Analysis"
+                    android:textColor="@color/green_light_theme"
+                    android:textSize="@dimen/h3_text" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fieldLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/titleLayout"
+            android:layout_alignRight="@+id/titleLayout"
+            android:layout_below="@+id/titleLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="@dimen/main_login_field_marginRight"
+            android:layout_marginTop="@dimen/mainScreen_fields_marginTop"
+            android:orientation="vertical">
+
+            <com.example.paul.cone_trading.RobotoEditTextViewRegular
+                android:id="@+id/editTextUsername"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/standard_for_height"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/rounded_corner"
+                android:ellipsize="start"
+                android:hint="Username"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="@dimen/small_text" />
+
+            <com.example.paul.cone_trading.RobotoEditTextViewRegular
+                android:id="@+id/editTextPassword"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/standard_for_height"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/mainScreen_fields_marginTop"
+                android:background="@drawable/rounded_corner"
+                android:ellipsize="start"
+                android:ems="10"
+                android:hint="@string/password_hint"
+                android:inputType="textPassword"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="@dimen/small_text" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/rememberSwitchLayoutParent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fieldLayout"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/rememberSwitchLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editTextPassword"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:onClick="doSwitchRemember"
+                android:orientation="horizontal">
+
+
+                <com.example.paul.cone_trading.RobotoTextViewRegular
+                    android:id="@+id/textOffLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="ON"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/nano_text" />
+
+                <ImageView
+                    android:id="@+id/rememberSwitch"
+                    android:layout_width="@dimen/h4_text"
+                    android:layout_height="@dimen/h4_text"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_vertical"
+                    android:checked="false"
+                    android:src="@drawable/ic_toggle_on" />
+
+                <com.example.paul.cone_trading.RobotoTextViewRegular
+                    android:id="@+id/textOnLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="OFF"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/nano_text" />
+            </LinearLayout>
+
+
+            <com.example.paul.cone_trading.RobotoTextViewRegular
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="ALWAYS REMEMBER"
+                android:textColor="@color/black"
+                android:textSize="@dimen/small_text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rememberSwitchLayoutParent"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/submit_btn_marginTop"
+            android:orientation="vertical">
+
+            <com.example.paul.cone_trading.RobotoTextViewRegular
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.example.paul.cone_trading.RobotoButtonBold
+                android:id="@+id/submit_button"
+                android:layout_width="@dimen/btn_width_login"
+                android:layout_height="@dimen/btn_height_login"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/rounded_button"
+                android:onClick="onSubmit"
+                android:text="Submit"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/medium_text" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="@dimen/forgetPass_layout_marginBottom"
+        android:onClick="doForgetPassword"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_marginLeft="@dimen/forget_padding_left"
+                    android:layout_alignBottom="@+id/a"
+                    android:layout_alignTop="@+id/a"
+                    android:layout_alignParentLeft="true"
+                    android:id="@+id/x"
+                    android:layout_width="@dimen/forget_asterisk_width"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_asterisk"/>
+                <ImageView
+                    android:layout_alignBottom="@+id/a"
+                    android:layout_alignTop="@+id/a"
+                    android:layout_toRightOf="@id/x"
+                    android:id="@+id/y"
+                    android:layout_width="@dimen/forget_asterisk_width"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_asterisk"/>
+
+                <ImageView
+                    android:layout_alignBottom="@+id/a"
+                    android:layout_alignTop="@+id/a"
+                    android:layout_toRightOf="@id/y"
+                    android:id="@+id/z"
+                    android:layout_width="@dimen/forget_asterisk_width"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_lock"/>
+
+                <EditText
+                    android:id="@+id/a"
+                    android:hint="                                     "
+                    android:layout_width="@dimen/forget_width"
+                    android:layout_height="@dimen/forget_height"
+                    android:background="@drawable/rounded_corner_v2"/>
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+        <com.example.paul.cone_trading.RobotoTextViewRegular
+            android:id="@+id/forgetLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/forget_text_margin_left"
+            android:text="Forgot Password?"
+            android:textColor="@color/black"
+            android:textSize="@dimen/small_text" />
+    </LinearLayout>
+
+
+</FrameLayout>

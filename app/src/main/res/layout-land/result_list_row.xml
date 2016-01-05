@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/imageView1"
+        android:layout_width="@dimen/result_list_iconSize"
+        android:layout_height="@dimen/result_list_iconSize"
+        android:src="@drawable/ic_date" />
+
+    <LinearLayout
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <com.example.paul.cone_trading.RobotoTextViewBold
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Brand New Hydraulic jack"
+            android:textSize="@dimen/large_text"
+            android:textColor="@color/black"
+            android:layout_marginTop="5dp" />
+
+        <com.example.paul.cone_trading.RobotoTextViewRegular
+            android:id="@+id/txtDesc"
+            android:layout_marginBottom="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="normal"
+            android:text="@string/item_description"
+            android:textSize="@dimen/micro_text"
+            android:textColor="@color/desc_fontColor" />
+
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:paddingBottom="2dp"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/typeLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:textStyle="normal"
+                        android:text="Type: "
+                        android:textSize="@dimen/micro_text"
+                        android:textColor="@color/desc_fontColor" />
+
+                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/typeData"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:textStyle="normal"
+                        android:text="Battery"
+                        android:textSize="@dimen/micro_text"
+                        android:textColor="@color/desc_fontColor" />
+                </LinearLayout>
+                <LinearLayout
+                    android:paddingBottom="2dp"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/makerLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:textStyle="normal"
+                        android:text="Maker: "
+                        android:textSize="@dimen/micro_text"
+                        android:textColor="@color/desc_fontColor" />
+
+                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/makerData"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:textStyle="normal"
+                        android:text="Isuzu"
+                        android:textSize="@dimen/micro_text"
+                        android:textColor="@color/desc_fontColor"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:paddingBottom="2dp"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/modelLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:textStyle="normal"
+                        android:text="Model: "
+                        android:textSize="@dimen/micro_text"
+                        android:textColor="@color/desc_fontColor"/>
+
+                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/modelData"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:textStyle="normal"
+                        android:text="TR123"
+                        android:textSize="@dimen/micro_text"
+                        android:textColor="@color/desc_fontColor" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:paddingLeft="@dimen/result_row_text_padding_left"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:paddingBottom="2dp"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/sizeLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:textStyle="normal"
+                        android:text="Size: "
+                        android:textSize="@dimen/micro_text"
+                        android:textColor="@color/desc_fontColor" />
+
+                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/sizeData"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:textStyle="normal"
+                        android:text="Small Truck"
+                        android:textSize="@dimen/micro_text"
+                        android:textColor="@color/desc_fontColor" />
+                </LinearLayout>
+                <LinearLayout
+                    android:paddingBottom="2dp"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/categoryLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:textStyle="normal"
+                        android:text="Category: "
+                        android:textSize="@dimen/micro_text"
+                        android:textColor="@color/desc_fontColor" />
+
+                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/categoryData"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:textStyle="normal"
+                        android:text="Local Auction"
+                        android:textSize="@dimen/micro_text"
+                        android:textColor="@color/desc_fontColor"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:paddingLeft="@dimen/result_row_text_padding_left"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:paddingBottom="2dp"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.example.paul.cone_trading.RobotoButtonRegular
+                        android:text="PHP"
+                        android:textSize="@dimen/micro_text"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="@dimen/currency_width"
+                        android:layout_height="25dp"
+                        android:background="@drawable/php_currency_style"/>
+
+                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/pesoPriceData"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="2dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:textStyle="normal"
+                        android:text="50,000.00"
+                        android:textSize="@dimen/micro_text"
+                        android:textColor="@color/desc_fontColor" />
+
+                    <com.example.paul.cone_trading.RobotoButtonRegular
+                        android:layout_marginLeft="@dimen/jpy_marginLeft"
+                        android:text="JPY"
+                        android:textSize="@dimen/micro_text"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="@dimen/currency_width"
+                        android:layout_height="25dp"
+                        android:background="@drawable/jpy_currency_style"/>
+
+                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/yenPriceData"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="2dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:textStyle="normal"
+                        android:text="120,000.00"
+                        android:textSize="@dimen/micro_text"
+                        android:textColor="@color/desc_fontColor"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

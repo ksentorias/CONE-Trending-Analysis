@@ -1,0 +1,4 @@
+<resources>>
+
+    <style name="Light_Green_Theme" parent="@android:style/Theme.Material.Light" />
+</resources>

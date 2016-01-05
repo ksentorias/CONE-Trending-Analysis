@@ -1,0 +1,749 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.example.paul.cone_trading.ListResultActivity">
+
+    <LinearLayout
+        android:id="@+id/whole_screen_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/result_layout_margin"
+        android:layout_marginRight="@dimen/result_layout_margin"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearHeaderLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/logo_margin_top"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+            <LinearLayout
+                android:id="@+id/settingsIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_weight="1"
+                android:onClick="doSearchSettings"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/result_icon_height"
+                    android:adjustViewBounds="true"
+                    android:onClick="doResultSettings"
+                    android:src="@drawable/ic_settings" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ImageLogo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/result_logo_height"
+                    android:layout_gravity="center_horizontal"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/logo" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <com.example.paul.cone_trading.RobotoTextViewBold
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ImageLogo"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:nestedScrollingEnabled="false"
+                        android:text="Trend"
+                        android:textColor="@color/green_dark_theme"
+                        android:textSize="@dimen/h5_text"
+                        android:textStyle="bold"
+                        android:typeface="sans" />
+
+                    <com.example.paul.cone_trading.RobotoTextViewRegular
+                        android:id="@+id/textAnalyis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ImageLogo"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_vertical"
+                        android:nestedScrollingEnabled="false"
+                        android:text=" Analysis"
+                        android:textColor="@color/green_light_theme"
+                        android:textSize="@dimen/h5_text" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/logOutIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingRight="5dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/result_icon_height"
+                    android:layout_gravity="right"
+                    android:adjustViewBounds="true"
+                    android:onClick="doResultLogout"
+                    android:src="@drawable/ic_logout" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/result_layout_margin">
+
+            <com.example.paul.cone_trading.RobotoEditTextViewRegular
+                android:id="@+id/result_searchField"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/search_field_height"
+                android:background="@drawable/rounded_button"
+                android:hint="Search Keyword"
+                android:inputType="textAutoCorrect"
+                android:paddingLeft="@dimen/search_field_marginLeft"
+                android:paddingRight="@dimen/search_field_marginLeft"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="@dimen/micro_text" />
+
+            <ImageView
+                android:id="@+id/id_search_button"
+                android:layout_width="@dimen/search_field_ClearIcon_width"
+                android:layout_height="@dimen/search_field_icon_height"
+                android:layout_alignBottom="@+id/result_searchField"
+                android:layout_alignRight="@+id/result_searchField"
+                android:layout_alignTop="@+id/result_searchField"
+                android:layout_marginBottom="@dimen/search_field_icon_padding"
+                android:layout_marginRight="@dimen/search_field_icon_padding"
+                android:layout_marginTop="@dimen/search_field_icon_padding"
+                android:layout_toLeftOf="@+id/result_searchField"
+                android:background="@drawable/ic_clear"
+                android:onClick="onClearText"
+                android:textAllCaps="false"
+                android:textSize="10sp" />
+
+            <ImageView
+                android:id="@+id/search_icon"
+                android:layout_width="@dimen/search_field_icon_width"
+                android:layout_height="@dimen/search_field_icon_height"
+                android:layout_alignBottom="@+id/result_searchField"
+                android:layout_alignLeft="@+id/result_searchField"
+                android:layout_marginBottom="@dimen/search_field_icon_padding"
+                android:layout_marginLeft="@dimen/search_field_icon_margin_left"
+                android:layout_marginRight="@dimen/search_field_icon_padding"
+                android:layout_marginTop="@dimen/search_field_icon_padding"
+                android:background="@drawable/ic_magnify_white"
+                android:textAllCaps="false"
+                android:textSize="10sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/result_body_marginTop">
+
+            <RelativeLayout
+                android:id="@+id/result_view_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/result_separator_layout_height">
+
+                <RelativeLayout
+                    android:id="@+id/result_separator_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/result_separator_marginTop">
+
+                    <com.example.paul.cone_trading.RobotoTextViewItalic
+                        android:id="@+id/resultText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/separator_icon"
+                        android:layout_alignLeft="@+id/separator_icon"
+                        android:layout_marginBottom="@dimen/result_text_margin_bottom"
+                        android:layout_marginLeft="@dimen/result_text_firstword_margin_left"
+                        android:enabled="false"
+                        android:nestedScrollingEnabled="false"
+                        android:text="We found"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/filterResult_textSize"
+                        android:textStyle="normal|italic" />
+
+                    <com.example.paul.cone_trading.RobotoTextViewItalic
+                        android:id="@+id/resultText2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/separator_icon"
+                        android:layout_marginBottom="@dimen/result_text_margin_bottom"
+                        android:layout_marginLeft="@dimen/result_text_margin_left"
+                        android:layout_toRightOf="@+id/resultText"
+                        android:enabled="false"
+                        android:nestedScrollingEnabled="false"
+                        android:text="30"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/filterResult_textSize"
+                        android:textStyle="normal|italic"
+                        android:typeface="sans" />
+
+                    <com.example.paul.cone_trading.RobotoTextViewItalic
+                        android:id="@+id/resultText3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/separator_icon"
+                        android:layout_marginBottom="@dimen/result_text_margin_bottom"
+                        android:layout_marginLeft="@dimen/result_text_margin_left"
+                        android:layout_toRightOf="@+id/resultText2"
+                        android:enabled="false"
+                        android:text="result(s) for you."
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/filterResult_textSize" />
+
+                    <ImageView
+                        android:id="@+id/separator_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentTop="true"
+                        android:adjustViewBounds="true"
+                        android:paddingTop="@dimen/filter_icon_paddingTop"
+                        android:src="@drawable/ic_filter_green" />
+
+                    <LinearLayout
+                        android:id="@+id/line_separator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/separator_icon"
+                        android:layout_marginLeft="@dimen/filter_line_marginLeft">
+
+                        <View
+                            android:layout_width="fill_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginBottom="@dimen/filter_line_marginBottom"
+                            android:background="@color/green_dark_theme" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/filter_buttonLayout_toggled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/resultText3"
+                        android:layout_alignLeft="@+id/filter_buttonLayout_normal"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/slight_round_top"
+                        android:onClick="exitFilterMenu"
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp">
+
+                        <com.example.paul.cone_trading.RobotoTextViewBold
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_toLeftOf="@+id/x_icon_filterText"
+                            android:text="FILTER"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/filter_textSize" />
+
+                        <ImageView
+                            android:id="@+id/x_icon_filterText"
+                            android:layout_width="@dimen/nano_plus_text"
+                            android:layout_height="@dimen/nano_plus_text"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="center_vertical"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_x_pullup" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/filter_buttonLayout_normal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/resultText3"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/filter_toggled_off_layout_marginRight"
+                        android:onClick="enterFilterMenu"
+                        android:orientation="horizontal"
+                        android:paddingTop="@dimen/filter_toggled_off_layout_paddingTop">
+
+                        <ImageView
+                            android:id="@+id/filter_icon"
+                            android:layout_width="@dimen/filter_icon_height"
+                            android:layout_height="@dimen/filter_icon_height"
+                            android:layout_toLeftOf="@+id/filterText"
+                            android:src="@drawable/ic_filter_button" />
+
+                        <com.example.paul.cone_trading.RobotoTextViewBold
+                            android:id="@+id/filterText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/result_Filter_text_margin_left"
+                            android:text="FILTER"
+                            android:textColor="@color/green_light_theme"
+                            android:textSize="@dimen/filter_textSize" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/result_list_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/result_view_layout"
+                android:orientation="vertical">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+                <RelativeLayout
+                    android:id="@+id/nav_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="horizontal">
+
+
+                    <ImageView
+                        android:id="@+id/nav_img"
+                        android:layout_width="@dimen/nav_width"
+                        android:layout_height="@dimen/nav_height"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/nav_p_1" />
+
+
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <!--Filter Menu Layout-->
+            <LinearLayout
+                android:id="@+id/filter_settings_layout"
+                android:layout_width="@dimen/result_filter_layout_width"
+                android:layout_height="@dimen/result_filter_layout_height"
+                android:layout_alignRight="@+id/result_view_layout"
+                android:layout_alignTop="@+id/result_view_layout"
+                android:layout_marginTop="@dimen/result_filter_layout_margin_top"
+                android:background="@drawable/slight_round_top_v2"
+                android:focusable="true"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/result_filter_layout_padding"
+                android:paddingTop="@dimen/result_filter_layout_padding">
+
+                <ScrollView
+                    android:id="@+id/filterScrollView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true">
+
+                    <LinearLayout
+                        android:id="@+id/filter_layout_body"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/filter_layout_header"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/filter_layout_paddingLeft"
+                            android:paddingRight="@dimen/result_filter_layout_padding">
+
+                            <RelativeLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/filter_row_layout_marginTop">
+
+                                <ImageView
+                                    android:id="@+id/calendarIco"
+                                    android:layout_width="@dimen/result_filter_icons_size"
+                                    android:layout_height="@dimen/result_filter_icons_size"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginRight="@dimen/result_filter_icons_marginRight"
+                                    android:src="@drawable/ic_calendar" />
+
+                                <TextView
+                                    android:id="@+id/textView3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toRightOf="@id/calendarIco"
+                                    android:text="Date Range"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/small_text"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/pullUpButton"
+                                    android:layout_width="@dimen/result_filter_icons_size"
+                                    android:layout_height="@dimen/result_filter_icons_size"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_gravity="center_vertical"
+                                    android:onClick="doPullUp"
+                                    android:src="@drawable/ic_pull_up" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/filter_From_row_layout_marginTop">
+
+                                <TextView
+                                    android:id="@+id/txt_blank1"
+                                    android:layout_width="@dimen/result_filter_icons_size"
+                                    android:layout_height="@dimen/result_filter_icons_size"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginRight="@dimen/result_filter_icons_marginRight"
+                                    android:text=""
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:id="@+id/txt_From"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="bottom"
+                                    android:layout_toRightOf="@+id/txt_blank1"
+                                    android:text="From"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/small_text" />
+
+                                <TextView
+                                    android:id="@+id/tbl_txt3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_gravity="end|bottom"
+                                    android:layout_span="1"
+                                    android:text="November 20, 2015"
+                                    android:textAlignment="textEnd"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/small_text" />
+
+                            </RelativeLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5sp"
+                                android:layout_marginLeft="@dimen/filter_separator_margin_left"
+                                android:background="@color/border_color" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/filter_From_row_layout_marginTop">
+
+                                <TextView
+                                    android:id="@+id/txt_blank2"
+                                    android:layout_width="@dimen/result_filter_icons_size"
+                                    android:layout_height="@dimen/result_filter_icons_size"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginRight="@dimen/result_filter_icons_marginRight"
+                                    android:text=""
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="bottom"
+                                    android:layout_toRightOf="@id/txt_blank2"
+                                    android:text="To"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/small_text" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_gravity="end|bottom"
+                                    android:text="December 20, 2015"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/small_text" />
+
+                            </RelativeLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5sp"
+                                android:layout_marginLeft="@dimen/filter_separator_margin_left"
+                                android:background="@color/border_color" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/filter_submenu_layout"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/filter_submenu_layout_marginTop"
+                            android:background="@color/sub_filter_menu_color"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/filter_layout_paddingLeft"
+                            android:paddingRight="@dimen/result_filter_layout_padding">
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/filter_submenu_row_marginBottom"
+                                android:layout_marginTop="@dimen/filter_submenu_row_marginTop">
+
+                                <ImageView
+                                    android:id="@+id/typeIco"
+                                    android:layout_width="@dimen/result_filter_icons_size"
+                                    android:layout_height="@dimen/result_filter_icons_size"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginRight="@dimen/result_filter_icons_marginRight"
+                                    android:src="@drawable/ic_type" />
+
+                                <TextView
+                                    android:id="@+id/textType"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toRightOf="@+id/typeIco"
+                                    android:text="Type"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/small_text"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/spinerButtonType"
+                                    android:layout_width="@dimen/result_filter_icons_size"
+                                    android:layout_height="@dimen/result_filter_icons_size"
+                                    android:layout_alignParentRight="true"
+                                    android:src="@drawable/pull_down_arrow" />
+
+                            </RelativeLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.3sp"
+                                android:background="@color/border_color" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/filter_submenu_row_marginBottom"
+                                android:layout_marginTop="@dimen/filter_submenu_row_marginTop">
+
+                                <ImageView
+                                    android:id="@+id/makerIco"
+                                    android:layout_width="@dimen/result_filter_icons_size"
+                                    android:layout_height="@dimen/result_filter_icons_size"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginRight="@dimen/result_filter_icons_marginRight"
+                                    android:src="@drawable/ic_maker" />
+
+                                <TextView
+                                    android:id="@+id/textMaker"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toRightOf="@+id/makerIco"
+                                    android:text="Maker"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/small_text"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/spinerButtonMaker"
+                                    android:layout_width="@dimen/result_filter_icons_size"
+                                    android:layout_height="@dimen/result_filter_icons_size"
+                                    android:layout_alignParentRight="true"
+                                    android:src="@drawable/pull_down_arrow" />
+
+                            </RelativeLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.3sp"
+                                android:background="@color/border_color" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/filter_submenu_row_marginBottom"
+                                android:layout_marginTop="@dimen/filter_submenu_row_marginTop">
+
+                                <ImageView
+                                    android:id="@+id/modelIco"
+                                    android:layout_width="@dimen/result_filter_icons_size"
+                                    android:layout_height="@dimen/result_filter_icons_size"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginRight="@dimen/result_filter_icons_marginRight"
+                                    android:src="@drawable/ic_model" />
+
+                                <TextView
+                                    android:id="@+id/textModel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toRightOf="@id/modelIco"
+                                    android:text="Model"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/small_text"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/spinerButtonModel"
+                                    android:layout_width="@dimen/result_filter_icons_size"
+                                    android:layout_height="@dimen/result_filter_icons_size"
+                                    android:layout_alignParentRight="true"
+                                    android:src="@drawable/pull_down_arrow" />
+
+                            </RelativeLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.3sp"
+                                android:background="@color/border_color" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/filter_submenu_row_marginBottom"
+                                android:layout_marginTop="@dimen/filter_submenu_row_marginTop">
+
+                                <ImageView
+                                    android:id="@+id/sizeIco"
+                                    android:layout_width="@dimen/result_filter_icons_size"
+                                    android:layout_height="@dimen/result_filter_icons_size"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginRight="@dimen/result_filter_icons_marginRight"
+                                    android:src="@drawable/ic_size" />
+
+                                <TextView
+                                    android:id="@+id/textSize"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toRightOf="@id/sizeIco"
+                                    android:text="Size"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/small_text"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/spinerButtonSize"
+                                    android:layout_width="@dimen/result_filter_icons_size"
+                                    android:layout_height="@dimen/result_filter_icons_size"
+                                    android:layout_alignParentRight="true"
+                                    android:src="@drawable/pull_down_arrow" />
+                            </RelativeLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/filter_button_marginTop"
+                            android:background="@drawable/rounded_button_v2"
+                            android:onClick="doShowFilterResult"
+                            android:orientation="horizontal"
+
+                            android:padding="@dimen/filter_button_padding">
+
+                            <com.example.paul.cone_trading.OpenSansTextViewBold
+                                android:id="@+id/test_button_text2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBaseline="@+id/test_button_image"
+                                android:layout_gravity="center_vertical|center_horizontal"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:text="SHOW FILTER RESULT"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/small_text" />
+
+                            <ImageView
+                                android:id="@+id/test_button_image"
+                                android:layout_width="@dimen/result_filter_icons_size"
+                                android:layout_height="@dimen/result_filter_icons_size"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginRight="5dp"
+                                android:layout_toRightOf="@+id/test_button_text2"
+                                android:src="@drawable/ic_filter" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                </ScrollView>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true">
+
+
+                <LinearLayout
+                    android:id="@+id/salesBtnLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/filter_button_marginBottom"
+                    android:layout_marginRight="@dimen/filter_button_marginRight"
+                    android:background="@drawable/rounded_button_v3"
+                    android:onClick="gotoReport"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/result_btn_padding">
+
+                    <com.example.paul.cone_trading.RobotoTextViewBold
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="2dp"
+                        android:text="VIEW SALES ANALYSIS"
+                        android:textColor="@color/white"
+
+                        android:textSize="@dimen/micro_text" />
+
+                    <ImageView
+                        android:layout_width="@dimen/result_btn_iconSize"
+                        android:layout_height="@dimen/result_btn_iconSize"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/result_btn_icon_marginLeft"
+                        android:src="@drawable/ic_sales" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

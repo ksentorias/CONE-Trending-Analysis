@@ -1,0 +1,154 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="app_bar_height">200dp</dimen>
+    <dimen name="login_title_margin_top">0dp</dimen>
+    <dimen name="standard_for_height">60dp</dimen>
+    <dimen name="standard_margin">10dp</dimen>
+
+    <!--Main Screen-->
+    <dimen name="forget_text_margin_left">8dp</dimen>
+    <dimen name="main_login_field_marginRight">50dp</dimen>
+    <dimen name="image_logo_height">140dp</dimen>
+    <dimen name="image_logo_width">350dp</dimen>
+    <dimen name="btn_width_login">200dp</dimen>
+    <dimen name="btn_height_login">60dp</dimen>
+    <dimen name="main_whole_layout_padding">25dp</dimen>
+    <dimen name="main_whole_layout_margin">110dp</dimen>
+    <dimen name="submit_btn_marginTop">10dp</dimen>
+    <dimen name="mainScreen_fields_marginTop">10dp</dimen>
+    <dimen name="brand_logo_marginTop">0dp</dimen>
+    <dimen name="switch_label_margin">5dp</dimen>
+    <dimen name="forgetPass_ico_height">30dp</dimen>
+    <dimen name="forgetPass_ico_width">80dp</dimen>
+    <dimen name="forgetPass_layout_marginBottom">10dp</dimen>
+    <!--Main Screen-->
+
+    <!--Search Screen-->
+    <dimen name="search_whole_layout_margin">30dp</dimen>
+    <dimen name="search_header_logo_height">50dp</dimen>
+    <dimen name="search_screen_title_marginTop">40dp</dimen>
+    <dimen name="search_logo_marginTop">80dp</dimen>
+    <dimen name="search_logo_height">200dp</dimen>
+    <dimen name="search_icon_margin_left">15dp</dimen>
+    <dimen name="search_icon_height">10dp</dimen>
+    <dimen name="search_icon_marginTop">13dp</dimen>
+    <dimen name="search_icon_marginBottom">13dp</dimen>
+    <dimen name="search_field_layout_marginTop">80dp</dimen>
+    <dimen name="magnify_ico_width">40dp</dimen>
+    <dimen name="search_btn_height">20dp</dimen>
+    <dimen name="search_btn_width">180dp</dimen>
+    <dimen name="search_btn_margin">5dp</dimen>
+    <dimen name="search_editTxt_height">70dp</dimen>
+    <dimen name="search_editText_padding_start">65sp</dimen>
+    <dimen name="search_editText_padding_end">200sp</dimen>
+    <!--Search Screen-->
+
+    <!--Result Screen Main-->
+    <dimen name="result_layout_margin">10dp</dimen>
+    <dimen name="result_text_margin_left">3dp</dimen>
+    <dimen name="result_logo_height">50dp</dimen>
+    <dimen name="result_icon_height">40dp</dimen>
+    <dimen name="result_text_firstword_margin_left">55dp</dimen>
+    <dimen name="result_text_margin_bottom">12dp</dimen>
+    <dimen name="result_row_text_padding_left">150dp</dimen>
+    <dimen name="search_field_marginLeft">50sp</dimen>
+    <dimen name="search_field_height">50dp</dimen>
+    <dimen name="search_field_icon_padding">8dp</dimen>
+    <dimen name="search_field_icon_margin_left">10dp</dimen>
+    <dimen name="search_field_icon_height">30dp</dimen>
+    <dimen name="search_field_ClearIcon_width">33dp</dimen>
+    <dimen name="search_field_icon_width">30dp</dimen>
+    <dimen name="result_list_iconSize">80dp</dimen>
+    <!--Result Screen Main-->
+
+    <!--Result Screen Separator-->
+    <dimen name="result_separator_layout_height">55dp</dimen>
+    <dimen name="result_separator_marginTop">0dp</dimen>
+    <dimen name="result_image_height">25dp</dimen>
+    <dimen name="filter_icon_paddingTop">10dp</dimen>
+    <dimen name="filter_line_marginLeft">27dp</dimen>
+    <dimen name="filter_line_marginBottom">8dp</dimen>
+    <dimen name="filter_icon_height">40dp</dimen>
+    <dimen name="filter_toggled_off_layout_paddingTop">0dp</dimen>
+    <dimen name="filter_toggled_off_layout_marginRight">5dp</dimen>
+    <!--Result Screen Separator-->
+
+    <!--Result Screen Filter-->
+    <dimen name="result_Filter_text_margin_bottom">12dp</dimen>
+    <dimen name="result_Filter_text_margin_right">3dp</dimen>
+    <dimen name="result_Filter_text_margin_left">10dp</dimen>
+    <dimen name="result_Filter_textSize">30sp</dimen>
+    <!--Result Screen Filter Menu-->
+    <dimen name="result_filter_layout_padding">5dp</dimen>
+    <dimen name="result_filter_layout_width">500dp</dimen>
+    <dimen name="result_filter_layout_margin_top">40dp</dimen>
+    <dimen name="result_filter_icons_size">30sp</dimen>
+    <dimen name="result_filter_icons_marginRight">10dp</dimen>
+    <dimen name="filter_row_layout_marginTop">10dp</dimen>
+    <dimen name="filter_From_row_layout_marginTop">20dp</dimen>
+    <dimen name="filter_layout_paddingLeft">15dp</dimen>
+    <dimen name="filter_separator_margin_left">30sp</dimen>
+    <!--Result Screen Filter SubMenu-->
+    <dimen name="filter_submenu_layout_padding">4dp</dimen>
+    <dimen name="filter_submenu_layout_marginTop">10dp</dimen>
+    <dimen name="filter_submenu_row_marginTop">10dp</dimen>
+    <dimen name="filter_submenu_row_marginBottom">10dp</dimen>
+    <!--Result Screen Filter SubMenu-->
+    <!--Result Screen Filter Menu-->
+    <!--Result Screen Filter Button-->
+    <dimen name="filter_button_padding">10dp</dimen>
+    <dimen name="filter_button_marginTop">10dp</dimen>
+    <dimen name="filter_button_marginBottom">3dp</dimen>
+    <!--Result Screen Filter Button-->
+    <!--Result Screen Filter-->
+
+    <!--Result Screen Navigation-->
+    <dimen name="result_nav_horizontal_margin">110dp</dimen>
+    <dimen name="result_nav_layout_top_margin">30dp</dimen>
+    <dimen name="result_btn_marginLeft">10dp</dimen>
+    <dimen name="result_btn_marginBottom">50dp</dimen>
+    <dimen name="result_btn_padding">10dp</dimen>
+    <dimen name="result_btn_iconSize">30dp</dimen>
+    <dimen name="result_btn_icon_marginLeft">5dp</dimen>
+    <dimen name="nav_width">250dp</dimen>
+    <dimen name="nav_height">50dp</dimen>
+    <!--Result Screen Navigation-->
+
+    <!--Report Screen-->
+    <dimen name="pageview_margin">30dp</dimen>
+    <dimen name="currency_width">70dp</dimen>
+    <dimen name="jpy_marginLeft">150dp</dimen>
+    <!--Report Screen-->
+
+
+
+    <!--Text Sizes-->
+    <dimen name="nano_text">18sp</dimen>
+    <dimen name="nano_plus_text">20sp</dimen>
+    <dimen name="micro_text">22sp</dimen>
+    <dimen name="small_text">24sp</dimen>
+    <dimen name="medium_text">26sp</dimen>
+    <dimen name="large_text">28sp</dimen>
+    <dimen name="x_large_text">30sp</dimen>
+    <dimen name="xx_large_text">32sp</dimen>
+    <dimen name="xxx_large_text">34sp</dimen>
+    <dimen name="xxxx_large_text">36sp</dimen>
+    <dimen name="xxxxx_large_text">38sp</dimen>
+    <dimen name="h5_text">60sp</dimen>
+    <dimen name="h4_text">70sp</dimen>
+    <dimen name="h3_text">80sp</dimen>
+    <dimen name="h2_text">90sp</dimen>
+    <dimen name="h1_text">100sp</dimen>
+
+
+    <dimen name="filterResult_textSize">22sp</dimen>
+    <dimen name="filter_textSize">30sp</dimen>
+    <!--Text Sizes-->
+
+    <dimen name="btn_sales_height">50dp</dimen>
+
+
+
+</resources>
