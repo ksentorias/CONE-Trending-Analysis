@@ -14,7 +14,7 @@ public class SearchActivity extends AppCompatActivity {
 
     EditText editTextSearch;
     Toast toast;
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +23,8 @@ public class SearchActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         editTextSearch = (EditText)findViewById(R.id.search_searchField);
+
+
 
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editTextSearch.getWindowToken(), 0);
@@ -41,6 +43,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void doSearch(View view) {
+        DataHolder.keyword = editTextSearch.getText().toString();
         Intent intent = new Intent(this, ResultActivity.class);
         startActivity(intent);
     }
