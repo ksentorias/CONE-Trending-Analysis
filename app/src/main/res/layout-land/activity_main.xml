@@ -4,9 +4,9 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/white"
-    android:paddingTop="@dimen/main_whole_layout_padding"
-    android:paddingRight="@dimen/main_whole_layout_padding"
     android:paddingLeft="@dimen/main_whole_layout_padding"
+    android:paddingRight="@dimen/main_whole_layout_padding"
+    android:paddingTop="@dimen/main_whole_layout_padding"
     tools:context=".MainActivity">
 
 
@@ -25,7 +25,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal|top"
             android:layout_marginTop="@dimen/brand_logo_marginTop"
-            android:onClick="doTest"
+
             android:src="@drawable/logo" />
 
         <LinearLayout
@@ -91,6 +91,7 @@
                 android:background="@drawable/rounded_corner"
                 android:ellipsize="start"
                 android:hint="Username"
+                android:singleLine="true"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray"
@@ -107,7 +108,9 @@
                 android:ellipsize="start"
                 android:ems="10"
                 android:hint="@string/password_hint"
+                android:imeOptions="actionDone"
                 android:inputType="textPassword"
+                android:singleLine="true"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray"
@@ -145,12 +148,12 @@
 
                 <ImageView
                     android:id="@+id/rememberSwitch"
-                    android:checked="false"
-                    android:src="@drawable/ic_toggle_on"
-                    android:layout_gravity="center_vertical"
-                    android:layout_centerInParent="true"
                     android:layout_width="@dimen/h4_text"
-                    android:layout_height="@dimen/h4_text" />
+                    android:layout_height="@dimen/h4_text"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_vertical"
+                    android:checked="false"
+                    android:src="@drawable/ic_toggle_on" />
 
                 <com.example.paul.cone_trading.RobotoTextViewRegular
                     android:id="@+id/textOnLabel"
@@ -213,43 +216,44 @@
             android:orientation="horizontal">
 
             <RelativeLayout
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
 
                 <ImageView
-                    android:layout_marginLeft="@dimen/forget_padding_left"
-                    android:layout_alignBottom="@+id/a"
-                    android:layout_alignTop="@+id/a"
-                    android:layout_alignParentLeft="true"
                     android:id="@+id/x"
                     android:layout_width="@dimen/forget_asterisk_width"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_asterisk"/>
-                <ImageView
                     android:layout_alignBottom="@+id/a"
+                    android:layout_alignParentLeft="true"
                     android:layout_alignTop="@+id/a"
-                    android:layout_toRightOf="@id/x"
+                    android:layout_marginLeft="@dimen/forget_padding_left"
+                    android:src="@drawable/ic_asterisk" />
+
+                <ImageView
                     android:id="@+id/y"
                     android:layout_width="@dimen/forget_asterisk_width"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_asterisk"/>
-
-                <ImageView
                     android:layout_alignBottom="@+id/a"
                     android:layout_alignTop="@+id/a"
-                    android:layout_toRightOf="@id/y"
+                    android:layout_toRightOf="@id/x"
+                    android:src="@drawable/ic_asterisk" />
+
+                <ImageView
                     android:id="@+id/z"
                     android:layout_width="@dimen/forget_asterisk_width"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_lock"/>
+                    android:layout_alignBottom="@+id/a"
+                    android:layout_alignTop="@+id/a"
+                    android:layout_toRightOf="@id/y"
+                    android:src="@drawable/ic_lock" />
 
                 <EditText
                     android:id="@+id/a"
-                    android:hint="                                     "
                     android:layout_width="@dimen/forget_width"
                     android:layout_height="@dimen/forget_height"
-                    android:background="@drawable/rounded_corner_v2"/>
+                    android:background="@drawable/rounded_corner_v2"
+                    android:hint="                                     " />
 
 
             </RelativeLayout>

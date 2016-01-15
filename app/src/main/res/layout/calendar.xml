@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="65sp"
+        android:layout_height="65sp">
+
+        <RelativeLayout
+            android:id="@+id/bodyLayout"
+            android:layout_width="65sp"
+            android:layout_height="65sp"
+            android:background="@drawable/circle_calendar"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <com.example.paul.cone_trading.RobotoTextViewBold
+                android:id="@+id/dateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="DD"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+
+            <com.example.paul.cone_trading.RobotoTextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dateText"
+                android:layout_centerHorizontal="true"
+                android:text="YYYY"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:background="@drawable/circle_calendar_month"
+            android:layout_width="20sp"
+            android:layout_height="20sp"
+            android:layout_alignRight="@+id/bodyLayout">
+
+            <com.example.paul.cone_trading.RobotoTextViewBold
+                android:id="@+id/monthText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="MMM"
+                android:textColor="@color/white"
+                android:textSize="8sp" />
+
+
+        </FrameLayout>
+
+
+
+    </RelativeLayout>
+
+
+
+</FrameLayout>

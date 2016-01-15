@@ -36,7 +36,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
             case 0:
                 LocalAuctionsTabActivity local_auctions = new LocalAuctionsTabActivity();
-                selected_tab = local_auctions;
+                //selected_tab = local_auctions;
                 break;
 
             case 1:

@@ -20,5 +20,7 @@
     <color name="outline_color">#cccccc</color>
     <color name="desc_fontColor">#9e9e9e</color>
     <color name="gray">#808080</color>
+    <color name="calendar_bg">#424242</color>
+    <color name="calendar_month">#01B248</color>
 
 </resources>

@@ -56,7 +56,7 @@
                     android:layout_height="@dimen/result_logo_height"
                     android:layout_gravity="center_horizontal"
                     android:adjustViewBounds="true"
-                    android:onClick="doTest"
+
                     android:src="@drawable/logo" />
 
                 <LinearLayout

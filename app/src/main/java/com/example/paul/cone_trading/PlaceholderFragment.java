@@ -18,10 +18,20 @@ import java.util.List;
 /**
  * Created by Paul on 1/6/2016.
  */
-public class PlaceholderFragment extends Fragment implements FetchDataListener{
+public class PlaceholderFragment extends Fragment implements FetchDataListener {
 
     /*keyword used across the system*/
-    public static  String keyword;
+    public static String keyword;
+    private static int pageNumber;
+
+    View thisView;
+    View errorView;
+    View rootView;
+    View defaultView;
+    boolean fail;
+    CustomAdapter adapter;
+
+    DataHolder dataHolder = SearchActivity.dataHolder;
 
     ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
@@ -35,12 +45,12 @@ public class PlaceholderFragment extends Fragment implements FetchDataListener{
      * number.
      */
     public static PlaceholderFragment newInstance(int sectionNumber) {
+        pageNumber = sectionNumber;
 
         PlaceholderFragment fragment = new PlaceholderFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
-
 
         return fragment;
     }
@@ -49,66 +59,94 @@ public class PlaceholderFragment extends Fragment implements FetchDataListener{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
-        View rootView = inflater.inflate(R.layout.result_list_fragment, container, false);
-        View errorView = inflater.inflate(R.layout.not_found_layout, container, false);
-
-//            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-//            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-
-
-
+        rootView = inflater.inflate(R.layout.result_list_fragment, container, false);
+        errorView = inflater.inflate(R.layout.not_found_layout, container, false);
+        defaultView = inflater.inflate(R.layout.default_result_layout, container, false);
 
         lv = (ListView) rootView.findViewById(android.R.id.list);
+
         initView();
 
+        thisView = rootView;
 
-
-
-        return rootView;
+        return thisView;
     }
 
 
     private void initView() {
-        // show progress dialog
-        dialog = ProgressDialog.show(getContext(), "", "Searching...");
-        String url = "http://webprojectupdates.com/c-one/test/readData.php";
 
-//        nameValuePairs.add(new BasicNameValuePair("keyword", getKeyword()));
-        FetchDataTask task = new FetchDataTask(this);
-        task.execute(url);
+        if (dataHolder.isRunWithData()) {
+            // show progress dialog
+            dialog = ProgressDialog.show(getContext(), "", "Searching...");
+            String url = DataHolder.permalink + "readData.php";
+            FetchDataTask task = new FetchDataTask(this, getActivity());
+            task.execute(url);
+
+            Toast.makeText(getContext(),  dataHolder.getKeyword()+" "+dataHolder.getDateFrom()+" "+dataHolder.getDateTo()+" "+dataHolder.getType()+" "+ dataHolder.getMaker()+" "+dataHolder.getModel()+" "+ dataHolder.getSize()+" filter:"+ dataHolder.isFilterSearch()+" data:"+dataHolder.isRunWithData(), Toast.LENGTH_LONG).show();
+
+        }
+        else {
+                adapter = new CustomAdapter(getContext(),dataHolder.getProduct().get(getArguments().getInt(ARG_SECTION_NUMBER)));
+                lv.setAdapter(adapter);
+                lv.setEmptyView(errorView);
+        }
+
     }
 
     @Override
-    public void onFetchComplete(List<ProductsIO> data) {
-        DataHolder.code = 1;
+    public void onFetchComplete(List<Products> data) {
         // dismiss the progress dialog
-        if(dialog != null)  dialog.dismiss();
-        // create new adapter
-        CustomAdapter adapter = new CustomAdapter(getContext(), data);
-        // set the adapter to list
-//        setListAdapter(adapter);
+        if (dialog != null) dialog.dismiss();
+
+        dataHolder.setProduct(splitData(data));
+
+        adapter = new CustomAdapter(getContext(), dataHolder.getProduct().get(getArguments().getInt(ARG_SECTION_NUMBER)));
+
         lv.setAdapter(adapter);
-
-
+        lv.setEmptyView(errorView);
     }
 
     @Override
     public void onFetchFailure(String msg) {
+        fail = false;
         // dismiss the progress dialog
-        if(dialog != null)  dialog.dismiss();
+        if (dialog != null) dialog.dismiss();
         // show failure message
         Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
-
-        //set code 0 for nah :(
     }
 
-    public  ArrayList<NameValuePair> getKeywordValuePair(){
-        nameValuePairs.add(new BasicNameValuePair("keyword", DataHolder.keyword));
+
+    public ArrayList<NameValuePair> getKeywordValuePair() {
+        nameValuePairs.add(new BasicNameValuePair("keyword", dataHolder.getKeyword()));
+        nameValuePairs.add(new BasicNameValuePair("dateFrom", dataHolder.getDateFrom()));
+        nameValuePairs.add(new BasicNameValuePair("dateTo", dataHolder.getDateTo()));
+        nameValuePairs.add(new BasicNameValuePair("type", dataHolder.getType()));
+        nameValuePairs.add(new BasicNameValuePair("maker", dataHolder.getMaker()));
+        nameValuePairs.add(new BasicNameValuePair("model", dataHolder.getModel()));
+        nameValuePairs.add(new BasicNameValuePair("size", dataHolder.getSize()));
+
+        if (dataHolder.isFilterSearch())
+            nameValuePairs.add(new BasicNameValuePair("dofilter", "filter"));
+        else nameValuePairs.add(new BasicNameValuePair("dofilter", "nofilter"));
+
+
         return nameValuePairs;
     }
 
+    public List<List<Products>> splitData(List<Products> data) {
+        List<List<Products>> splittedData = new ArrayList<List<Products>>();
+        List<Products> currentSplit = null;
+        for (int i = 0; i < data.size(); i++) {
+            if (i % 10 == 0) {
+                currentSplit = new ArrayList<Products>();
+                splittedData.add(currentSplit);
+            }
+            currentSplit.add(data.get(i));
+        }
+        return splittedData;
+    }
 
 }

@@ -5,18 +5,15 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.NumberFormat;
 import java.util.List;
 
-class CustomAdapter extends BaseAdapter implements FetchDataListener {
-    private List<ProductsIO> items;
+class CustomAdapter extends BaseAdapter{
+    private List<Products> items;
     private String[] result;
     private Context context;
     private int[] imageId;
@@ -33,19 +30,10 @@ class CustomAdapter extends BaseAdapter implements FetchDataListener {
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public CustomAdapter(Context context, List<ProductsIO> items) {
+    public CustomAdapter(Context context, List<Products> items) {
         this.context = context;
         this.items = items;
     }
-
-    public CustomAdapter(PlaceholderFragment context) {
-        this.context = context.getContext();
-        initView();
-    }
-
-
-
-
 
 
     @Override
@@ -76,14 +64,17 @@ class CustomAdapter extends BaseAdapter implements FetchDataListener {
         TextView txt_category;
         TextView txt_price_php;
         TextView txt_price_jpy;
-        ImageView img;
+        TextView txt_month;
+        TextView txt_day;
+        TextView txt_year;
+
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
 
-        ProductsIO productIO = items.get(position);
+        Products productIO = items.get(position);
 
 
         if (convertView == null) {
@@ -109,14 +100,20 @@ class CustomAdapter extends BaseAdapter implements FetchDataListener {
             holder.txt_category = (TextView) convertView.findViewById(R.id.categoryData);
             holder.txt_price_php = (TextView) convertView.findViewById(R.id.pesoPriceData);
             holder.txt_price_jpy = (TextView) convertView.findViewById(R.id.yenPriceData);
+            holder.txt_year = (TextView) convertView.findViewById(R.id.yearText);
+            holder.txt_month = (TextView) convertView.findViewById(R.id.monthText);
+            holder.txt_day = (TextView) convertView.findViewById(R.id.dayText);
 
-            if (holder.txt_title != null) holder.txt_title.setText(productIO.getTitle() + " " + position);
+            if (holder.txt_title != null) holder.txt_title.setText(productIO.getTitle());
             if (holder.txt_desc != null) holder.txt_desc.setText(productIO.getDesc());
             if (holder.txt_type != null) holder.txt_type.setText(productIO.getType());
             if (holder.txt_maker != null) holder.txt_maker.setText(productIO.getMaker());
             if (holder.txt_model != null) holder.txt_model.setText(productIO.getModel());
             if (holder.txt_size != null) holder.txt_size.setText(productIO.getSize());
             if (holder.txt_category != null) holder.txt_category.setText(productIO.getCategory());
+            if (holder.txt_year != null) holder.txt_year.setText(""+productIO.getYear());
+            if (holder.txt_month != null) holder.txt_month.setText(productIO.getMonth().toUpperCase());
+            if (holder.txt_day != null) holder.txt_day.setText(""+productIO.getDay());
             if (holder.txt_price_php != null) {
                 NumberFormat nf = NumberFormat.getNumberInstance();
                 holder.txt_price_php.setText(nf.format(productIO.getPrice_php()));
@@ -128,43 +125,14 @@ class CustomAdapter extends BaseAdapter implements FetchDataListener {
 
         }
 
-        convertView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Toast.makeText(context, result[position] + " " + position + " is Selected", Toast.LENGTH_LONG).show();
-            }
-        });
+//        convertView.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // TODO Auto-generated method stub
+//                Toast.makeText(context, productIO.getTitle() + " " + position + " is Selected", Toast.LENGTH_LONG).show();
+//            }
+//        });
 
         return convertView;
     }
-
-    private void initView() {
-        // show progress dialog
-        dialog = ProgressDialog.show(context, "", "Loading...");
-        String url = "http://webprojectupdates.com/c-one/test/readData.php";
-        FetchDataTask task = new FetchDataTask(this);
-        task.execute(url);
-    }
-
-    @Override
-    public void onFetchComplete(List<ProductsIO> data) {
-        // dismiss the progress dialog
-        if(dialog != null)  dialog.dismiss();
-        // create new adapter
-        //new CustomAdapter(context, data);
-        // set the adapter to list
-//        placeholder.setAdapter(adapter);
-        //   listactivity.setListAdapter(adapter);
-    }
-
-    @Override
-    public void onFetchFailure(String msg) {
-        // dismiss the progress dialog
-        if(dialog != null)  dialog.dismiss();
-        // show failure message
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-    }
-
-
 }

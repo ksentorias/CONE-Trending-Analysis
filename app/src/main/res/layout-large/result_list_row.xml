@@ -4,13 +4,64 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
 
-    <ImageView
+    <RelativeLayout
+        android:id="@+id/datelLayout"
+        android:layout_width="65sp"
+        android:layout_height="65sp"
         android:layout_gravity="center"
-        android:layout_marginLeft="5dp"
-        android:id="@+id/imageView1"
-        android:layout_width="@dimen/result_list_iconSize"
-        android:layout_height="@dimen/result_list_iconSize"
-        android:src="@drawable/ic_date" />
+        android:layout_marginLeft="5dp">
+
+        <RelativeLayout
+            android:id="@+id/bodyLayout"
+            android:layout_width="65sp"
+            android:layout_height="65sp"
+            android:background="@drawable/circle_calendar"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <com.example.paul.cone_trading.RobotoTextViewBold
+                android:id="@+id/dayText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="8sp"
+                android:text="DD"
+                android:textColor="@color/white"
+                android:textSize="35sp" />
+
+            <com.example.paul.cone_trading.RobotoTextViewBold
+                android:id="@+id/yearText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="YYYY"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="20sp"
+            android:layout_height="20sp"
+            android:layout_alignRight="@+id/bodyLayout"
+            android:background="@drawable/circle_calendar_month">
+
+            <com.example.paul.cone_trading.RobotoTextViewBold
+                android:id="@+id/monthText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="MMM"
+                android:textColor="@color/white"
+                android:textSize="8sp" />
+
+
+        </FrameLayout>
+
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_marginLeft="10dp"

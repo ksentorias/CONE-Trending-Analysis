@@ -17,19 +17,22 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.avast.android.dialogs.fragment.SimpleDialogFragment;
+import com.avast.android.dialogs.iface.ISimpleDialogListener;
 import com.google.samples.apps.iosched.ui.widget.SlidingTabLayout;
 
-public class ReportActivity extends AppCompatActivity {
+public class ReportActivity extends AppCompatActivity implements ISimpleDialogListener {
 
     Toolbar toolbar;
     Toast toast;
     ViewPager pager;
     ViewPagerAdapter adapter;
-    SampleFragmentPagerAdapter adapter_x;
     SlidingTabLayout tabs;
     CharSequence Titles[]={"Local Auctions","Foreign Suppliers","Foreign Auctions", "Local Market", "Sold"};
     int Numboftabs =5;
     EditText report_searchField;
+    Credential credentials = MainActivity.credentials;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,11 +99,35 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     public void doReportLogout(View view) {
-        toast = Toast.makeText(this, "Logout", Toast.LENGTH_SHORT);
-        toast.show();
+        SimpleDialogFragment.createBuilder(this, getSupportFragmentManager())
+                .setTitle("Logout")
+                .setMessage("Are you sure you want to logout with the current account?")
+                .setNegativeButtonText("No")
+                .setRequestCode(DataHolder.logoutCode)
+                .setPositiveButtonText("Yes").show();
     }
 
     public void onClearTextReport(View view) {
         report_searchField.setText("");
+    }
+
+    @Override
+    public void onNegativeButtonClicked(int requestCode) {
+
+    }
+
+    @Override
+    public void onNeutralButtonClicked(int requestCode) {
+
+    }
+
+    @Override
+    public void onPositiveButtonClicked(int requestCode) {
+        if (requestCode == DataHolder.logoutCode) {
+            credentials.clearCredentials(getBaseContext());
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+
+        }
     }
 }

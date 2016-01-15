@@ -120,6 +120,7 @@
             <com.example.paul.cone_trading.RobotoEditTextViewRegular
                 android:id="@+id/result_searchField"
                 android:layout_width="fill_parent"
+                android:imeOptions="actionSearch"
                 android:layout_height="@dimen/search_field_height"
                 android:background="@drawable/rounded_button"
                 android:hint="Search Keyword"
@@ -354,7 +355,7 @@
             <LinearLayout
                 android:id="@+id/filter_settings_layout"
                 android:layout_width="@dimen/result_filter_layout_width"
-                android:layout_height="@dimen/result_filter_layout_height"
+                android:layout_height="wrap_content"
                 android:layout_alignRight="@+id/result_view_layout"
                 android:layout_alignTop="@+id/result_view_layout"
                 android:layout_marginTop="@dimen/result_filter_layout_margin_top"
@@ -365,10 +366,11 @@
                 android:paddingTop="@dimen/result_filter_layout_padding">
 
                 <ScrollView
+                    android:maxHeight="300dp"
+                    android:fillViewport="true"
                     android:id="@+id/filterScrollView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fillViewport="true">
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:id="@+id/filter_layout_body"
@@ -404,7 +406,7 @@
                                     android:layout_toRightOf="@id/calendarIco"
                                     android:text="Date Range"
                                     android:textColor="@color/white"
-                                    android:textSize="@dimen/small_text"
+                                    android:textSize="@dimen/micro_text"
                                     android:textStyle="bold" />
 
                                 <ImageView
@@ -413,93 +415,112 @@
                                     android:layout_height="@dimen/result_filter_icons_size"
                                     android:layout_alignParentRight="true"
                                     android:layout_gravity="center_vertical"
-                                    android:onClick="doPullUp"
+                                    android:onClick="doDateMenu"
                                     android:src="@drawable/ic_pull_up" />
                             </RelativeLayout>
 
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/filter_From_row_layout_marginTop">
-
-                                <TextView
-                                    android:id="@+id/txt_blank1"
-                                    android:layout_width="@dimen/result_filter_icons_size"
-                                    android:layout_height="@dimen/result_filter_icons_size"
-                                    android:layout_alignParentLeft="true"
-                                    android:layout_marginRight="@dimen/result_filter_icons_marginRight"
-                                    android:text=""
-                                    android:textColor="@color/white" />
-
-                                <TextView
-                                    android:id="@+id/txt_From"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="bottom"
-                                    android:layout_toRightOf="@+id/txt_blank1"
-                                    android:text="From"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/small_text" />
-
-                                <TextView
-                                    android:id="@+id/tbl_txt3"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_gravity="end|bottom"
-                                    android:layout_span="1"
-                                    android:text="November 20, 2015"
-                                    android:textAlignment="textEnd"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/small_text" />
-
-                            </RelativeLayout>
-
-                            <View
+                            <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+                                android:id="@+id/dateMenu"
                                 android:layout_width="match_parent"
-                                android:layout_height="0.5sp"
-                                android:layout_marginLeft="@dimen/filter_separator_margin_left"
-                                android:background="@color/border_color" />
+                                android:layout_height="match_parent"
+                                app:ael_duration="500"
+                                app:ael_interpolator="linearOutSlowIn"
+                                app:ael_orientation="vertical">
 
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/filter_From_row_layout_marginTop">
-
-                                <TextView
-                                    android:id="@+id/txt_blank2"
-                                    android:layout_width="@dimen/result_filter_icons_size"
-                                    android:layout_height="@dimen/result_filter_icons_size"
-                                    android:layout_alignParentLeft="true"
-                                    android:layout_marginRight="@dimen/result_filter_icons_marginRight"
-                                    android:text=""
-                                    android:textColor="@color/white" />
-
-                                <TextView
+                                <RelativeLayout
+                                    android:onClick="doFromDateOption"
+                                    android:id="@+id/fromLayout"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="bottom"
-                                    android:layout_toRightOf="@id/txt_blank2"
-                                    android:text="To"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/small_text" />
+                                    android:layout_marginTop="@dimen/filter_From_row_layout_marginTop">
 
-                                <TextView
+                                    <TextView
+                                        android:id="@+id/txt_blank1"
+                                        android:layout_width="@dimen/result_filter_icons_size"
+                                        android:layout_height="@dimen/result_filter_icons_size"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_marginRight="@dimen/result_filter_icons_marginRight"
+                                        android:text=""
+                                        android:textColor="@color/white" />
+
+                                    <TextView
+                                        android:id="@+id/txt_From"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="bottom"
+                                        android:layout_toRightOf="@+id/txt_blank1"
+                                        android:text="From"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/micro_text" />
+
+                                    <TextView
+                                        android:id="@+id/fromTxtDateData"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_gravity="end|bottom"
+                                        android:layout_span="1"
+                                        android:text="November 20, 2015"
+                                        android:textAlignment="textEnd"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/micro_text" />
+
+                                </RelativeLayout>
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0.5sp"
+                                    android:layout_marginLeft="@dimen/filter_separator_margin_left"
+                                    android:background="@color/border_color" />
+
+                                <RelativeLayout
+                                    android:onClick="doToDateOption"
+                                    android:id="@+id/toLayout"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_gravity="end|bottom"
-                                    android:text="December 20, 2015"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/small_text" />
+                                    android:layout_below="@+id/fromLayout"
+                                    android:layout_marginTop="@dimen/filter_From_row_layout_marginTop">
 
-                            </RelativeLayout>
+                                    <TextView
+                                        android:id="@+id/txt_blank2"
+                                        android:layout_width="@dimen/result_filter_icons_size"
+                                        android:layout_height="@dimen/result_filter_icons_size"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_marginRight="@dimen/result_filter_icons_marginRight"
+                                        android:text=""
+                                        android:textColor="@color/white" />
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.5sp"
-                                android:layout_marginLeft="@dimen/filter_separator_margin_left"
-                                android:background="@color/border_color" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="bottom"
+                                        android:layout_toRightOf="@id/txt_blank2"
+                                        android:text="To"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/micro_text" />
+
+                                    <TextView
+                                        android:id="@+id/toTxtDateData"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_gravity="end|bottom"
+                                        android:text="December 20, 2015"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/micro_text" />
+
+                                </RelativeLayout>
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0.5sp"
+                                    android:layout_marginLeft="@dimen/filter_separator_margin_left"
+                                    android:background="@color/border_color" />
+
+
+                            </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+
                         </LinearLayout>
 
 
@@ -514,6 +535,7 @@
                             android:paddingRight="@dimen/result_filter_layout_padding">
 
                             <RelativeLayout
+                                android:onClick="doTypeMenu"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/filter_submenu_row_marginBottom"
@@ -534,7 +556,7 @@
                                     android:layout_toRightOf="@+id/typeIco"
                                     android:text="Type"
                                     android:textColor="@color/white"
-                                    android:textSize="@dimen/small_text"
+                                    android:textSize="@dimen/micro_text"
                                     android:textStyle="bold" />
 
                                 <ImageView
@@ -546,12 +568,40 @@
 
                             </RelativeLayout>
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.3sp"
-                                android:background="@color/border_color" />
+                        </LinearLayout>
+
+                        <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+                            android:id="@+id/typeMenu"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:ael_duration="100"
+                            app:ael_interpolator="linear"
+                            app:ael_orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content">
+                                <Spinner
+                                    android:id="@+id/typeSpinner"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:entries="@array/type_array"
+                                    android:prompt="@string/type_prompt" />
+                            </LinearLayout>
+                        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/filter_submenu_layout1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0.3sp"
+                            android:background="@color/sub_filter_menu_color"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/filter_layout_paddingLeft"
+                            android:paddingRight="@dimen/result_filter_layout_padding">
 
                             <RelativeLayout
+                                android:onClick="doMakerMenu"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/filter_submenu_row_marginBottom"
@@ -572,7 +622,7 @@
                                     android:layout_toRightOf="@+id/makerIco"
                                     android:text="Maker"
                                     android:textColor="@color/white"
-                                    android:textSize="@dimen/small_text"
+                                    android:textSize="@dimen/micro_text"
                                     android:textStyle="bold" />
 
                                 <ImageView
@@ -584,12 +634,41 @@
 
                             </RelativeLayout>
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.3sp"
-                                android:background="@color/border_color" />
+                        </LinearLayout>
+
+                        <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+                            android:id="@+id/makerMenu"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:ael_duration="100"
+                            app:ael_interpolator="linear"
+                            app:ael_orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content">
+                                <Spinner
+                                    android:id="@+id/makerSpinner"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:entries="@array/maker_array"
+                                    android:prompt="@string/maker_prompt" />
+                            </LinearLayout>
+                        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/filter_submenu_layout2"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0.3sp"
+                            android:background="@color/sub_filter_menu_color"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/filter_layout_paddingLeft"
+                            android:paddingRight="@dimen/result_filter_layout_padding">
 
                             <RelativeLayout
+                                android:onClick="doModelMenu"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/filter_submenu_row_marginBottom"
@@ -610,7 +689,7 @@
                                     android:layout_toRightOf="@id/modelIco"
                                     android:text="Model"
                                     android:textColor="@color/white"
-                                    android:textSize="@dimen/small_text"
+                                    android:textSize="@dimen/micro_text"
                                     android:textStyle="bold" />
 
                                 <ImageView
@@ -622,12 +701,41 @@
 
                             </RelativeLayout>
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.3sp"
-                                android:background="@color/border_color" />
+                        </LinearLayout>
+
+                        <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+                            android:id="@+id/modelMenu"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:ael_duration="100"
+                            app:ael_interpolator="linear"
+                            app:ael_orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content">
+                                <Spinner
+                                    android:id="@+id/modelSpinner"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:entries="@array/model_array"
+                                    android:prompt="@string/model_prompt" />
+                            </LinearLayout>
+                        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/filter_submenu_layout3"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0.3sp"
+                            android:background="@color/sub_filter_menu_color"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/filter_layout_paddingLeft"
+                            android:paddingRight="@dimen/result_filter_layout_padding">
 
                             <RelativeLayout
+                                android:onClick="doSizeMenu"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/filter_submenu_row_marginBottom"
@@ -648,7 +756,7 @@
                                     android:layout_toRightOf="@id/sizeIco"
                                     android:text="Size"
                                     android:textColor="@color/white"
-                                    android:textSize="@dimen/small_text"
+                                    android:textSize="@dimen/micro_text"
                                     android:textStyle="bold" />
 
                                 <ImageView
@@ -658,7 +766,29 @@
                                     android:layout_alignParentRight="true"
                                     android:src="@drawable/pull_down_arrow" />
                             </RelativeLayout>
+
                         </LinearLayout>
+                        <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+                            android:id="@+id/sizeMenu"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:ael_duration="100"
+                            app:ael_interpolator="linear"
+                            app:ael_orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content">
+                                <Spinner
+                                    android:id="@+id/sizeSpinner"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:entries="@array/size_array"
+                                    android:prompt="@string/size_prompt" />
+                            </LinearLayout>
+                        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -681,7 +811,7 @@
                                 android:layout_marginRight="10dp"
                                 android:text="SHOW FILTER RESULT"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/small_text" />
+                                android:textSize="@dimen/micro_text" />
 
                             <ImageView
                                 android:id="@+id/test_button_image"
@@ -698,6 +828,7 @@
 
 
                 </ScrollView>
+
 
 
             </LinearLayout>

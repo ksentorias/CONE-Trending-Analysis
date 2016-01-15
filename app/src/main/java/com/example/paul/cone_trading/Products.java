@@ -1,6 +1,10 @@
 package com.example.paul.cone_trading;
 
-public class ProductsIO {
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+public class Products {
 
     private String title;
     private String desc;
@@ -9,6 +13,9 @@ public class ProductsIO {
     private String model;
     private String size;
     private String category;
+    private Date fullDate;
+    private int day;
+    private int year;
     private int price_php;
     private int price_jpy;
 
@@ -62,6 +69,26 @@ public class ProductsIO {
     }
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public void setFullDate(Date date){
+        fullDate = date;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fullDate);
+        year = cal.get(Calendar.YEAR);
+        day = cal.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public int getDay (){
+        return day;
+    }
+
+    public String getMonth(){
+        return new SimpleDateFormat("MMM").format(fullDate);
+    }
+
+    public int getYear(){
+        return year;
     }
 
     public int getPrice_php() {

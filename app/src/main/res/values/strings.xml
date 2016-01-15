@@ -35,14 +35,64 @@
     <string name="method">Login Method</string>
     <string name="Choose">Choose Method</string>
 
-
-
-
     <!--<Project Strings>-->
 
     <string name="item_description">Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
 
     <string name="default_error_msg">this is not found, try another keyword or use the filter menu</string>
+
+
+    <string name="type_prompt">Choose type</string>
+    <string name="maker_prompt">Choose maker</string>
+    <string name="model_prompt">Choose model</string>
+    <string name="size_prompt">Choose size</string>
+
+    <string-array name="type_array">
+        <item>Select Type</item>
+        <item>Battery</item>
+        <item>Timber</item>
+        <item>Excavator</item>
+        <item>Grader</item>
+        <item>Track Loader</item>
+        <item>SkidSteer</item>
+        <item>Paving</item>
+        <item>Highway</item>
+        <item>Hydromatic Tool</item>
+    </string-array>
+
+    <string-array name="maker_array">
+        <item>Select Maker</item>
+        <item>Isuzu</item>
+        <item>Caterpillar</item>
+        <item>Hitachi‎</item>
+        <item>Reggiane</item>
+        <item>Komatsu</item>
+        <item>Kubota</item>
+        <item>Dynapac</item>
+        <item>Sonacome</item>
+        <item>Shantui</item>
+    </string-array>
+
+    <string-array name="model_array">
+        <item>Select Model</item>
+        <item>IFR123</item>
+        <item>IFR321</item>
+        <item>TR123</item>
+        <item>TR321</item>
+        <item>CR123</item>
+        <item>CR321</item>
+        <item>FFR123</item>
+        <item>FFR321</item>
+        <item>ABC987</item>
+    </string-array>
+
+    <string-array name="size_array">
+        <item>Select Size</item>
+        <item>Small Truck</item>
+        <item>medyo small</item>
+        <item>medyo gamay</item>
+        <item>dako</item>
+    </string-array>
 
     <!--<Project Strings>-->
 

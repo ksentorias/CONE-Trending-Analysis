@@ -139,6 +139,7 @@ tools:context=".SearchActivity"
 
             <com.example.paul.cone_trading.RobotoEditTextViewRegular
                 android:id="@+id/search_searchField"
+                android:imeOptions="actionSearch"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/search_editTxt_height"
                 android:singleLine="true"
