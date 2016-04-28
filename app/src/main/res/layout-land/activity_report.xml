@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="com.example.paul.cone_trading.ReportActivity">
+    tools:context="com.trendinganalysis.conetrading.ReportActivity">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -68,7 +68,7 @@
                         android:layout_gravity="center_horizontal"
                         android:orientation="horizontal">
 
-                        <com.example.paul.cone_trading.RobotoTextViewBold
+                        <com.trendinganalysis.conetrading.RobotoTextViewBold
                             android:id="@+id/textView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
                             android:textStyle="bold"
                             android:typeface="sans" />
 
-                        <com.example.paul.cone_trading.RobotoTextViewRegular
+                        <com.trendinganalysis.conetrading.RobotoTextViewRegular
                             android:id="@+id/textAnalyis"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -102,6 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|right"
                     android:layout_weight="1"
+                    android:onClick="doReportLogout"
                     android:orientation="vertical"
                     android:paddingRight="5dp">
 
@@ -110,7 +111,6 @@
                         android:layout_height="@dimen/result_icon_height"
                         android:layout_gravity="right"
                         android:adjustViewBounds="true"
-                        android:onClick="doReportLogout"
                         android:src="@drawable/ic_logout" />
 
 
@@ -123,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/result_layout_margin">
 
-                <com.example.paul.cone_trading.RobotoEditTextViewRegular
+                <com.trendinganalysis.conetrading.RobotoEditTextViewRegular
                     android:id="@+id/report_searchField"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/search_field_height"
@@ -174,7 +174,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp">
 
-                <com.example.paul.cone_trading.RobotoTextViewBold
+                <com.trendinganalysis.conetrading.RobotoTextViewBold
                     android:id="@+id/analysisReportText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -184,7 +184,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/h4_text" />
 
-                <com.example.paul.cone_trading.RobotoTextViewRegular
+                <com.trendinganalysis.conetrading.RobotoTextViewRegular
                     android:id="@+id/salesText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

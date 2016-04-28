@@ -78,6 +78,7 @@
     <dimen name="result_Filter_text_margin_right">3dp</dimen>
     <dimen name="result_Filter_text_margin_left">5dp</dimen>
     <!--Result Screen Filter Menu-->
+    <dimen name="resultFilterMaxHeightLayout">350dp</dimen>
     <dimen name="result_filter_layout_padding">5dp</dimen>
     <dimen name="result_filter_layout_width">200dp</dimen>
     <dimen name="result_filter_layout_margin_top">25dp</dimen>

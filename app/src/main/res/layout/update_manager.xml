@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:padding="40dp"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_gravity="center"
+                android:id="@+id/imageView"
+                android:layout_width="@dimen/image_logo_width"
+                android:layout_height="@dimen/image_logo_height"
+                android:layout_marginBottom="@dimen/large_text"
+                android:src="@drawable/logo" />
+
+
+
+            <com.trendinganalysis.conetrading.RobotoTextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/h4_text"
+                android:text="Database Update"
+                android:textColor="@color/green_dark_theme"
+
+                android:layout_gravity="center"/>
+
+
+
+        </LinearLayout>
+
+
+
+    </FrameLayout>
+
+
+    <!--<Button-->
+    <!--android:id="@+id/button"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:onClick="synch"-->
+    <!--android:text="SYNCH!" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/button2"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:onClick="check"-->
+    <!--android:text="check things ~~" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/button3"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:onClick="refresh"-->
+    <!--android:text="Refresh List" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/button4"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:onClick="truncate"-->
+    <!--android:text="truncate man" />-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<ListView-->
+    <!--android:layout_weight="1"-->
+    <!--android:id="@+id/productList"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:choiceMode="singleChoice" />-->
+
+    <!--<ListView-->
+    <!--android:layout_weight="1"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:id="@+id/reportList" />-->
+    <!--</LinearLayout>-->
+
+</LinearLayout>

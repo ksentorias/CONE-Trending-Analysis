@@ -44,7 +44,7 @@
                 android:orientation="horizontal">
 
 
-                <com.example.paul.cone_trading.RobotoTextViewBold
+                <com.trendinganalysis.conetrading.RobotoTextViewBold
                     android:id="@+id/appTextTrend"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                     android:textColor="@color/green_dark_theme"
                     android:textSize="@dimen/h3_text" />
 
-                <com.example.paul.cone_trading.RobotoTextViewRegular
+                <com.trendinganalysis.conetrading.RobotoTextViewRegular
                     android:id="@+id/appTextAnalysis"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
             android:layout_marginTop="@dimen/mainScreen_fields_marginTop"
             android:orientation="vertical">
 
-            <com.example.paul.cone_trading.RobotoEditTextViewRegular
+            <com.trendinganalysis.conetrading.RobotoEditTextViewRegular
                 android:id="@+id/editTextUsername"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/standard_for_height"
@@ -95,7 +95,7 @@
                 android:textColorHint="@color/gray"
                 android:textSize="@dimen/small_text" />
 
-            <com.example.paul.cone_trading.RobotoEditTextViewRegular
+            <com.trendinganalysis.conetrading.RobotoEditTextViewRegular
                 android:id="@+id/editTextPassword"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/standard_for_height"
@@ -136,7 +136,7 @@
                 android:orientation="horizontal">
 
 
-                <com.example.paul.cone_trading.RobotoTextViewRegular
+                <com.trendinganalysis.conetrading.RobotoTextViewRegular
                     android:id="@+id/textOffLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -154,7 +154,7 @@
                     android:checked="false"
                     android:src="@drawable/ic_toggle_on" />
 
-                <com.example.paul.cone_trading.RobotoTextViewRegular
+                <com.trendinganalysis.conetrading.RobotoTextViewRegular
                     android:id="@+id/textOnLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
             </LinearLayout>
 
 
-            <com.example.paul.cone_trading.RobotoTextViewRegular
+            <com.trendinganalysis.conetrading.RobotoTextViewRegular
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -184,11 +184,11 @@
             android:layout_marginTop="@dimen/submit_btn_marginTop"
             android:orientation="vertical">
 
-            <com.example.paul.cone_trading.RobotoTextViewRegular
+            <com.trendinganalysis.conetrading.RobotoTextViewRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <com.example.paul.cone_trading.RobotoButtonBold
+            <com.trendinganalysis.conetrading.RobotoButtonBold
                 android:id="@+id/submit_button"
                 android:layout_width="@dimen/btn_width_login"
                 android:layout_height="@dimen/btn_height_login"
@@ -264,7 +264,7 @@
         </LinearLayout>
 
 
-        <com.example.paul.cone_trading.RobotoTextViewRegular
+        <com.trendinganalysis.conetrading.RobotoTextViewRegular
             android:id="@+id/forgetLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

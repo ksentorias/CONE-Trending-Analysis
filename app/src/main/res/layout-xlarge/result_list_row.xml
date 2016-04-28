@@ -19,7 +19,7 @@
             android:orientation="vertical"
             android:padding="5dp">
 
-            <com.example.paul.cone_trading.RobotoTextViewBold
+            <com.trendinganalysis.conetrading.RobotoTextViewBold
                 android:id="@+id/dayText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
                 android:textColor="@color/white"
                 android:textSize="35sp" />
 
-            <com.example.paul.cone_trading.RobotoTextViewBold
+            <com.trendinganalysis.conetrading.RobotoTextViewBold
                 android:id="@+id/yearText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
             android:layout_alignRight="@+id/bodyLayout"
             android:background="@drawable/circle_calendar_month">
 
-            <com.example.paul.cone_trading.RobotoTextViewBold
+            <com.trendinganalysis.conetrading.RobotoTextViewBold
                 android:id="@+id/monthText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,8 +70,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
-        <com.example.paul.cone_trading.RobotoTextViewBold
-            android:id="@+id/txtTitle"
+        <com.trendinganalysis.conetrading.RobotoTextViewBold
+            android:id="@+id/txtEngine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
@@ -81,7 +81,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp" />
 
-        <com.example.paul.cone_trading.RobotoTextViewRegular
+        <com.trendinganalysis.conetrading.RobotoTextViewRegular
             android:id="@+id/txtDesc"
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
@@ -107,7 +107,7 @@
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/typeLabel"
+                    <com.trendinganalysis.conetrading.RobotoTextViewRegular android:id="@+id/typeLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -117,7 +117,7 @@
                         android:textSize="@dimen/nano_text"
                         android:textColor="@color/desc_fontColor" />
 
-                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/typeData"
+                    <com.trendinganalysis.conetrading.RobotoTextViewRegular android:id="@+id/typeData"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -133,7 +133,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
-                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/makerLabel"
+                    <com.trendinganalysis.conetrading.RobotoTextViewRegular android:id="@+id/makerLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -143,7 +143,7 @@
                         android:textSize="@dimen/nano_text"
                         android:textColor="@color/desc_fontColor" />
 
-                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/makerData"
+                    <com.trendinganalysis.conetrading.RobotoTextViewRegular android:id="@+id/makerData"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -159,7 +159,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
-                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/modelLabel"
+                    <com.trendinganalysis.conetrading.RobotoTextViewRegular android:id="@+id/modelLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -169,7 +169,7 @@
                         android:textSize="@dimen/nano_text"
                         android:textColor="@color/desc_fontColor"/>
 
-                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/modelData"
+                    <com.trendinganalysis.conetrading.RobotoTextViewRegular android:id="@+id/modelData"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -194,7 +194,7 @@
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/sizeLabel"
+                    <com.trendinganalysis.conetrading.RobotoTextViewRegular android:id="@+id/sizeLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -204,7 +204,7 @@
                         android:textSize="@dimen/nano_text"
                         android:textColor="@color/desc_fontColor" />
 
-                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/sizeData"
+                    <com.trendinganalysis.conetrading.RobotoTextViewRegular android:id="@+id/sizeData"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -220,17 +220,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
-                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/categoryLabel"
+                    <com.trendinganalysis.conetrading.RobotoTextViewRegular android:id="@+id/categoryLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentBottom="true"
                         android:textStyle="normal"
-                        android:text="Category: "
+                        android:text="Source: "
                         android:textSize="@dimen/nano_text"
                         android:textColor="@color/desc_fontColor" />
 
-                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/categoryData"
+                    <com.trendinganalysis.conetrading.RobotoTextViewRegular android:id="@+id/categoryData"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -240,6 +240,34 @@
                         android:textSize="@dimen/nano_text"
                         android:textColor="@color/desc_fontColor"/>
                 </LinearLayout>
+
+                <LinearLayout
+                    android:paddingBottom="2dp"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.trendinganalysis.conetrading.RobotoTextViewRegular android:id="@+id/seriesLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:textStyle="normal"
+                        android:text="Series: "
+                        android:textSize="@dimen/nano_text"
+                        android:textColor="@color/desc_fontColor" />
+
+                    <com.trendinganalysis.conetrading.RobotoTextViewRegular android:id="@+id/seriesData"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:textStyle="normal"
+                        android:text="C Series"
+                        android:textSize="@dimen/nano_text"
+                        android:textColor="@color/desc_fontColor"/>
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -253,7 +281,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
-                    <com.example.paul.cone_trading.RobotoButtonRegular
+                    <com.trendinganalysis.conetrading.RobotoButtonRegular
                         android:text="PHP"
                         android:textSize="@dimen/nano_text"
                         android:layout_gravity="center_vertical"
@@ -261,7 +289,7 @@
                         android:layout_height="25dp"
                         android:background="@drawable/php_currency_style"/>
 
-                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/pesoPriceData"
+                    <com.trendinganalysis.conetrading.RobotoTextViewRegular android:id="@+id/pesoPriceData"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="2dp"
                         android:layout_width="wrap_content"
@@ -273,7 +301,7 @@
                         android:textSize="@dimen/nano_text"
                         android:textColor="@color/desc_fontColor" />
 
-                    <com.example.paul.cone_trading.RobotoButtonRegular
+                    <com.trendinganalysis.conetrading.RobotoButtonRegular
                         android:layout_marginLeft="@dimen/jpy_marginLeft"
                         android:text="JPY"
                         android:textSize="@dimen/nano_text"
@@ -282,7 +310,7 @@
                         android:layout_height="25dp"
                         android:background="@drawable/jpy_currency_style"/>
 
-                    <com.example.paul.cone_trading.RobotoTextViewRegular android:id="@+id/yenPriceData"
+                    <com.trendinganalysis.conetrading.RobotoTextViewRegular android:id="@+id/yenPriceData"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="2dp"
                         android:layout_width="wrap_content"

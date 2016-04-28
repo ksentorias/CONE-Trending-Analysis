@@ -99,7 +99,7 @@ tools:context=".SearchActivity"
                 android:layout_marginTop="@dimen/search_screen_title_marginTop"
                 android:layout_gravity="center_horizontal">
 
-                <com.example.paul.cone_trading.RobotoTextViewBold
+                <com.trendinganalysis.conetrading.RobotoTextViewBold
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Trend"
@@ -109,7 +109,7 @@ tools:context=".SearchActivity"
                     android:textSize="@dimen/h3_text"
                     android:textColor="@color/green_dark_theme"/>
 
-                <com.example.paul.cone_trading.RobotoTextViewRegular
+                <com.trendinganalysis.conetrading.RobotoTextViewRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" Analysis"
@@ -137,7 +137,7 @@ tools:context=".SearchActivity"
                 android:layout_alignBottom="@+id/search_searchField"
                 android:layout_alignLeft="@+id/search_searchField" />
 
-            <com.example.paul.cone_trading.RobotoEditTextViewRegular
+            <com.trendinganalysis.conetrading.RobotoEditTextViewRegular
                 android:id="@+id/search_searchField"
                 android:imeOptions="actionSearch"
                 android:layout_width="fill_parent"
@@ -152,7 +152,7 @@ tools:context=".SearchActivity"
                 android:paddingLeft="@dimen/search_editText_padding_start"
                 android:paddingRight="@dimen/search_editText_padding_end"/>
 
-            <com.example.paul.cone_trading.RobotoButtonRegular
+            <com.trendinganalysis.conetrading.RobotoButtonRegular
                 android:id="@+id/id_search_button"
                 android:layout_width="@dimen/search_btn_width"
                 android:layout_height="@dimen/search_btn_height"

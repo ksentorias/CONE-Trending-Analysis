@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#000000">
+
+
+    <!--<TextView-->
+        <!--android:id="@+id/lblListHeader"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"-->
+        <!--android:textSize="17dp"-->
+        <!--android:textColor="#f9f93d" />-->
+
+
+    <LinearLayout
+        android:id="@+id/filter_submenu_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/sub_filter_menu_color"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/filter_layout_paddingLeft"
+        android:paddingRight="@dimen/result_filter_layout_padding">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/filter_submenu_row_marginBottom"
+            android:layout_marginTop="@dimen/filter_submenu_row_marginTop">
+
+            <ImageView
+                android:id="@+id/headerIco"
+                android:layout_width="@dimen/result_filter_icons_size"
+                android:layout_height="@dimen/result_filter_icons_size"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="@dimen/result_filter_icons_marginRight"
+                android:src="@drawable/ic_type" />
+
+            <com.trendinganalysis.conetrading.RobotoTextViewBold
+                android:id="@+id/typeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/headerIco"
+                android:text="Type"
+                android:textColor="@color/white"
+                android:textSize="@dimen/micro_text"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/indicatorIco"
+                android:layout_width="@dimen/result_filter_icons_size"
+                android:layout_height="@dimen/result_filter_icons_size"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_pull_down_arrow" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

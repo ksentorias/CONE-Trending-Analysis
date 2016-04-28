@@ -48,7 +48,7 @@
     <string name="size_prompt">Choose size</string>
 
     <string-array name="type_array">
-        <item>Select Type</item>
+        <item>Any</item>
         <item>Battery</item>
         <item>Timber</item>
         <item>Excavator</item>
@@ -61,7 +61,7 @@
     </string-array>
 
     <string-array name="maker_array">
-        <item>Select Maker</item>
+        <item>Any</item>
         <item>Isuzu</item>
         <item>Caterpillar</item>
         <item>Hitachi‎</item>
@@ -74,7 +74,7 @@
     </string-array>
 
     <string-array name="model_array">
-        <item>Select Model</item>
+        <item>Any</item>
         <item>IFR123</item>
         <item>IFR321</item>
         <item>TR123</item>
@@ -87,11 +87,16 @@
     </string-array>
 
     <string-array name="size_array">
-        <item>Select Size</item>
+        <item>Any</item>
         <item>Small Truck</item>
-        <item>medyo small</item>
-        <item>medyo gamay</item>
-        <item>dako</item>
+        <item>Large Truck</item>
+        <item>Small Tractors</item>
+        <item>Large Tractors</item>
+        <item>Small Excavator</item>
+        <item>Large Excavator</item>
+        <item>Small Harvester</item>
+        <item>Large Harvester</item>
+        <item>Small Paver</item>
     </string-array>
 
     <!--<Project Strings>-->
