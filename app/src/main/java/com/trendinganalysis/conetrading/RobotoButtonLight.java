@@ -6,12 +6,12 @@ import android.util.AttributeSet;
 import android.widget.Button;
 
 /**
- * Created by Paul on 12/3/2015.
+ * Created by Ken on 12/3/2015.
  */
 public class RobotoButtonLight extends Button {
 
-    public RobotoButtonLight(Context context, AttributeSet attrs){
+    public RobotoButtonLight(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/RobotoCondensed-Light.ttf"));
+        this.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/RobotoCondensed-Light.ttf"));
     }
 }

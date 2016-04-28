@@ -8,20 +8,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
-class CustomAdapter extends BaseAdapter{
+class CustomAdapter extends BaseAdapter {
+    private static LayoutInflater inflater;
+    ProgressDialog dialog;
+    NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
     private List<Products> items;
     private String[] result;
     private Context context;
+    //    DecimalFormat nf = new DecimalFormat("##,##,##,##,##,##,###.##");
+//    NumberFormat nf = DecimalFormat.getInstance();
     private int[] imageId;
-    private static LayoutInflater inflater;
-    ProgressDialog dialog;
-    NumberFormat nf = new DecimalFormat("###,###,###.##");
+
 
     public CustomAdapter(PlaceholderFragment list_result_activity, String[] prgmNameList, int[] prgmImages) {
 
@@ -38,6 +40,12 @@ class CustomAdapter extends BaseAdapter{
         this.items = items;
     }
 
+    public static String replaceString(double value) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        String currencySymbol = formatter.getCurrency().getSymbol();
+        String moneyString = formatter.format(value);
+        return moneyString.replace(currencySymbol, "");
+    }
 
     @Override
     public int getCount() {
@@ -55,23 +63,6 @@ class CustomAdapter extends BaseAdapter{
     public long getItemId(int position) {
         // TODO Auto-generated method stub
         return position;
-    }
-
-    public class Holder {
-        TextView txt_engine;
-        TextView txt_desc;
-        TextView txt_type;
-        TextView txt_maker;
-        TextView txt_model;
-        TextView txt_size;
-        TextView txt_category;
-        TextView txt_price_php;
-        TextView txt_price_jpy;
-        TextView txt_month;
-        TextView txt_day;
-        TextView txt_year;
-        TextView txt_series;
-
     }
 
     @Override
@@ -104,22 +95,25 @@ class CustomAdapter extends BaseAdapter{
             holder.txt_day = (TextView) convertView.findViewById(R.id.dayText);
             holder.txt_series = (TextView) convertView.findViewById(R.id.seriesData);
 
+
             if (holder.txt_engine != null) holder.txt_engine.setText(productIO.getEngine());
             if (holder.txt_desc != null) holder.txt_desc.setText(productIO.getDesc());
-            if (holder.txt_type != null) holder.txt_type.setText(productIO.getType());
-            if (holder.txt_maker != null) holder.txt_maker.setText(productIO.getMake());
+//            if (holder.txt_type != null) holder.txt_type.setText(productIO.getType());
+            if (holder.txt_maker != null)
+                holder.txt_maker.setText(productIO.getMake() + " " + productIO.getSeries() + " " + productIO.getType());
             if (holder.txt_model != null) holder.txt_model.setText(productIO.getModel());
             if (holder.txt_size != null) holder.txt_size.setText(productIO.getSize());
             if (holder.txt_category != null) holder.txt_category.setText(productIO.getCategory());
-            if (holder.txt_year != null) holder.txt_year.setText(""+productIO.getYear());
-            if (holder.txt_month != null) holder.txt_month.setText(productIO.getMonth().toUpperCase());
-            if (holder.txt_day != null) holder.txt_day.setText(""+productIO.getDay());
-            if (holder.txt_series != null) holder.txt_series.setText(""+productIO.getSeries());
+            if (holder.txt_year != null) holder.txt_year.setText("" + productIO.getYear());
+            if (holder.txt_month != null)
+                holder.txt_month.setText(productIO.getMonth().toUpperCase());
+            if (holder.txt_day != null) holder.txt_day.setText("" + productIO.getDay());
+//            if (holder.txt_series != null) holder.txt_series.setText("" + productIO.getSeries());
             if (holder.txt_price_php != null) {
-                holder.txt_price_php.setText(nf.format(productIO.getPrice_php()));
+                holder.txt_price_php.setText(replaceString(productIO.getPrice_php()));
             }
             if (holder.txt_price_jpy != null) {
-                holder.txt_price_jpy.setText(nf.format(productIO.getPrice_jpy()));
+                holder.txt_price_jpy.setText(replaceString(productIO.getPrice_jpy()));
             }
 
         }
@@ -134,4 +128,23 @@ class CustomAdapter extends BaseAdapter{
 
         return convertView;
     }
+
+    public class Holder {
+        TextView txt_engine;
+        TextView txt_desc;
+        TextView txt_type;
+        TextView txt_maker;
+        TextView txt_model;
+        TextView txt_size;
+        TextView txt_category;
+        TextView txt_price_php;
+        TextView txt_price_jpy;
+        TextView txt_month;
+        TextView txt_day;
+        TextView txt_year;
+        TextView txt_series;
+
+    }
+
+
 }

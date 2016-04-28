@@ -5,10 +5,14 @@ import com.avast.android.dialogs.iface.ISimpleDialogListener;
 
 import java.util.List;
 
-public interface FetchDataListener extends ISimpleDialogListener{
-    public void onFetchComplete(List<Products> data);
-    public void onFetchFailure(String msg);
-    public void onFetchComplete(int code);
+public interface FetchDataListener extends ISimpleDialogListener {
+    void onFetchComplete(List<Products> data);
+
+    void onFetchFailure(String msg);
+
+    void onFetchComplete(int code);
+
+    void onFetchComplete(CustomAdapter adapter);
 
 
 }

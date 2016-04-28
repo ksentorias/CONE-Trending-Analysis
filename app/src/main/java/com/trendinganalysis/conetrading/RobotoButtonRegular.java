@@ -6,12 +6,12 @@ import android.util.AttributeSet;
 import android.widget.Button;
 
 /**
- * Created by Paul on 12/3/2015.
+ * Created by Ken on 12/3/2015.
  */
 public class RobotoButtonRegular extends Button {
 
-    public RobotoButtonRegular(Context context, AttributeSet attrs){
+    public RobotoButtonRegular(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/RobotoCondensed-Regular.ttf"));
+        this.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/RobotoCondensed-Regular.ttf"));
     }
 }

@@ -1,16 +1,13 @@
 package com.trendinganalysis.conetrading;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.v4.app.DialogFragment;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -22,13 +19,15 @@ import com.avast.android.dialogs.iface.ISimpleDialogListener;
 
 public class SearchActivity extends AppCompatActivity implements ISimpleDialogListener {
 
-    EditText editTextSearch;
-    ResultActivity resultActivity;
     Credential credentials = MainActivity.credentials;
-    public static DataHolder dataHolder = new DataHolder();
+    DataHandler dataHandler = MainActivity.dataHandler;
     Toast toast;
+    private CoordinatorLayout activityLayout;
+    private EditText editTextSearch;
+    private String updateMessage = "";
+    private String updateAction = "";
+    private int snackbarLength = 0;
     private long mLastClickTime = 0;
-
 
 
     @Override
@@ -36,9 +35,10 @@ public class SearchActivity extends AppCompatActivity implements ISimpleDialogLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        activityLayout = (CoordinatorLayout) findViewById(R.id.activityLayout);
 
-        resultActivity = new ResultActivity();
+
+//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         editTextSearch = (EditText) findViewById(R.id.search_searchField);
 
@@ -48,19 +48,17 @@ public class SearchActivity extends AppCompatActivity implements ISimpleDialogLi
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                         return false;
-                    }
-                    else {
+                    } else {
                         mLastClickTime = SystemClock.elapsedRealtime();
 
-                        if(editTextSearch.getText().toString().isEmpty()){
+                        if (editTextSearch.getText().toString().isEmpty()) {
                             SimpleDialogFragment.createBuilder(getBaseContext(), getSupportFragmentManager())
                                     .setTitle("No Input")
                                     .setMessage("Please provide an input keywords (E.g., Truck, Hydraulics and etc.)")
-                                    .setRequestCode(DataHolder.noInputCode)
+                                    .setRequestCode(DataHandler.noInputCode)
                                     .setPositiveButtonText("Close").show();
                             return false;
-                        }
-                        else {
+                        } else {
                             search();
                             InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                             mgr.hideSoftInputFromWindow(editTextSearch.getWindowToken(), 0);
@@ -71,45 +69,54 @@ public class SearchActivity extends AppCompatActivity implements ISimpleDialogLi
                 return false;
             }
         });
+
+//        Timer timer = new Timer();
+//
+//        timer.schedule(new TimerTask() {
+//            public void run() {
+//                showUpdateMessage();
+//            }
+//        }, 3000);
+
+
     }
+
 
     public void doSearchLogout(View view) {
         SimpleDialogFragment.createBuilder(this, getSupportFragmentManager())
                 .setTitle("Logout")
                 .setMessage("Are you sure you want to logout with the current account?")
                 .setNegativeButtonText("No")
-                .setRequestCode(DataHolder.logoutCode)
+                .setRequestCode(DataHandler.logoutCode)
                 .setPositiveButtonText("Yes").show();
     }
 
-    public void doSearchSettings(View view) {
-        toast = Toast.makeText(this, "Settings", Toast.LENGTH_SHORT);
-        toast.show();
+    public void doSettings(View view) {
+        Intent intent = new Intent(this, Settings.class);
+        startActivity(intent);
     }
 
     public void doSearch(View view) {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-        }
-        else {
+        } else {
             mLastClickTime = SystemClock.elapsedRealtime();
 
-            if(editTextSearch.getText().toString().isEmpty()){
+            if (editTextSearch.getText().toString().isEmpty()) {
                 SimpleDialogFragment.createBuilder(getBaseContext(), getSupportFragmentManager())
                         .setTitle("No Input")
                         .setMessage("Please provide an input keywords (E.g., Truck, Hydraulics and etc.)")
-                        .setRequestCode(DataHolder.noInputCode)
+                        .setRequestCode(DataHandler.noInputCode)
                         .setPositiveButtonText("Close").show();
-            }
-            else {
+            } else {
                 search();
             }
         }
     }
 
     public void search() {
-        dataHolder.setRunWithData(true);
-        dataHolder.setFilterSearch(false);
-        dataHolder.setKeyword(editTextSearch.getText().toString());
+        dataHandler.setRunWithData(true);
+        dataHandler.setFilterSearch(false);
+        dataHandler.setKeyword(editTextSearch.getText().toString());
         Intent intent = new Intent(this, ResultActivity.class);
         startActivity(intent);
     }
@@ -126,11 +133,12 @@ public class SearchActivity extends AppCompatActivity implements ISimpleDialogLi
 
     @Override
     public void onPositiveButtonClicked(int requestCode) {
-        if (requestCode == DataHolder.logoutCode) {
-            credentials.clearCredentials(getBaseContext());
+        if (requestCode == DataHandler.logoutCode) {
+            credentials.clearCredentials();
             Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            finish();
             startActivity(intent);
-
         }
     }
 }

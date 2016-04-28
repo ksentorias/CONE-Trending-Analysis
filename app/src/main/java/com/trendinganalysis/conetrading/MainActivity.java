@@ -1,11 +1,12 @@
 package com.trendinganalysis.conetrading;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,47 +20,33 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avast.android.dialogs.fragment.SimpleDialogFragment;
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements FetchDataListener {
+public class MainActivity extends AppCompatActivity {
 
 
+    public static final DataHandler dataHandler = new DataHandler();
+    public static DatabaseHandler databaseHandler;
+    public static SharedPrefs sharedPrefs;
+    public static Credential credentials;
     String s_username;
     String s_password;
     EditText editTextUsername;
     EditText editTextPassword;
+    boolean doubleBackToExitPressedOnce = false;
+    RobotoButtonBold submitButton;
     ImageView toggleBtn;
     boolean toggler = true;
     boolean remember = true;
-    Toast toast;
-
     ProgressDialog dialog;
-
-    public static Credential credentials;
-
+    ProgressDialog updateDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,17 +54,21 @@ public class MainActivity extends AppCompatActivity implements FetchDataListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //displays current dimension of device
-        //showDimension();
+        sharedPrefs = new SharedPrefs(this);
 
+        SharedPrefs.initializeInstance(this);
 
-        credentials = new Credential(getApplicationContext(), getParent());
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
+        databaseHandler = new DatabaseHandler(getBaseContext());
+
+        credentials = new Credential(getApplicationContext(), this);
 
         editTextUsername = (EditText) findViewById(R.id.editTextUsername);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
+        submitButton = (RobotoButtonBold) findViewById(R.id.submit_button);
+
         toggleBtn = (ImageView) findViewById(R.id.rememberSwitch);
-
-
         editTextUsername.setGravity(Gravity.CENTER);
         editTextPassword.setGravity(Gravity.CENTER);
 
@@ -105,7 +96,149 @@ public class MainActivity extends AppCompatActivity implements FetchDataListener
             }
         });
 
-        checkRemember();
+        //set ddatabaseHandler size
+//            getDBSize();
+
+        if (!credentials.getUsername().isEmpty()) {
+            Log.i("MainActivity", "U: " + credentials.getUsername() + "/ P: " + credentials.getPassword());
+            editTextUsername.setText(credentials.getUsername());
+            editTextPassword.setText(credentials.getPassword());
+        }
+
+        //if the app is configured
+        if (sharedPrefs.getValueBol(SharedPrefs.KEY_CONFIGURED)) {
+
+        } else {
+//            getDBSize();
+            Intent intent = new Intent(this, WelcomeActivity.class);
+            startActivity(intent);
+
+        }
+
+    }
+
+    public void getDBSize() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put(Settings.DB_HOST, sharedPrefs.getValueStr(SharedPrefs.KEY_DB_HOST));
+        params.put(Settings.DB_NAME, sharedPrefs.getValueStr(SharedPrefs.KEY_DB_NAME));
+        params.put(Settings.DB_USER, sharedPrefs.getValueStr(SharedPrefs.KEY_DB_USERNAME));
+        params.put(Settings.DB_PASSWORD, sharedPrefs.getValueStr(SharedPrefs.KEY_DB_PASSWORD));
+
+        System.out.println("params: " + params.toString());
+
+        String url = sharedPrefs.getValueStr(SharedPrefs.KEY_DOMAIN_NAME) + "/php/checkDBSize.php";
+        Log.i("getDBSize", "URL: " + url);
+
+        client.post(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(String response) {
+                System.out.println("sucess sa dbcheck");
+                try {
+                    JSONObject json_data = new JSONObject(response);
+                    double size = (json_data.getDouble("size"));
+                    dataHandler.setDbSize(size);
+                    Log.i("checkDBSize", "DB Size: " + dataHandler.getDbSize());
+                    dialog.dismiss();
+                    updateDialog.dismiss();
+
+                    Intent intent = new Intent(getApplicationContext(), UpdateManager.class);
+                    startActivity(intent);
+
+                } catch (Exception e) {
+                    updateDialog.dismiss();
+                    Log.e("Fail 3", e.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Throwable error,
+                                  String content) {
+                dialog.dismiss();
+                System.out.println("failed sa dbcheck");
+                if (statusCode == 404) {
+                    Log.e("getDBSize", "ERROR 404");
+                } else if (statusCode == 500) {
+                    Log.e("getDBSize", "ERROR 500");
+                } else {
+                    Log.e("getDBSize", "ERROR OCCURED!  content: " + content + "\nstatus: " + statusCode + "\nerror: " + error.toString());
+                }
+            }
+        });
+
+    }
+
+    public void checkNeedUpdate() {
+
+        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date datelocal = new Date(sharedPrefs.getValueLong(SharedPrefs.KEY_DATE_MODIFIED));
+
+        Log.i("checkNeedUpdate", sdf.format(datelocal));
+
+        final Date dateModifiedLocal = datelocal;
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put(Settings.DB_HOST, sharedPrefs.getValueStr(SharedPrefs.KEY_DB_HOST));
+        params.put(Settings.DB_NAME, sharedPrefs.getValueStr(SharedPrefs.KEY_DB_NAME));
+        params.put(Settings.DB_USER, sharedPrefs.getValueStr(SharedPrefs.KEY_DB_USERNAME));
+        params.put(Settings.DB_PASSWORD, sharedPrefs.getValueStr(SharedPrefs.KEY_DB_PASSWORD));
+
+        System.out.println("need Update params: " + params.toString());
+
+        String url = sharedPrefs.getValueStr(SharedPrefs.KEY_DOMAIN_NAME) + "/php/getDateModified.php";
+        Log.i("getDBSize", "URL: " + url);
+
+        client.post(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(String response) {
+                System.out.println("success sa dbcheck");
+
+                try {
+                    JSONObject json_data = new JSONObject(response);
+                    long date_modified = (json_data.getLong("date_modified"));
+                    date_modified = date_modified * 1000;
+                    Date dateremote = new Date(date_modified);
+
+                    Log.i("needUpdate", "date_modified (long)(remote): " + date_modified);
+                    Log.i("needUpdate", "date_modified (long)(local): " + sharedPrefs.getValueLong(SharedPrefs.KEY_DATE_MODIFIED));
+
+
+                    Log.i("needUpdate", "date_modified (remote): " + sdf.format(dateremote));
+                    Log.i("needUpdate", "date_modified (local): " + sdf.format(dateModifiedLocal));
+
+                    if (dateremote.after(dateModifiedLocal)) {
+                        Log.i("needUpdate", "WEE NEED BLOODY UPDATES");
+                        getDBSize();
+                    } else {
+                        Log.i("needUpdate", "WEE DONT NEED BLOODY UPDATES");
+                        updateDialog.dismiss();
+                        Intent intent = new Intent(getBaseContext(), SearchActivity.class);
+                        startActivity(intent);
+
+                    }
+
+                } catch (Exception e) {
+                    updateDialog.dismiss();
+                    Log.e("Fail 3", e.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Throwable error,
+                                  String content) {
+                System.out.println("failed sa dbcheck");
+                if (statusCode == 404) {
+                    Log.e("getDBSize", "ERROR 404");
+                } else if (statusCode == 500) {
+                    Log.e("getDBSize", "ERROR 500");
+                } else {
+                    Log.e("getDBSize", "ERROR OCCURED!  content: " + content + "\nstatus: " + statusCode + "\nerror: " + error.toString());
+                }
+            }
+        });
+
     }
 
     public void onSubmit(View view) {
@@ -116,32 +249,39 @@ public class MainActivity extends AppCompatActivity implements FetchDataListener
         s_username = editTextUsername.getText().toString().trim();
         s_password = editTextPassword.getText().toString().trim();
 
-        credentials.setCredentials(s_username, s_password);
 
-        checkCredentials(s_username, s_password);
+        dialog = ProgressDialog.show(MainActivity.this, "", "Checking your account...");
+
+        if (databaseHandler.checkCredentials(s_username, s_password)) {
+
+            // save it to sharedprefs
+            credentials.setUserName(s_username, s_password, remember);
 
 
-    }
+            if (checkInternetConnection()) {
+                dialog.dismiss();
+                updateDialog = ProgressDialog.show(MainActivity.this, "", "Checking for updates...");
 
-    public void checkCredentials(boolean access){
+                checkNeedUpdate();
 
-        if (access) {
-            if(remember){
-                credentials.setUserName(this,s_username,remember);
-
-                Intent intent = new Intent(this, SearchActivity.class);
+            } else {
+                Log.i("logIn", "NO INTERNET CONNECTION");
+                dialog.dismiss();
+                Intent intent = new Intent(getBaseContext(), SearchActivity.class);
                 startActivity(intent);
-            }
-            else{
-                Intent intent = new Intent(this, SearchActivity.class);
-                startActivity(intent);
-            }
-        }
-        else {
 
-            YoYo.with(Techniques.Tada)
-                    .duration(700)
-                    .playOn(findViewById(R.id.fieldLayout));
+
+            }
+
+        } else {
+            SimpleDialogFragment.createBuilder(this, getSupportFragmentManager())
+                    .setTitle("Incorrect Credentials")
+                    .setMessage("Username or  password you entered is incorrect. Please try again")
+                    .setCancelable(true)
+                    .show();
+            dialog.dismiss();
+
+
         }
     }
 
@@ -168,179 +308,34 @@ public class MainActivity extends AppCompatActivity implements FetchDataListener
 
     }
 
-    public void checkRemember(){
-        if(credentials.getUserName(this)) {
-            Intent intent = new Intent(this, SearchActivity.class);
-            startActivity(intent);
-        }
-    }
-
-    public void checkCredentials(String username, String password) {
-        dialog = ProgressDialog.show(MainActivity.this, "", "Checking your account...");
-
-        String url = DataHolder.permalink + "checkCredentials.php";
-
-        FetchCredentialsData task = new FetchCredentialsData(this, getBaseContext(), username,  password);
-        task.execute(url);
-
-
+    private boolean checkInternetConnection() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 
     @Override
-    public void onFetchComplete(List<Products> data) {
-
-    }
-
-    @Override
-    public void onFetchFailure(String msg) {
-        if (dialog != null) dialog.dismiss();
-        Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
-        Log.e("Failure sa login page", "mao ni ang msg: " + msg);
-        if (dialog != null) dialog.dismiss();
-
-        checkCredentials(false);
-
-    }
-
-    @Override
-    public void onFetchComplete(int code) {
-        if (dialog != null) dialog.dismiss();
-
-        checkCredentials(true);
-
-
-    }
-
-    @Override
-    public void onNegativeButtonClicked(int requestCode) {
-
-    }
-
-    @Override
-    public void onNeutralButtonClicked(int requestCode) {
-
-    }
-
-    @Override
-    public void onPositiveButtonClicked(int requestCode) {
-
-    }
-
-}
-
-class FetchCredentialsData extends AsyncTask<String, Void, String> {
-
-    Context context;
-    FetchDataListener listener;
-
-    String user = "";
-    String pass = "";
-
-    String msg;
-    int code;
-
-    public FetchCredentialsData(FetchDataListener listener, Context context , String user, String pass) {
-        this.context = context;
-        this.listener = listener;
-        this.user = user;
-        this.pass = pass;
-    }
-
-    @Override
-    protected String doInBackground(String... params) {
-        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-
-
-        nameValuePairs.add(new BasicNameValuePair("user", user));
-        nameValuePairs.add(new BasicNameValuePair("pass", pass));
-        try {
-            // create http connection
-            DefaultHttpClient httpClient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(params[0]);
-
-            //connect
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-            //get response
-            HttpResponse httpResponse = httpClient.execute(httppost);
-            HttpEntity entity = httpResponse.getEntity();
-
-
-            if (entity == null) {
-                msg = "No response from server";
-                return null;
-            }
-
-            // get response content and convert it to json string
-            InputStream is = entity.getContent();
-            Log.e("pass 1", "connection success ");
-
-            return streamToString(is);
-
-        } catch (IOException e) {
-            msg = "No network connection or cannot connect to database server.";
-        }
-        return null;
-    }
-
-    @Override
-    protected void onPostExecute(String s) {
-
-        if (s == null) {
-            if (listener != null) listener.onFetchFailure(msg);
-            return;
-        }
-        try {
-            JSONObject json_data = new JSONObject(s);
-
-            code=(json_data.getInt("code"));
-
-            if(code == 1){
-
-                if (listener != null) {
-                    //set code 1 for success
-                    listener.onFetchComplete(code);
-                }
-            }
-            else{
-                msg = "Login Failed: Incorrect Password or Username";
-                if (listener != null) listener.onFetchFailure(msg);
-            }
-        } catch (JSONException e) {
-            msg = e + "\nNo User Found";
-            if (listener != null) listener.onFetchFailure(msg);
-            return;
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            System.exit(0);
         }
 
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "press BACK again to exit", Toast.LENGTH_SHORT).show();
 
+        new Handler().postDelayed(new Runnable() {
 
-
-
-        super.onPostExecute(s);
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 
-    public String streamToString(final InputStream is) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-        String line = null;
-
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-        } catch (IOException e) {
-            throw e;
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                throw e;
-            }
-        }
-
-        return sb.toString();
+    public void doSettings(View view) {
+        Intent intent = new Intent(this, Settings.class);
+        startActivity(intent);
     }
 }
-
-

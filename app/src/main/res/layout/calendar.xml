@@ -37,10 +37,10 @@
         </RelativeLayout>
 
         <FrameLayout
-            android:background="@drawable/circle_calendar_month"
             android:layout_width="20sp"
             android:layout_height="20sp"
-            android:layout_alignRight="@+id/bodyLayout">
+            android:layout_alignRight="@+id/bodyLayout"
+            android:background="@drawable/circle_calendar_month">
 
             <com.trendinganalysis.conetrading.RobotoTextViewBold
                 android:id="@+id/monthText"

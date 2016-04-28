@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 
 /**
- * Created by Paul on 12/7/2015.
+ * Created by Ken on 12/7/2015.
  */
 public class OnSwipeTouchListener implements OnTouchListener {
 

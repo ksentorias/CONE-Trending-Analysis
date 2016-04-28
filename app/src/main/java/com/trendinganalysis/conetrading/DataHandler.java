@@ -1,37 +1,136 @@
 package com.trendinganalysis.conetrading;
 
-import org.apache.http.NameValuePair;
+import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
- * Created by Paul on 1/7/2016.
+ * Created by Ken on 1/7/2016.
  */
 public class DataHandler {
     final static int logoutCode = 1;
     final static int noInputCode = 2;
-    final static String permalink = "http://webprojectupdates.com/c-one/php/";
+    final static int updateCode = 3;
+    final static int cancelSyncCode = 4;
     private int dataLength;
     private String keyword;
     private String type;
     private String model;
     private String maker;
     private String size;
-    private String category;
+    private String engine;
+    private String series;
     private String dateTo;
     private String dateFrom;
+    private String source;
+
+
+    private double dbSize;
+
     private boolean filterSearch;
     private boolean runWithData;
-    private boolean reportData;
+    private boolean cancelUpdate;
+    private boolean updating;
+
+
+    private List<String> childListType;
+    private List<String> childListMake;
+    private List<String> childListModel;
+    private List<String> childListEngine;
+    private List<String> childListWeight;
+    private List<String> childListSeries;
+    private List<String> childListSource;
     private List<List<Products>> products;
-    private List<List<Products>> reportProducts;
     private List<Products> reportLAProducts;
     private List<Products> reportFSProducts;
     private List<Products> reportFAProducts;
     private List<Products> reportLMProducts;
     private List<Products> reportSDProducts;
-    ArrayList<NameValuePair> nameValuePairs;
+    private String initialSearchQuery;
+
+    public DataHandler() {
+    }
+
+    public List<String> getChildListSeries() {
+        return childListSeries;
+    }
+
+    public void setChildListSeries(List<String> childListSeries) {
+        this.childListSeries = childListSeries;
+    }
+
+    public String getSeries() {
+        return series;
+    }
+
+    public void setSeries(String series) {
+        this.series = series;
+    }
+
+    public String getInitialSearchQuery() {
+        return initialSearchQuery;
+    }
+
+    public void setInitialSearchQuery(String initialSearchQuery) {
+        this.initialSearchQuery = initialSearchQuery;
+    }
+
+    public List<String> getChildListType() {
+        return childListType;
+    }
+
+    public void setChildListType(List<String> childListType) {
+        this.childListType = childListType;
+    }
+
+    public List<String> getChildListMake() {
+        return childListMake;
+    }
+
+    public void setChildListMake(List<String> childListMake) {
+        this.childListMake = childListMake;
+    }
+
+    public List<String> getChildListModel() {
+        return childListModel;
+    }
+
+    public void setChildListModel(List<String> childListModel) {
+        this.childListModel = childListModel;
+    }
+
+    public List<String> getChildListEngine() {
+        return childListEngine;
+    }
+
+    public void setChildListEngine(List<String> childListEngine) {
+        this.childListEngine = childListEngine;
+    }
+
+    public List<String> getChildListWeight() {
+        return childListWeight;
+    }
+
+    public void setChildListWeight(List<String> childListWeight) {
+        this.childListWeight = childListWeight;
+    }
+
+    public List<String> getChildListSource() {
+        return childListSource;
+    }
+
+    public void setChildListSource(List<String> childListSource) {
+        this.childListSource = childListSource;
+    }
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
     public boolean isRunWithData() {
         return runWithData;
@@ -41,7 +140,7 @@ public class DataHandler {
         this.runWithData = runWithData;
     }
 
-    public List <List<Products>> getProduct() {
+    public List<List<Products>> getProduct() {
         return products;
     }
 
@@ -62,7 +161,17 @@ public class DataHandler {
     }
 
     public void setKeyword(String keyword) {
-        this.keyword = keyword;
+        StringTokenizer st = new StringTokenizer(keyword);
+        int i = 0;
+        while (st.hasMoreElements()) {
+            Log.i("String Tokenizer", st.nextElement() + " " + i);
+            i++;
+        }
+
+        if (i == 1) {
+            this.keyword = keyword.replaceAll("\\s", "");
+            Log.i("String Tokenizer", "New Keyword: " + this.keyword);
+        } else if (i > 1) this.keyword = keyword;
     }
 
     public String getType() {
@@ -97,12 +206,12 @@ public class DataHandler {
         this.size = size;
     }
 
-    public String getCategory() {
-        return category;
+    public String getSource() {
+        return source;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public String getDateTo() {
@@ -127,22 +236,6 @@ public class DataHandler {
 
     public void setFilterSearch(boolean filterSearch) {
         this.filterSearch = filterSearch;
-    }
-
-    public boolean isReportData() {
-        return reportData;
-    }
-
-    public void setReportData(boolean reportData) {
-        this.reportData = reportData;
-    }
-
-    public ArrayList<NameValuePair> getNameValuePairs() {
-        return nameValuePairs;
-    }
-
-    public void setNameValuePairs(ArrayList<NameValuePair> nameValuePairs) {
-        this.nameValuePairs = nameValuePairs;
     }
 
     public List<Products> getReportLAProducts() {
@@ -185,11 +278,27 @@ public class DataHandler {
         this.reportSDProducts = reportSDProducts;
     }
 
-    public List<List<Products>> getReportProducts() {
-        return reportProducts;
+    public double getDbSize() {
+        return dbSize;
     }
 
-    public void setReportProducts(List<List<Products>> reportProducts) {
-        this.reportProducts = reportProducts;
+    public void setDbSize(double dbSize) {
+        this.dbSize = dbSize;
+    }
+
+    public boolean isCancelUpdate() {
+        return cancelUpdate;
+    }
+
+    public void setCancelUpdate(boolean cancelUpdate) {
+        this.cancelUpdate = cancelUpdate;
+    }
+
+    public boolean isUpdating() {
+        return updating;
+    }
+
+    public void setUpdating(boolean updating) {
+        this.updating = updating;
     }
 }

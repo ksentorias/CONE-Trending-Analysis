@@ -1,0 +1,902 @@
+Index: app/src/main/java/com/trendinganalysis/conetrading/ResultActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/trendinganalysis/conetrading/ResultActivity.java	(revision )
++++ app/src/main/java/com/trendinganalysis/conetrading/ResultActivity.java	(revision )
+@@ -1,23 +1,28 @@
+ package com.trendinganalysis.conetrading;
+ 
+ import android.app.DatePickerDialog;
+-import android.app.FragmentManager;
++import android.content.Context;
+ import android.content.Intent;
+ import android.os.Bundle;
+ import android.os.SystemClock;
+ import android.support.v4.view.ViewPager;
+ import android.support.v7.app.AppCompatActivity;
++import android.util.TypedValue;
+ import android.view.KeyEvent;
+ import android.view.View;
++import android.view.ViewGroup;
+ import android.view.WindowManager;
+ import android.view.animation.Animation;
+ import android.view.animation.AnimationUtils;
+ import android.view.inputmethod.EditorInfo;
++import android.view.inputmethod.InputMethodManager;
+ import android.widget.AdapterView;
++import android.widget.ArrayAdapter;
+ import android.widget.DatePicker;
+ import android.widget.EditText;
+ import android.widget.ImageView;
+ import android.widget.LinearLayout;
++import android.widget.ListAdapter;
+ import android.widget.ListView;
+ import android.widget.RelativeLayout;
+ import android.widget.ScrollView;
+@@ -30,21 +35,25 @@
+ 
+ import java.text.DateFormat;
+ import java.text.SimpleDateFormat;
++import java.util.ArrayList;
+ import java.util.Calendar;
+ import java.util.Date;
+ import java.util.GregorianCalendar;
++import java.util.List;
+ 
+ public class ResultActivity extends AppCompatActivity implements ISimpleDialogListener {
+ 
+     Toast toast;
+     private SectionsPagerAdapter mSectionsPagerAdapter;
+     Credential credentials = MainActivity.credentials;
+-    DataHolder dataHolder = SearchActivity.dataHolder;
++    DataHandler dataHandler = MainActivity.dataHandler;
++    DatabaseHandler databaseHandler;
+     private ViewPager mViewPager;
+     private ExpandableRelativeLayout dateMenuLayout;
+     private ExpandableRelativeLayout typeMenuLayout;
+     private ExpandableRelativeLayout makerMenuLayout;
+-    private ExpandableRelativeLayout modelMenuLayout;
++    private static ExpandableRelativeLayout modelMenuLayout;
++    private ExpandableRelativeLayout engineMenuLayout;
+     private ExpandableRelativeLayout sizeMenuLayout;
+ 
+     //date pickers
+@@ -69,21 +78,32 @@
+     ImageView spinerButtonType;
+     ImageView spinerButtonMaker;
+     ImageView spinerButtonModel;
++    ImageView spinerButtonEngine;
+     ImageView spinerButtonSize;
+     TextView resultText;
+     TextView resultText2;
+     TextView resultText3;
+     TextView textMaker;
+     TextView textModel;
++    TextView textEngine;
+     TextView textSize;
+     TextView textType;
++    TextView currentPageText;
++    TextView lastPageText;
+     private Animation animUp;
+     private Animation animDown;
+     LinearLayout filter_settings_layout;
+     LinearLayout filter_buttonLayout_toggled;
+     LinearLayout filter_buttonLayout_normal;
+     LinearLayout salesBtnLayout;
++    LinearLayout paginationLayout;
++    LinearLayout typeSubLayout;
++    LinearLayout makeSubLayout;
++    LinearLayout modelSubLayout;
++    LinearLayout engineSubLayout;
++    LinearLayout weightSubLayout;
+     RelativeLayout resultBodyLayout;
++    RelativeLayout nav_layout;
+     Animation animationFadeIn = null;
+     Animation animationFadeOut = null;
+     EditText searchField;
+@@ -92,6 +112,7 @@
+     ListView listMaker;
+     ListView listModel;
+     ListView listSize;
++    ListView listEngine;
+ 
+ 
+     //vars
+@@ -107,9 +128,10 @@
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_result);
+ 
+-        //start populating List;
+-        populateList();
++        databaseHandler = new DatabaseHandler(getBaseContext());
+ 
++
++
+         //common views
+         resultText = (TextView) findViewById(R.id.resultText);
+         resultText2 = (TextView) findViewById(R.id.resultText2);
+@@ -117,27 +139,32 @@
+         textType = (TextView) findViewById(R.id.textType);
+         textMaker = (TextView) findViewById(R.id.textMaker);
+         textModel = (TextView) findViewById(R.id.textModel);
++        textEngine = (TextView) findViewById(R.id.textEngine);
+         textSize = (TextView) findViewById(R.id.textSize);
+-        nav_img = (ImageView) findViewById(R.id.nav_img);
++        currentPageText = (TextView) findViewById(R.id.currentPageText);
++        lastPageText = (TextView) findViewById(R.id.lastPageText);
+         pullUpButton = (ImageView) findViewById(R.id.pullUpButton);
+         spinerButtonType = (ImageView) findViewById(R.id.spinerButtonType);
+         spinerButtonMaker = (ImageView) findViewById(R.id.spinerButtonMaker);
+         spinerButtonModel = (ImageView) findViewById(R.id.spinerButtonModel);
++        spinerButtonEngine = (ImageView) findViewById(R.id.spinerButtonEngine);
+         spinerButtonSize = (ImageView) findViewById(R.id.spinerButtonSize);
+         filter_settings_layout = (LinearLayout) findViewById(R.id.filter_settings_layout);
+         salesBtnLayout = (LinearLayout) findViewById(R.id.salesBtnLayout);
++        paginationLayout = (LinearLayout) findViewById(R.id.paginationLayout);
++
+         filter_buttonLayout_normal = (LinearLayout) findViewById(R.id.filter_buttonLayout_normal);
+         filter_buttonLayout_toggled = (LinearLayout) findViewById(R.id.filter_buttonLayout_toggled);
+         resultBodyLayout = (RelativeLayout) findViewById(R.id.resultBodyLayout);
++        nav_layout = (RelativeLayout) findViewById(R.id.nav_layout);
+         searchField = (EditText) findViewById(R.id.result_searchField);
+         filterScrollView = (ScrollView) findViewById(R.id.filterScrollView);
+         fromDate = (TextView) findViewById(R.id.fromTxtDateData);
+         toDate = (TextView) findViewById(R.id.toTxtDateData);
+-        listType = (ListView) findViewById(R.id.listType);
+-        listMaker = (ListView) findViewById(R.id.listMaker);
+-        listModel = (ListView) findViewById(R.id.listModel);
+-        listSize = (ListView) findViewById(R.id.listSize);
+ 
++
++
++
+         //animations
+         animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+         animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+@@ -150,26 +177,30 @@
+         typeMenuLayout = (ExpandableRelativeLayout) findViewById(R.id.typeMenu);
+         makerMenuLayout = (ExpandableRelativeLayout) findViewById(R.id.makerMenu);
+         modelMenuLayout = (ExpandableRelativeLayout) findViewById(R.id.modelMenu);
++        engineMenuLayout = (ExpandableRelativeLayout) findViewById(R.id.engineMenu);
+         sizeMenuLayout = (ExpandableRelativeLayout) findViewById(R.id.sizeMenu);
+ 
+ 
+-        searchField.setText(dataHolder.getKeyword() + "");
++        searchField.setText(dataHandler.getKeyword() + "");
+ 
+         filter_settings_layout.setVisibility(View.INVISIBLE);
+         salesBtnLayout.setVisibility(View.INVISIBLE);
+         filter_buttonLayout_toggled.setVisibility(View.INVISIBLE);
+-        nav_img.setVisibility(View.INVISIBLE);
++        paginationLayout.setVisibility(View.INVISIBLE);
+         resultText.setVisibility(View.INVISIBLE);
+         resultText2.setVisibility(View.INVISIBLE);
+         resultText3.setVisibility(View.INVISIBLE);
+ 
++        //start populating List;
++        populateList();
++//        initFilterMenuList();
++//        setListViewHeight();
+ 
+-        //listview adapters
+-//        ArrayAdapter<CharSequence> adapterType = ArrayAdapter.createFromResource(this, R.array.type_array, android.R.layout.simple_list_item_1);
+-//        listType.setAdapter(adapterType);
+ 
++// Changes the height and width to the specified *pixels*
+ 
+-        //listeners
++
++
+         listType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                 // When clicked, show a toast with the TextView text
+@@ -206,6 +237,19 @@
+             }
+         });
+ 
++        listEngine.setOnItemClickListener(new AdapterView.OnItemClickListener() {
++            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
++                // When clicked, show a toast with the TextView text
++//                Toast.makeText(getApplicationContext(),((TextView) view).getText(), Toast.LENGTH_SHORT).show();
++                textEngine.setText(((TextView) view).getText());
++                if (engineMenuLayout.isExpanded())
++                    spinerButtonEngine.setImageResource(R.drawable.ic_pull_down_arrow);
++                else spinerButtonEngine.setImageResource(R.drawable.ic_pull_up_arrow);
++                engineMenuLayout.toggle();
++            }
++        });
++
++
+         listSize.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                 // When clicked, show a toast with the TextView text
+@@ -225,99 +269,91 @@
+             public void onPageScrollStateChanged(int arg0) {
+                 // TODO Auto-generated method stub
+ 
+-                dataHolder.setRunWithData(false);
++                dataHandler.setRunWithData(false);
+ 
+ //                searchField.setText("" + mViewPager.getCurrentItem());
+ 
+                 int currentPointer = mViewPager.getCurrentItem() + 1;
+ 
++                currentPageText.setText("Page " + (mViewPager.getCurrentItem() + 1));
++                lastPageText.setText(" of " + mViewPager.getAdapter().getCount());
+ 
+-                if (currentPointer == 6) currentPointer = 1;
+-                if (currentPointer == 7) currentPointer = 2;
+-                if (currentPointer == 8) currentPointer = 3;
+-                if (currentPointer == 9) currentPointer = 4;
+-                if (currentPointer == 10) currentPointer = 5;
+-                if (currentPointer == 11) currentPointer = 1;
+-                if (currentPointer == 12) currentPointer = 2;
+-                if (currentPointer == 14) currentPointer = 3;
+-                if (currentPointer == 15) currentPointer = 4;
+-                if (currentPointer == 16) currentPointer = 5;
+-                if (currentPointer == 17) currentPointer = 1;
+-                if (currentPointer == 18) currentPointer = 2;
+-                if (currentPointer == 19) currentPointer = 3;
+-                if (currentPointer == 20) currentPointer = 4;
++//                Toast.makeText(getApplicationContext(), "max viewpager: "+mViewPager.getAdapter().getCount(), Toast.LENGTH_LONG).show();
++//
++//                currentPointer = currentPointer % 5;
++//                if (currentPointer == 0) currentPointer = 5;
++//
++//
++//                if (dataHandler.getProduct().size() == 2) {
++//
++//                    switch (currentPointer) {
++//                        case 1:
++//                            nav_img.setImageResource(R.drawable.nav2_p1);
++//                            break;
++//                        case 2:
++//                            nav_img.setImageResource(R.drawable.nav2_p2);
++//                            break;
++//                    }
++//                } else if (dataHandler.getProduct().size() == 3) {
++//                    switch (currentPointer) {
++//                        case 1:
++//                            nav_img.setImageResource(R.drawable.nav3_p1);
++//                            break;
++//                        case 2:
++//                            nav_img.setImageResource(R.drawable.nav3_p2);
++//                            break;
++//                        case 3:
++//                            nav_img.setImageResource(R.drawable.nav3_p3);
++//                            break;
++//                    }
++//                } else if (dataHandler.getProduct().size() == 4) {
++//                    switch (currentPointer) {
++//                        case 1:
++//                            nav_img.setImageResource(R.drawable.nav4_p1);
++//                            break;
++//                        case 2:
++//                            nav_img.setImageResource(R.drawable.nav4_p2);
++//                            break;
++//                        case 3:
++//                            nav_img.setImageResource(R.drawable.nav4_p3);
++//                            break;
++//                        case 4:
++//                            nav_img.setImageResource(R.drawable.nav4_p4);
++//                            break;
++//                    }
++//
++//                } else if (dataHandler.getProduct().size() >= 5) {
++//                    switch (currentPointer) {
++//                        case 1:
++//                            nav_img.setImageResource(R.drawable.nav_p_1);
++//                            break;
++//                        case 2:
++//                            nav_img.setImageResource(R.drawable.nav_p_2);
++//                            break;
++//                        case 3:
++//                            nav_img.setImageResource(R.drawable.nav_p_3);
++//                            break;
++//                        case 4:
++//                            nav_img.setImageResource(R.drawable.nav_p_4);
++//                            break;
++//                        case 5:
++//                            nav_img.setImageResource(R.drawable.nav_p_5);
++//                            break;
++//                    }
++//
++//                }
+ 
++//
++//                filter_settings_layout.setOnTouchListener(new OnSwipeTouchListener(getBaseContext()) {
++//                    @Override
++//                    public void onSwipeRight() {
++//                        // Whatever
++//                    }
++//                });
+ 
+-                if (dataHolder.getProduct().size() == 2) {
+-
+-                    switch (currentPointer) {
+-                        case 1:
+-                            nav_img.setImageResource(R.drawable.nav2_p1);
+-                            break;
+-                        case 2:
+-                            nav_img.setImageResource(R.drawable.nav2_p2);
+-                            break;
+-                    }
++            }
+-                } else if (dataHolder.getProduct().size() == 3) {
+-                    switch (currentPointer) {
+-                        case 1:
+-                            nav_img.setImageResource(R.drawable.nav3_p1);
+-                            break;
+-                        case 2:
+-                            nav_img.setImageResource(R.drawable.nav3_p2);
+-                            break;
+-                        case 3:
+-                            nav_img.setImageResource(R.drawable.nav3_p3);
+-                            break;
+-                    }
+-                } else if (dataHolder.getProduct().size() == 4) {
+-                    switch (currentPointer) {
+-                        case 1:
+-                            nav_img.setImageResource(R.drawable.nav4_p1);
+-                            break;
+-                        case 2:
+-                            nav_img.setImageResource(R.drawable.nav4_p2);
+-                            break;
+-                        case 3:
+-                            nav_img.setImageResource(R.drawable.nav4_p3);
+-                            break;
+-                        case 4:
+-                            nav_img.setImageResource(R.drawable.nav4_p4);
+-                            break;
+-                    }
+ 
+-                } else if (dataHolder.getProduct().size() >= 5) {
+-                    switch (currentPointer) {
+-                        case 1:
+-                            nav_img.setImageResource(R.drawable.nav_p_1);
+-                            break;
+-                        case 2:
+-                            nav_img.setImageResource(R.drawable.nav_p_2);
+-                            break;
+-                        case 3:
+-                            nav_img.setImageResource(R.drawable.nav_p_3);
+-                            break;
+-                        case 4:
+-                            nav_img.setImageResource(R.drawable.nav_p_4);
+-                            break;
+-                        case 5:
+-                            nav_img.setImageResource(R.drawable.nav_p_5);
+-                            break;
+-                    }
+-
+-                }
+-
+-
+-                filter_settings_layout.setOnTouchListener(new OnSwipeTouchListener(getBaseContext()) {
+-                    @Override
++            @Override
+-                    public void onSwipeRight() {
+-                        // Whatever
+-                    }
+-                });
+-
+-            }
+-
+-            @Override
+             public void onPageScrolled(int arg0, float arg1, int arg2) {
+                 // TODO Auto-generated method stub
+ 
+@@ -339,20 +375,23 @@
+                         return false;
+                     } else {
+                         mLastClickTime = SystemClock.elapsedRealtime();
+-                        dataHolder.setRunWithData(true);
+-                        dataHolder.setFilterSearch(false);
++                        dataHandler.setRunWithData(true);
++                        dataHandler.setFilterSearch(false);
+                         if (searchField.getText().toString().isEmpty()) {
+                             SimpleDialogFragment.createBuilder(getBaseContext(), getSupportFragmentManager())
+                                     .setTitle("No Input")
+                                     .setMessage("Please provide an input keywords (E.g., Truck, Hydraulics and etc.)")
+-                                    .setRequestCode(DataHolder.noInputCode)
++                                    .setRequestCode(DataHandler.noInputCode)
+                                     .setPositiveButtonText("Close").show();
+                             return false;
+                         } else {
+                             //set keyword data
+-                            dataHolder.setKeyword(searchField.getText().toString());
++                            dataHandler.setKeyword(searchField.getText().toString());
++                            dismissFilterMenu();
+                             populateList();
+-                            setResultNumber();
++//                            setResultNumber();
++                            InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
++                            mgr.hideSoftInputFromWindow(searchField.getWindowToken(), 0);
+                             return true;
+                         }
+                     }
+@@ -365,7 +404,6 @@
+ 
+         filterScrollView.scrollTo(0, 0);
+ 
+-
+         doDatepicker();
+         //set number of search results
+     }
+@@ -408,18 +446,8 @@
+ 
+     private void setCurrentDate() {
+         DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+-//        Calendar from = Calendar.getInstance();
+-//        Calendar to = Calendar.getInstance();
+-//
+-//        from.set(Calendar.YEAR, 2016);
+-//        from.set(Calendar.MONTH, 1);
+-//        from.set(Calendar.DAY_OF_MONTH, 1);
+-//
+-//        to.set(Calendar.YEAR, 2015);
+-//        to.set(Calendar.MONTH, 12);
+-//        to.set(Calendar.DAY_OF_MONTH, 30);
+ 
+-        dateFrom = new GregorianCalendar(2015, 12, 01).getTime();
++        dateFrom = new GregorianCalendar(2014, 12, 01).getTime();
+         dateTo = new GregorianCalendar(2016, 11, 30).getTime();
+ 
+         fromDate.setText(setDate(dateFormat.format(dateFrom), false));
+@@ -428,7 +456,7 @@
+ 
+     public String setDate(String date, Boolean inverse) {
+         if (!inverse) {
+-            String month = "";
++            String month;
+             month = date.substring(0, 2);
+             switch (month) {
+                 case "01": {
+@@ -491,7 +519,7 @@
+     }
+ 
+     public String getDateforDB(Date date) {
+-        String sdate = "";
++        String sdate;
+         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+         sdate = dateFormat.format(date);
+         return sdate;
+@@ -499,17 +527,22 @@
+ 
+     public void setResultNumber() {
+ 
++        if (dataHandler.getDataLength() > 1) {
+ 
+-        if (dataHolder.getDataLength() > 1) {
+-            resultText2.setText(dataHolder.getDataLength() + "");
++            resultText2.setText(dataHandler.getDataLength() + "");
+             resultText3.setText("results for you");
++            currentPageText.setVisibility(View.VISIBLE);
++            lastPageText.setVisibility(View.VISIBLE);
+             resultText.setVisibility(View.VISIBLE);
+             resultText2.setVisibility(View.VISIBLE);
+             resultText3.setVisibility(View.VISIBLE);
+             resultText3.invalidate();
+             resultText2.invalidate();
+-        } else if ((dataHolder.getDataLength() == 1)) {
+-            resultText2.setText(dataHolder.getDataLength() + "");
++            currentPageText.invalidate();
++            lastPageText.invalidate();
++        } else if ((dataHandler.getDataLength() == 1)) {
++
++            resultText2.setText(dataHandler.getDataLength() + "");
+             resultText3.setText("result for you");
+             resultText.setVisibility(View.VISIBLE);
+             resultText2.setVisibility(View.VISIBLE);
+@@ -518,6 +551,8 @@
+             resultText3.invalidate();
+ 
+         } else {
++            currentPageText.setVisibility(View.INVISIBLE);
++            lastPageText.setVisibility(View.INVISIBLE);
+             resultText.setVisibility(View.INVISIBLE);
+             resultText2.setVisibility(View.INVISIBLE);
+             resultText3.setVisibility(View.INVISIBLE);
+@@ -526,19 +561,122 @@
+ 
+     public void populateList() {
+ 
++
+         //inflate again list
+         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+ 
+         // Set up the ViewPager with the sections adapter.
+         mViewPager = (ViewPager) findViewById(R.id.container);
+         mViewPager.setAdapter(mSectionsPagerAdapter);
++
++
+     }
+ 
++    public void initFilterMenuList() {
++
++        listType = (ListView) findViewById(R.id.listType);
++        listMaker = (ListView) findViewById(R.id.listMaker);
++        listModel = (ListView) findViewById(R.id.listModel);
++        listEngine = (ListView) findViewById(R.id.listEngine);
++        listSize = (ListView) findViewById(R.id.listSize);
++
++        List<String> type =  databaseHandler.getMenuList(DatabaseHandler.C_ONE_UNIQUE_KEY_PRODUCT_TYPE);
++        List<String> make =  databaseHandler.getMenuList(DatabaseHandler.C_ONE_UNIQUE_KEY_PRODUCT_MAKE);
++        List<String> model =  databaseHandler.getMenuList(DatabaseHandler.C_ONE_UNIQUE_KEY_PRODUCT_MODEL);
++        List<String> engine =  databaseHandler.getMenuList(DatabaseHandler.C_ONE_UNIQUE_KEY_PRODUCT_ENGINE);
++        List<String> weight =  databaseHandler.getMenuList(DatabaseHandler.C_ONE_UNIQUE_KEY_PRODUCT_WEIGHT);
++
++        typeSubLayout = (LinearLayout) findViewById(R.id.typeSubLayout);
++        makeSubLayout = (LinearLayout) findViewById(R.id.makeSubLayout);
++        modelSubLayout = (LinearLayout) findViewById(R.id.modelSubLayout);
++        engineSubLayout = (LinearLayout) findViewById(R.id.engineSubLayout);
++        weightSubLayout = (LinearLayout) findViewById(R.id.weightSubLayout);
++
++        //set adapter based on initial search
++        listType.setAdapter(new ArrayAdapter<>(this,R.layout.filter_sub_menu_list_layout, type));
++
++        listMaker.setAdapter(new ArrayAdapter<>(this, R.layout.filter_sub_menu_list_layout, make));
++
++        listModel.setAdapter(new ArrayAdapter<>(this, R.layout.filter_sub_menu_list_layout,model));
++
++        listEngine.setAdapter(new ArrayAdapter<>(this, R.layout.filter_sub_menu_list_layout, engine));
++
++        listSize.setAdapter(new ArrayAdapter<>(this,R.layout.filter_sub_menu_list_layout, weight));
++
++
++        //set listlayout hieght according to nuymber of list items
++        typeSubLayout.setLayoutParams(new LinearLayout.LayoutParams(-1, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, setListViewHeightBasedOnItems(listType), getResources().getDisplayMetrics())));
++        typeSubLayout.invalidate();
++        typeSubLayout.requestLayout();
++        getWindow().getDecorView().findViewById(R.id.typeSubLayout).invalidate();
++
++        makeSubLayout.setLayoutParams(new LinearLayout.LayoutParams(-1, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, setListViewHeightBasedOnItems(listMaker), getResources().getDisplayMetrics())));
++        makeSubLayout.invalidate();
++        makeSubLayout.requestLayout();
++        getWindow().getDecorView().findViewById(R.id.makeSubLayout).invalidate();
++
++
++        modelSubLayout.setLayoutParams(new LinearLayout.LayoutParams(-1, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, setListViewHeightBasedOnItems(listModel), getResources().getDisplayMetrics())));
++        modelSubLayout.invalidate();
++        modelSubLayout.requestLayout();
++        getWindow().getDecorView().findViewById(R.id.modelSubLayout).invalidate();
++
++
++        engineSubLayout.setLayoutParams(new LinearLayout.LayoutParams(-1, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, setListViewHeightBasedOnItems(listEngine), getResources().getDisplayMetrics())));
++        engineSubLayout.invalidate();
++        engineSubLayout.requestLayout();
++        getWindow().getDecorView().findViewById(R.id.engineSubLayout).invalidate();
++
++
++        weightSubLayout.setLayoutParams(new LinearLayout.LayoutParams(-1, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, setListViewHeightBasedOnItems(listSize), getResources().getDisplayMetrics())));
++        weightSubLayout.invalidate();
++        weightSubLayout.requestLayout();
++        getWindow().getDecorView().findViewById(R.id.weightSubLayout).invalidate();
++    }
++
++
++    public int setListViewHeightBasedOnItems(ListView listView) {
++        ListAdapter listAdapter = listView.getAdapter();
++
++        if (listAdapter != null) {
++
++            int numberOfItems = listAdapter.getCount();
++
++            // Get total height of all items.
++            int totalItemsHeight = 0;
++            for (int itemPos = 0; itemPos < numberOfItems; itemPos++) {
++                View item = listAdapter.getView(itemPos, null, listView);
++                item.measure(0, 0);
++                totalItemsHeight += item.getMeasuredHeight();
++            }
++
++            // Get total height of all item dividers.
++            int totalDividersHeight = listView.getDividerHeight() *
++                    (numberOfItems - 1);
++
++            listView.getLayoutParams().height = Math.round((getResources().getDimension(R.dimen.micro_text)*3)*(getResources().getStringArray(R.array.type_array).length+1)+(getResources().getDimension(R.dimen.micro_text))) ;
++
++
++            // Set list height.
++//            ViewGroup.LayoutParams params = listView.getLayoutParams();
++//            params.height = totalItemsHeight + totalDividersHeight;
++//            listView.setLayoutParams(params);
++//            listView.requestLayout();
++
++            return totalItemsHeight + totalDividersHeight;
++
++        } else {
++            return 0;
++        }
++    }
++
++
+     public void enterFilterMenu(View view) {
+         if (toggler) {
+             textType.setText("Type");
+             textMaker.setText("Maker");
+             textModel.setText("Model");
++            textEngine.setText("Engine");
+             textSize.setText("Size");
+             setCurrentDate();
+             filter_settings_layout.requestFocus();
+@@ -551,12 +689,26 @@
+             filterScrollView.setVisibility(View.VISIBLE);
+             filter_buttonLayout_normal.setVisibility(View.INVISIBLE);
+             filter_buttonLayout_toggled.setVisibility(View.VISIBLE);
+-            toggler = false;
++            toggler = !toggler;
+         }
+     }
+ 
+     public void exitFilterMenu(View view) {
++        dismissFilterMenu();
++    }
++
++    public void dismissFilterMenu(){
+         if (!toggler) {
++            typeMenuLayout.collapse();
++            spinerButtonType.setImageResource(R.drawable.ic_pull_down_arrow);
++            makerMenuLayout.collapse();
++            spinerButtonMaker.setImageResource(R.drawable.ic_pull_down_arrow);
++            modelMenuLayout.collapse();
++            spinerButtonModel.setImageResource(R.drawable.ic_pull_down_arrow);
++            engineMenuLayout.collapse();
++            spinerButtonEngine.setImageResource(R.drawable.ic_pull_down_arrow);
++            sizeMenuLayout.collapse();
++            spinerButtonSize.setImageResource(R.drawable.ic_pull_down_arrow);
+             filter_settings_layout.startAnimation(animUp);
+             salesBtnLayout.startAnimation(animationFadeOut);
+             filter_buttonLayout_normal.startAnimation(animationFadeIn);
+@@ -566,13 +718,12 @@
+             filterScrollView.setVisibility(View.GONE);
+             filter_buttonLayout_normal.setVisibility(View.VISIBLE);
+             filter_buttonLayout_toggled.setVisibility(View.INVISIBLE);
+-            toggler = true;
++            toggler = !toggler;
+         }
+     }
+ 
+     public void doResultSettings(View view) {
+-        toast = Toast.makeText(this, "Settings", Toast.LENGTH_SHORT);
+-        toast.show();
++        Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+     }
+ 
+     public void doResultLogout(View view) {
+@@ -580,35 +731,39 @@
+                 .setTitle("Logout")
+                 .setMessage("Are you sure you want to logout with the current account?")
+                 .setNegativeButtonText("No")
+-                .setRequestCode(DataHolder.logoutCode)
++                .setRequestCode(DataHandler.logoutCode)
+                 .setPositiveButtonText("Yes").show();
+     }
+ 
+     public void doShowFilterResult(View view) {
+-        dataHolder.setFilterSearch(true);
+-        dataHolder.setRunWithData(true);
++        dataHandler.setFilterSearch(true);
++        dataHandler.setRunWithData(true);
+ 
+-        dataHolder.setDateFrom(getDateforDB(dateFrom));
+-        dataHolder.setDateTo(getDateforDB(dateTo));
++        dataHandler.setDateFrom(getDateforDB(dateFrom));
++        dataHandler.setDateTo(getDateforDB(dateTo));
+ 
+-        dataHolder.setKeyword(searchField.getText().toString());
++        dataHandler.setKeyword(searchField.getText().toString());
+ 
+-        dataHolder.setType("" + textType.getText());
+-        if ("Type".toLowerCase().trim().equals(dataHolder.getType().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHolder.getType().toLowerCase().trim()))
+-            dataHolder.setType("");
++        dataHandler.setType("" + textType.getText());
++        if ("Type".toLowerCase().trim().equals(dataHandler.getType().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHandler.getType().toLowerCase().trim()))
++            dataHandler.setType("");
+ 
+-        dataHolder.setMaker("" + textMaker.getText());
+-        if ("Maker".toLowerCase().trim().equals(dataHolder.getMaker().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHolder.getMaker().toLowerCase().trim()))
+-            dataHolder.setMaker("");
++        dataHandler.setMaker("" + textMaker.getText());
++        if ("Maker".toLowerCase().trim().equals(dataHandler.getMaker().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHandler.getMaker().toLowerCase().trim()))
++            dataHandler.setMaker("");
+ 
+-        dataHolder.setModel("" + textModel.getText());
+-        if ("Model".toLowerCase().trim().equals(dataHolder.getModel().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHolder.getModel().toLowerCase().trim()))
+-            dataHolder.setModel("");
++        dataHandler.setModel("" + textModel.getText());
++        if ("Model".toLowerCase().trim().equals(dataHandler.getModel().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHandler.getModel().toLowerCase().trim()))
++            dataHandler.setModel("");
+ 
+-        dataHolder.setSize("" + textSize.getText());
+-        if ("Size".toLowerCase().trim().equals(dataHolder.getSize().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHolder.getSize().toLowerCase().trim()))
+-            dataHolder.setSize("");
++        dataHandler.setSize("" + textSize.getText());
++        if ("Size".toLowerCase().trim().equals(dataHandler.getSize().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHandler.getSize().toLowerCase().trim()))
++            dataHandler.setSize("");
+ 
++        dataHandler.setEngine("" + textEngine.getText());
++        if ("Engine".toLowerCase().trim().equals(dataHandler.getEngine().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHandler.getEngine().toLowerCase().trim()))
++            dataHandler.setEngine("");
++
+         populateList();
+ 
+     }
+@@ -624,31 +779,82 @@
+     }
+ 
+     public void doTypeMenu(View view) {
+-        if (typeMenuLayout.isExpanded())
++
++        typeMenuLayout.toggle();
++
++
++        if (typeMenuLayout.isExpanded()){
+             spinerButtonType.setImageResource(R.drawable.ic_pull_down_arrow);
++
++            typeSubLayout.setLayoutParams(new LinearLayout.LayoutParams(-1, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, setListViewHeightBasedOnItems(listType), getResources().getDisplayMetrics())));
++            typeSubLayout.invalidate();
++            typeSubLayout.requestLayout();
++            typeSubLayout.forceLayout();
++            getWindow().getDecorView().findViewById(R.id.typeSubLayout).invalidate();
++        }
+         else spinerButtonType.setImageResource(R.drawable.ic_pull_up_arrow);
+-        typeMenuLayout.toggle();
+     }
+ 
+     public void doMakerMenu(View view) {
+-        if (makerMenuLayout.isExpanded())
++
++        makerMenuLayout.toggle();
++
++        if (makerMenuLayout.isExpanded()){
+             spinerButtonMaker.setImageResource(R.drawable.ic_pull_down_arrow);
++
++            makeSubLayout.setLayoutParams(new LinearLayout.LayoutParams(-1, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, setListViewHeightBasedOnItems(listMaker), getResources().getDisplayMetrics())));
++            makeSubLayout.invalidate();
++            makeSubLayout.requestLayout();
++            makeSubLayout.forceLayout();
++            getWindow().getDecorView().findViewById(R.id.makeSubLayout).invalidate();
++        }
+         else spinerButtonMaker.setImageResource(R.drawable.ic_pull_up_arrow);
+-        makerMenuLayout.toggle();
+     }
+ 
+     public void doModelMenu(View view) {
+-        if (modelMenuLayout.isExpanded())
++
++        modelMenuLayout.toggle();
++
++        if (modelMenuLayout.isExpanded()){
+             spinerButtonModel.setImageResource(R.drawable.ic_pull_down_arrow);
++            modelSubLayout.setLayoutParams(new LinearLayout.LayoutParams(-1, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, setListViewHeightBasedOnItems(listModel), getResources().getDisplayMetrics())));
++            modelSubLayout.invalidate();
++            modelSubLayout.requestLayout();
++            modelSubLayout.forceLayout();
++            getWindow().getDecorView().findViewById(R.id.modelSubLayout).invalidate();
++        }
+         else spinerButtonModel.setImageResource(R.drawable.ic_pull_up_arrow);
+-        modelMenuLayout.toggle();
+     }
+ 
++    public void doEngineMenu(View view) {
++
++        engineMenuLayout.toggle();
++
++        if (engineMenuLayout.isExpanded()){
++            spinerButtonEngine.setImageResource(R.drawable.ic_pull_down_arrow);
++            engineSubLayout.setLayoutParams(new LinearLayout.LayoutParams(-1, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, setListViewHeightBasedOnItems(listEngine), getResources().getDisplayMetrics())));
++            engineSubLayout.invalidate();
++            engineSubLayout.requestLayout();
++            engineSubLayout.forceLayout();
++            getWindow().getDecorView().findViewById(R.id.engineSubLayout).invalidate();
++        }
++
++        else spinerButtonEngine.setImageResource(R.drawable.ic_pull_up_arrow);
++    }
++
+     public void doSizeMenu(View view) {
+-        if (sizeMenuLayout.isExpanded())
++
++        sizeMenuLayout.toggle();
++
++        if (sizeMenuLayout.isExpanded()){
+             spinerButtonSize.setImageResource(R.drawable.ic_pull_down_arrow);
++            weightSubLayout.setLayoutParams(new LinearLayout.LayoutParams(-1, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, setListViewHeightBasedOnItems(listSize), getResources().getDisplayMetrics())));
++            weightSubLayout.invalidate();
++            weightSubLayout.requestLayout();
++            weightSubLayout.forceLayout();
++            getWindow().getDecorView().findViewById(R.id.weightSubLayout).invalidate();
++        }
+         else spinerButtonSize.setImageResource(R.drawable.ic_pull_up_arrow);
+-        sizeMenuLayout.toggle();
+     }
+ 
+     public void doToDateOption(View view) {
+@@ -671,26 +877,47 @@
+ 
+     public void setNumberofPages(int count) {
+ 
++        //initialized filter menulist it is putted here because this method is called after searches
++//        initFilterMenuList();
++
++
++        paginationLayout.setVisibility(View.VISIBLE);
++
+         mSectionsPagerAdapter.setNumberofPage(count);
+         mSectionsPagerAdapter.notifyDataSetChanged();
+ 
++
++        currentPageText.setText("Page " + (mViewPager.getCurrentItem() + 1));
++
++        lastPageText.setText(" of " + count);
++
+     }
+ 
+     public void setNavigation(int pages) {
+-        if (pages == 1) nav_img.setVisibility(View.INVISIBLE);
+-        else if (pages == 2) {
+-            nav_img.setVisibility(View.VISIBLE);
+-            nav_img.setImageResource(R.drawable.nav2_p1);
+-        } else if (pages == 3) {
+-            nav_img.setVisibility(View.VISIBLE);
+-            nav_img.setImageResource(R.drawable.nav3_p1);
+-        } else if (pages == 4) {
+-            nav_img.setVisibility(View.VISIBLE);
+-            nav_img.setImageResource(R.drawable.nav4_p1);
+-        } else if (pages >= 5) {
+-            nav_img.setVisibility(View.VISIBLE);
+-            nav_img.setImageResource(R.drawable.nav_p_1);
++
++        if (pages == 1) paginationLayout.setVisibility(View.INVISIBLE);
++        else paginationLayout.setVisibility(View.VISIBLE);
++
++
++//        if (pages == 1) nav_img.setVisibility(View.INVISIBLE);
++//        else if (pages == 2) {
++//            nav_img.setVisibility(View.VISIBLE);
++//            nav_img.setImageResource(R.drawable.nav2_p1);
++//        } else if (pages == 3) {
++//            nav_img.setVisibility(View.VISIBLE);
++//            nav_img.setImageResource(R.drawable.nav3_p1);
++//        } else if (pages == 4) {
++//            nav_img.setVisibility(View.VISIBLE);
++//            nav_img.setImageResource(R.drawable.nav4_p1);
++//        } else if (pages >= 5) {
++//            nav_img.setVisibility(View.VISIBLE);
++//            nav_img.setImageResource(R.drawable.nav_p_1);
++//        }
+-        }
++    }
++
++    public void reloadActivity() {
++        Intent objIntent = new Intent(getApplicationContext(), ResultActivity.class);
++        startActivity(objIntent);
+     }
+ 
+ 
+@@ -706,11 +933,20 @@
+ 
+     @Override
+     public void onPositiveButtonClicked(int requestCode) {
+-        if (requestCode == DataHolder.logoutCode) {
++        if (requestCode == DataHandler.logoutCode) {
+             credentials.clearCredentials(getBaseContext());
+             Intent intent = new Intent(this, MainActivity.class);
+             startActivity(intent);
++        }
++    }
+ 
++
++    public void doNextpage(View view) {
++//        currentPageText.setText("Page " + (mViewPager.getCurrentItem() + 1));
++//        lastPageText.setText(" of " + mViewPager.getAdapter().getCount());
++        if(mViewPager.getCurrentItem()!=mViewPager.getAdapter().getCount())   mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1, true);
+-        }
++    }
++    public void doPrevPage(View view) {
++        if(mViewPager.getCurrentItem()!=0) mViewPager.setCurrentItem(mViewPager.getCurrentItem()-1, true);
+     }
+ }

@@ -5,9 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,15 +16,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,23 +32,24 @@ import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
 
 public class ResultActivity extends AppCompatActivity implements ISimpleDialogListener {
 
+    public static Snackbar snackbar;
+    static ExpandableListView expListView;
+    public Calendar newDate = Calendar.getInstance();
+    //vars
+    public String date;
     Toast toast;
-    private SectionsPagerAdapter mSectionsPagerAdapter;
     Credential credentials = MainActivity.credentials;
-    DataHolder dataHolder = SearchActivity.dataHolder;
-    private ViewPager mViewPager;
-    private ExpandableRelativeLayout dateMenuLayout;
-    private ExpandableRelativeLayout typeMenuLayout;
-    private ExpandableRelativeLayout makerMenuLayout;
-    private ExpandableRelativeLayout modelMenuLayout;
-    private ExpandableRelativeLayout sizeMenuLayout;
-
+    DataHandler dataHandler = MainActivity.dataHandler;
+    DatabaseHandler databaseHandler;
     //date pickers
     DatePickerDialog datepicker;
 
@@ -59,49 +59,39 @@ public class ResultActivity extends AppCompatActivity implements ISimpleDialogLi
     //dates and calendar
     Date dateFrom;
     Date dateTo;
-    public Calendar newDate = Calendar.getInstance();
-
     //date textviews
     TextView fromDate;
     TextView toDate;
     TextView textDate;
-
     //common views
-    ImageView nav_img;
     ImageView pullUpButton;
-    ImageView spinerButtonType;
-    ImageView spinerButtonMaker;
-    ImageView spinerButtonModel;
-    ImageView spinerButtonSize;
     TextView resultText;
     TextView resultText2;
     TextView resultText3;
-    TextView textMaker;
-    TextView textModel;
-    TextView textSize;
-    TextView textType;
-    private Animation animUp;
-    private Animation animDown;
+    TextView currentPageText;
+    TextView lastPageText;
     LinearLayout filter_settings_layout;
     LinearLayout filter_buttonLayout_toggled;
     LinearLayout filter_buttonLayout_normal;
     LinearLayout salesBtnLayout;
+    LinearLayout paginationLayout;
     RelativeLayout resultBodyLayout;
+    RelativeLayout nav_layout;
     Animation animationFadeIn = null;
     Animation animationFadeOut = null;
     EditText searchField;
-    ScrollView filterScrollView;
-    ListView listType;
-    ListView listMaker;
-    ListView listModel;
-    ListView listSize;
-
-
-    //vars
-    public String date;
     boolean toggler = true;
     boolean dateToggler;
     boolean dateError;
+    ExpandableListAdapter listAdapter;
+    List<String> listDataHeader;
+    HashMap<String, List<String>> listDataChild;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
+    private ExpandableRelativeLayout dateMenuLayout;
+    private CoordinatorLayout coordinatorLayout;
+    private Animation animUp;
+    private Animation animDown;
     private long mLastClickTime = 0;
 
     @Override
@@ -110,36 +100,32 @@ public class ResultActivity extends AppCompatActivity implements ISimpleDialogLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        //start populating List;
-        populateList();
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.mainResultLayout);
+        databaseHandler = new DatabaseHandler(getBaseContext());
+
+        expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
         //common views
         resultText = (TextView) findViewById(R.id.resultText);
         resultText2 = (TextView) findViewById(R.id.resultText2);
         resultText3 = (TextView) findViewById(R.id.resultText3);
-        textType = (TextView) findViewById(R.id.textType);
-        textMaker = (TextView) findViewById(R.id.textMaker);
-        textModel = (TextView) findViewById(R.id.textModel);
-        textSize = (TextView) findViewById(R.id.textSize);
-        nav_img = (ImageView) findViewById(R.id.nav_img);
+
+        currentPageText = (TextView) findViewById(R.id.currentPageText);
+        lastPageText = (TextView) findViewById(R.id.lastPageText);
         pullUpButton = (ImageView) findViewById(R.id.pullUpButton);
-        spinerButtonType = (ImageView) findViewById(R.id.spinerButtonType);
-        spinerButtonMaker = (ImageView) findViewById(R.id.spinerButtonMaker);
-        spinerButtonModel = (ImageView) findViewById(R.id.spinerButtonModel);
-        spinerButtonSize = (ImageView) findViewById(R.id.spinerButtonSize);
+
         filter_settings_layout = (LinearLayout) findViewById(R.id.filter_settings_layout);
         salesBtnLayout = (LinearLayout) findViewById(R.id.salesBtnLayout);
+        paginationLayout = (LinearLayout) findViewById(R.id.paginationLayout);
+
         filter_buttonLayout_normal = (LinearLayout) findViewById(R.id.filter_buttonLayout_normal);
         filter_buttonLayout_toggled = (LinearLayout) findViewById(R.id.filter_buttonLayout_toggled);
         resultBodyLayout = (RelativeLayout) findViewById(R.id.resultBodyLayout);
+        nav_layout = (RelativeLayout) findViewById(R.id.nav_layout);
         searchField = (EditText) findViewById(R.id.result_searchField);
-        filterScrollView = (ScrollView) findViewById(R.id.filterScrollView);
         fromDate = (TextView) findViewById(R.id.fromTxtDateData);
         toDate = (TextView) findViewById(R.id.toTxtDateData);
-        listType = (ListView) findViewById(R.id.listType);
-        listMaker = (ListView) findViewById(R.id.listMaker);
-        listModel = (ListView) findViewById(R.id.listModel);
-        listSize = (ListView) findViewById(R.id.listSize);
+
 
         //animations
         animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
@@ -150,182 +136,29 @@ public class ResultActivity extends AppCompatActivity implements ISimpleDialogLi
 
         //drop down menus
         dateMenuLayout = (ExpandableRelativeLayout) findViewById(R.id.dateMenu);
-        typeMenuLayout = (ExpandableRelativeLayout) findViewById(R.id.typeMenu);
-        makerMenuLayout = (ExpandableRelativeLayout) findViewById(R.id.makerMenu);
-        modelMenuLayout = (ExpandableRelativeLayout) findViewById(R.id.modelMenu);
-        sizeMenuLayout = (ExpandableRelativeLayout) findViewById(R.id.sizeMenu);
 
-
-        searchField.setText(dataHolder.getKeyword() + "");
+        searchField.setText(dataHandler.getKeyword() + "");
 
         filter_settings_layout.setVisibility(View.INVISIBLE);
         salesBtnLayout.setVisibility(View.INVISIBLE);
         filter_buttonLayout_toggled.setVisibility(View.INVISIBLE);
-        nav_img.setVisibility(View.INVISIBLE);
+        paginationLayout.setVisibility(View.INVISIBLE);
         resultText.setVisibility(View.INVISIBLE);
         resultText2.setVisibility(View.INVISIBLE);
         resultText3.setVisibility(View.INVISIBLE);
 
-
-        //listview adapters
-//        ArrayAdapter<CharSequence> adapterType = ArrayAdapter.createFromResource(this, R.array.type_array, android.R.layout.simple_list_item_1);
-        listType.setAdapter(ArrayAdapter.createFromResource(this, R.array.type_array, R.layout.simple_list_item_1));
-        listType.getLayoutParams().height = Math.round((getResources().getDimension(R.dimen.micro_text)*3)*(getResources().getStringArray(R.array.type_array).length+1)+(getResources().getDimension(R.dimen.micro_text))) ;
-        listMaker.setAdapter(ArrayAdapter.createFromResource(this, R.array.maker_array, R.layout.simple_list_item_1));
-        listMaker.getLayoutParams().height = Math.round((getResources().getDimension(R.dimen.micro_text)*3)*(getResources().getStringArray(R.array.maker_array).length+1)+(getResources().getDimension(R.dimen.micro_text))) ;
-        listModel.setAdapter(ArrayAdapter.createFromResource(this, R.array.model_array, R.layout.simple_list_item_1));
-        listModel.getLayoutParams().height = Math.round((getResources().getDimension(R.dimen.micro_text)*3)*(getResources().getStringArray(R.array.model_array).length+1)+(getResources().getDimension(R.dimen.micro_text))) ;
-        listSize.setAdapter(ArrayAdapter.createFromResource(this, R.array.size_array, R.layout.simple_list_item_1));
-        listSize.getLayoutParams().height = Math.round((getResources().getDimension(R.dimen.micro_text)*3)*(getResources().getStringArray(R.array.size_array).length+1)+(getResources().getDimension(R.dimen.micro_text))) ;
-
-
-
-        //listeners
-        listType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // When clicked, show a toast with the TextView text
-//                Toast.makeText(getApplicationContext(),((TextView) view).getText(), Toast.LENGTH_SHORT).show();
-                textType.setText(((TextView) view).getText());
-                if (typeMenuLayout.isExpanded())
-                    spinerButtonType.setImageResource(R.drawable.ic_pull_down_arrow);
-                else spinerButtonType.setImageResource(R.drawable.ic_pull_up_arrow);
-                typeMenuLayout.toggle();
-            }
-        });
-
-        listMaker.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // When clicked, show a toast with the TextView text
-//                Toast.makeText(getApplicationContext(),((TextView) view).getText(), Toast.LENGTH_SHORT).show();
-                textMaker.setText(((TextView) view).getText());
-                if (makerMenuLayout.isExpanded())
-                    spinerButtonMaker.setImageResource(R.drawable.ic_pull_down_arrow);
-                else spinerButtonMaker.setImageResource(R.drawable.ic_pull_up_arrow);
-                makerMenuLayout.toggle();
-            }
-        });
-
-        listModel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // When clicked, show a toast with the TextView text
-//                Toast.makeText(getApplicationContext(),((TextView) view).getText(), Toast.LENGTH_SHORT).show();
-                textModel.setText(((TextView) view).getText());
-                if (modelMenuLayout.isExpanded())
-                    spinerButtonModel.setImageResource(R.drawable.ic_pull_down_arrow);
-                else spinerButtonModel.setImageResource(R.drawable.ic_pull_up_arrow);
-                modelMenuLayout.toggle();
-            }
-        });
-
-        listSize.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // When clicked, show a toast with the TextView text
-//                Toast.makeText(getApplicationContext(),((TextView) view).getText(), Toast.LENGTH_SHORT).show();
-                textSize.setText(((TextView) view).getText());
-                if (sizeMenuLayout.isExpanded())
-                    spinerButtonSize.setImageResource(R.drawable.ic_pull_down_arrow);
-                else spinerButtonSize.setImageResource(R.drawable.ic_pull_up_arrow);
-                sizeMenuLayout.toggle();
-            }
-        });
-
+        //start populating List;
+        populateList();
+        prepareListData();
+        setCurrentDate();
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
             @Override
             public void onPageScrollStateChanged(int arg0) {
                 // TODO Auto-generated method stub
-
-                dataHolder.setRunWithData(false);
-
-//                searchField.setText("" + mViewPager.getCurrentItem());
-
-                int currentPointer = mViewPager.getCurrentItem() + 1;
-
-
-                if (currentPointer == 6) currentPointer = 1;
-                if (currentPointer == 7) currentPointer = 2;
-                if (currentPointer == 8) currentPointer = 3;
-                if (currentPointer == 9) currentPointer = 4;
-                if (currentPointer == 10) currentPointer = 5;
-                if (currentPointer == 11) currentPointer = 1;
-                if (currentPointer == 12) currentPointer = 2;
-                if (currentPointer == 14) currentPointer = 3;
-                if (currentPointer == 15) currentPointer = 4;
-                if (currentPointer == 16) currentPointer = 5;
-                if (currentPointer == 17) currentPointer = 1;
-                if (currentPointer == 18) currentPointer = 2;
-                if (currentPointer == 19) currentPointer = 3;
-                if (currentPointer == 20) currentPointer = 4;
-
-
-                if (dataHolder.getProduct().size() == 2) {
-
-                    switch (currentPointer) {
-                        case 1:
-                            nav_img.setImageResource(R.drawable.nav2_p1);
-                            break;
-                        case 2:
-                            nav_img.setImageResource(R.drawable.nav2_p2);
-                            break;
-                    }
-                } else if (dataHolder.getProduct().size() == 3) {
-                    switch (currentPointer) {
-                        case 1:
-                            nav_img.setImageResource(R.drawable.nav3_p1);
-                            break;
-                        case 2:
-                            nav_img.setImageResource(R.drawable.nav3_p2);
-                            break;
-                        case 3:
-                            nav_img.setImageResource(R.drawable.nav3_p3);
-                            break;
-                    }
-                } else if (dataHolder.getProduct().size() == 4) {
-                    switch (currentPointer) {
-                        case 1:
-                            nav_img.setImageResource(R.drawable.nav4_p1);
-                            break;
-                        case 2:
-                            nav_img.setImageResource(R.drawable.nav4_p2);
-                            break;
-                        case 3:
-                            nav_img.setImageResource(R.drawable.nav4_p3);
-                            break;
-                        case 4:
-                            nav_img.setImageResource(R.drawable.nav4_p4);
-                            break;
-                    }
-
-                } else if (dataHolder.getProduct().size() >= 5) {
-                    switch (currentPointer) {
-                        case 1:
-                            nav_img.setImageResource(R.drawable.nav_p_1);
-                            break;
-                        case 2:
-                            nav_img.setImageResource(R.drawable.nav_p_2);
-                            break;
-                        case 3:
-                            nav_img.setImageResource(R.drawable.nav_p_3);
-                            break;
-                        case 4:
-                            nav_img.setImageResource(R.drawable.nav_p_4);
-                            break;
-                        case 5:
-                            nav_img.setImageResource(R.drawable.nav_p_5);
-                            break;
-                    }
-
-                }
-
-
-                filter_settings_layout.setOnTouchListener(new OnSwipeTouchListener(getBaseContext()) {
-                    @Override
-                    public void onSwipeRight() {
-                        // Whatever
-                    }
-                });
-
+                dataHandler.setRunWithData(false);
+                currentPageText.setText("Page " + (mViewPager.getCurrentItem() + 1));
+                lastPageText.setText(" of " + mViewPager.getAdapter().getCount());
             }
 
             @Override
@@ -350,20 +183,22 @@ public class ResultActivity extends AppCompatActivity implements ISimpleDialogLi
                         return false;
                     } else {
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        dataHolder.setRunWithData(true);
-                        dataHolder.setFilterSearch(false);
+                        dataHandler.setRunWithData(true);
+                        dataHandler.setFilterSearch(false);
                         if (searchField.getText().toString().isEmpty()) {
                             SimpleDialogFragment.createBuilder(getBaseContext(), getSupportFragmentManager())
                                     .setTitle("No Input")
                                     .setMessage("Please provide an input keywords (E.g., Truck, Hydraulics and etc.)")
-                                    .setRequestCode(DataHolder.noInputCode)
+                                    .setRequestCode(DataHandler.noInputCode)
                                     .setPositiveButtonText("Close").show();
                             return false;
                         } else {
                             //set keyword data
-                            dataHolder.setKeyword(searchField.getText().toString());
+                            dataHandler.setKeyword(searchField.getText().toString());
+                            dismissFilterMenu();
                             populateList();
-                            setResultNumber();
+                            if (snackbar.isShown()) snackbar.dismiss();
+//                            setResultNumber();
                             InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                             mgr.hideSoftInputFromWindow(searchField.getWindowToken(), 0);
                             return true;
@@ -374,18 +209,92 @@ public class ResultActivity extends AppCompatActivity implements ISimpleDialogLi
             }
         });
 
-        //set scrollview to top scroll
 
-        filterScrollView.scrollTo(0, 0);
+        expListView.setOnChildClickListener(new OnChildClickListener() {
 
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+
+                //set listHeader based on clicked or selected child or list item
+                listDataHeader.set(groupPosition, listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition));
+
+                //update the child list on their new header or parent name.
+                switch (groupPosition) {
+                    case 0:
+                        listDataChild.put(listDataHeader.get(groupPosition), dataHandler.getChildListMake());
+                        break;
+                    case 1:
+                        listDataChild.put(listDataHeader.get(groupPosition), dataHandler.getChildListSeries());
+                        break;
+                    case 2:
+                        listDataChild.put(listDataHeader.get(groupPosition), dataHandler.getChildListType());
+                        break;
+                    case 3:
+                        listDataChild.put(listDataHeader.get(groupPosition), dataHandler.getChildListModel());
+                        break;
+                    case 4:
+                        listDataChild.put(listDataHeader.get(groupPosition), dataHandler.getChildListEngine());
+                        break;
+                    case 5:
+                        listDataChild.put(listDataHeader.get(groupPosition), dataHandler.getChildListWeight());
+                        break;
+                    case 6:
+                        listDataChild.put(listDataHeader.get(groupPosition), dataHandler.getChildListSource());
+                        break;
+                }
+
+                listAdapter.notifyDataSetChanged();
+                parent.collapseGroup(groupPosition);
+
+                return false;
+            }
+        });
 
         doDatepicker();
-        //set number of search results
+    }
+
+    public void prepareListData() {
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
+
+        // Adding child data
+        listDataHeader.add("Make");
+        listDataHeader.add("Series");
+        listDataHeader.add("Type");
+        listDataHeader.add("Model");
+        listDataHeader.add("Engine");
+        listDataHeader.add("Weight");
+        listDataHeader.add("Source");
+
+        // Adding child data
+        dataHandler.setChildListType(databaseHandler.getMenuList(DatabaseHandler.C_ONE_UNIQUE_KEY_PRODUCT_TYPE));
+        dataHandler.setChildListMake(databaseHandler.getMenuList(DatabaseHandler.C_ONE_UNIQUE_KEY_PRODUCT_MAKE));
+        dataHandler.setChildListModel(databaseHandler.getMenuList(DatabaseHandler.C_ONE_UNIQUE_KEY_PRODUCT_MODEL));
+        dataHandler.setChildListEngine(databaseHandler.getMenuList(DatabaseHandler.C_ONE_UNIQUE_KEY_PRODUCT_ENGINE));
+        dataHandler.setChildListWeight(databaseHandler.getMenuList(DatabaseHandler.C_ONE_UNIQUE_KEY_PRODUCT_WEIGHT));
+        dataHandler.setChildListSeries(databaseHandler.getMenuList(DatabaseHandler.C_ONE_UNIQUE_KEY_PRODUCT_SERIES));
+        dataHandler.setChildListSeries(databaseHandler.getMenuList(DatabaseHandler.C_ONE_UNIQUE_KEY_PRODUCT_SERIES));
+        dataHandler.setChildListSource(databaseHandler.getMenuList(DatabaseHandler.C_ONE_UNIQUE_KEY_PRODUCT_SOURCE));
+
+
+        listDataChild.put(listDataHeader.get(0), dataHandler.getChildListMake()); // Header, Child data
+        listDataChild.put(listDataHeader.get(1), dataHandler.getChildListSeries());
+        listDataChild.put(listDataHeader.get(2), dataHandler.getChildListType());
+        listDataChild.put(listDataHeader.get(3), dataHandler.getChildListModel());
+        listDataChild.put(listDataHeader.get(4), dataHandler.getChildListEngine());
+        listDataChild.put(listDataHeader.get(5), dataHandler.getChildListWeight());
+        listDataChild.put(listDataHeader.get(6), dataHandler.getChildListSource());
+
+
+        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+
+        // setting list adapter
+        expListView.setAdapter(listAdapter);
     }
 
     private void doDatepicker() {
         dateFormatter = new SimpleDateFormat("MM-dd-yyyy");
-
 
         datepicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
@@ -431,7 +340,7 @@ public class ResultActivity extends AppCompatActivity implements ISimpleDialogLi
 
     public String setDate(String date, Boolean inverse) {
         if (!inverse) {
-            String month = "";
+            String month;
             month = date.substring(0, 2);
             switch (month) {
                 case "01": {
@@ -494,7 +403,7 @@ public class ResultActivity extends AppCompatActivity implements ISimpleDialogLi
     }
 
     public String getDateforDB(Date date) {
-        String sdate = "";
+        String sdate;
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         sdate = dateFormat.format(date);
         return sdate;
@@ -502,17 +411,22 @@ public class ResultActivity extends AppCompatActivity implements ISimpleDialogLi
 
     public void setResultNumber() {
 
+        if (dataHandler.getDataLength() > 1) {
 
-        if (dataHolder.getDataLength() > 1) {
-            resultText2.setText(dataHolder.getDataLength() + "");
+            resultText2.setText(dataHandler.getDataLength() + "");
             resultText3.setText("results for you");
+            currentPageText.setVisibility(View.VISIBLE);
+            lastPageText.setVisibility(View.VISIBLE);
             resultText.setVisibility(View.VISIBLE);
             resultText2.setVisibility(View.VISIBLE);
             resultText3.setVisibility(View.VISIBLE);
             resultText3.invalidate();
             resultText2.invalidate();
-        } else if ((dataHolder.getDataLength() == 1)) {
-            resultText2.setText(dataHolder.getDataLength() + "");
+            currentPageText.invalidate();
+            lastPageText.invalidate();
+        } else if ((dataHandler.getDataLength() == 1)) {
+
+            resultText2.setText(dataHandler.getDataLength() + "");
             resultText3.setText("result for you");
             resultText.setVisibility(View.VISIBLE);
             resultText2.setVisibility(View.VISIBLE);
@@ -521,6 +435,9 @@ public class ResultActivity extends AppCompatActivity implements ISimpleDialogLi
             resultText3.invalidate();
 
         } else {
+            paginationLayout.setVisibility(View.INVISIBLE);
+            currentPageText.setVisibility(View.INVISIBLE);
+            lastPageText.setVisibility(View.INVISIBLE);
             resultText.setVisibility(View.INVISIBLE);
             resultText2.setVisibility(View.INVISIBLE);
             resultText3.setVisibility(View.INVISIBLE);
@@ -529,21 +446,21 @@ public class ResultActivity extends AppCompatActivity implements ISimpleDialogLi
 
     public void populateList() {
 
+
         //inflate again list
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+
     }
+
 
     public void enterFilterMenu(View view) {
         if (toggler) {
-            textType.setText("Type");
-            textMaker.setText("Maker");
-            textModel.setText("Model");
-            textSize.setText("Size");
-            setCurrentDate();
+//            if(snackbar.isShown()) snackbar.dismiss();
             filter_settings_layout.requestFocus();
             filter_settings_layout.startAnimation(animDown);
             salesBtnLayout.startAnimation(animationFadeIn);
@@ -551,31 +468,36 @@ public class ResultActivity extends AppCompatActivity implements ISimpleDialogLi
             filter_buttonLayout_toggled.startAnimation(animationFadeIn);
             filter_settings_layout.setVisibility(View.VISIBLE);
             salesBtnLayout.setVisibility(View.VISIBLE);
-            filterScrollView.setVisibility(View.VISIBLE);
             filter_buttonLayout_normal.setVisibility(View.INVISIBLE);
             filter_buttonLayout_toggled.setVisibility(View.VISIBLE);
-            toggler = false;
+            prepareListData();
+
+            toggler = !toggler;
         }
     }
 
     public void exitFilterMenu(View view) {
+        dismissFilterMenu();
+    }
+
+    public void dismissFilterMenu() {
         if (!toggler) {
+            dateMenuLayout.collapse();
             filter_settings_layout.startAnimation(animUp);
             salesBtnLayout.startAnimation(animationFadeOut);
             filter_buttonLayout_normal.startAnimation(animationFadeIn);
             filter_buttonLayout_toggled.startAnimation(animationFadeOut);
             filter_settings_layout.setVisibility(View.INVISIBLE);
             salesBtnLayout.setVisibility(View.INVISIBLE);
-            filterScrollView.setVisibility(View.GONE);
             filter_buttonLayout_normal.setVisibility(View.VISIBLE);
             filter_buttonLayout_toggled.setVisibility(View.INVISIBLE);
-            toggler = true;
+            toggler = !toggler;
         }
     }
 
-    public void doResultSettings(View view) {
-        toast = Toast.makeText(this, "Settings", Toast.LENGTH_SHORT);
-        toast.show();
+    public void doSettings(View view) {
+        Intent intent = new Intent(this, Settings.class);
+        startActivity(intent);
     }
 
     public void doResultLogout(View view) {
@@ -583,34 +505,50 @@ public class ResultActivity extends AppCompatActivity implements ISimpleDialogLi
                 .setTitle("Logout")
                 .setMessage("Are you sure you want to logout with the current account?")
                 .setNegativeButtonText("No")
-                .setRequestCode(DataHolder.logoutCode)
+                .setRequestCode(DataHandler.logoutCode)
                 .setPositiveButtonText("Yes").show();
     }
 
     public void doShowFilterResult(View view) {
-        dataHolder.setFilterSearch(true);
-        dataHolder.setRunWithData(true);
+        dataHandler.setFilterSearch(true);
+        dataHandler.setRunWithData(true);
 
-        dataHolder.setDateFrom(getDateforDB(dateFrom));
-        dataHolder.setDateTo(getDateforDB(dateTo));
+        dismissFilterMenu();
 
-        dataHolder.setKeyword(searchField.getText().toString());
+        dataHandler.setDateFrom(getDateforDB(dateFrom));
+        dataHandler.setDateTo(getDateforDB(dateTo));
 
-        dataHolder.setType("" + textType.getText());
-        if ("Type".toLowerCase().trim().equals(dataHolder.getType().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHolder.getType().toLowerCase().trim()))
-            dataHolder.setType("");
+        dataHandler.setKeyword(searchField.getText().toString());
 
-        dataHolder.setMaker("" + textMaker.getText());
-        if ("Maker".toLowerCase().trim().equals(dataHolder.getMaker().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHolder.getMaker().toLowerCase().trim()))
-            dataHolder.setMaker("");
+        dataHandler.setMaker("" + listDataHeader.get(0));
+        if ("Make".toLowerCase().trim().equals(dataHandler.getMaker().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHandler.getMaker().toLowerCase().trim()))
+            dataHandler.setMaker("");
 
-        dataHolder.setModel("" + textModel.getText());
-        if ("Model".toLowerCase().trim().equals(dataHolder.getModel().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHolder.getModel().toLowerCase().trim()))
-            dataHolder.setModel("");
+        dataHandler.setSeries("" + listDataHeader.get(1));
+        if ("Series".toLowerCase().trim().equals(dataHandler.getSeries().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHandler.getSeries().toLowerCase().trim()))
+            dataHandler.setSeries("");
 
-        dataHolder.setSize("" + textSize.getText());
-        if ("Size".toLowerCase().trim().equals(dataHolder.getSize().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHolder.getSize().toLowerCase().trim()))
-            dataHolder.setSize("");
+        dataHandler.setType("" + listDataHeader.get(2));
+        if ("Type".toLowerCase().trim().equals(dataHandler.getType().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHandler.getType().toLowerCase().trim()))
+            dataHandler.setType("");
+
+        dataHandler.setModel("" + listDataHeader.get(3));
+        if ("Model".toLowerCase().trim().equals(dataHandler.getModel().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHandler.getModel().toLowerCase().trim()))
+            dataHandler.setModel("");
+
+        dataHandler.setEngine("" + listDataHeader.get(4));
+        if ("Engine".toLowerCase().trim().equals(dataHandler.getEngine().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHandler.getEngine().toLowerCase().trim()))
+            dataHandler.setEngine("");
+
+        dataHandler.setSize("" + listDataHeader.get(5));
+        if ("Weight".toLowerCase().trim().equals(dataHandler.getSize().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHandler.getSize().toLowerCase().trim()))
+            dataHandler.setSize("");
+
+
+        dataHandler.setSource("" + listDataHeader.get(6));
+        if ("Source".toLowerCase().trim().equals(dataHandler.getSource().toLowerCase().trim()) || "Any".toLowerCase().trim().equals(dataHandler.getSource().toLowerCase().trim()))
+            dataHandler.setSource("");
+
 
         populateList();
 
@@ -624,34 +562,6 @@ public class ResultActivity extends AppCompatActivity implements ISimpleDialogLi
         if (dateMenuLayout.isExpanded()) pullUpButton.setImageResource(R.drawable.ic_pull_down);
         else pullUpButton.setImageResource(R.drawable.ic_pull_up);
         dateMenuLayout.toggle();
-    }
-
-    public void doTypeMenu(View view) {
-        if (typeMenuLayout.isExpanded())
-            spinerButtonType.setImageResource(R.drawable.ic_pull_down_arrow);
-        else spinerButtonType.setImageResource(R.drawable.ic_pull_up_arrow);
-        typeMenuLayout.toggle();
-    }
-
-    public void doMakerMenu(View view) {
-        if (makerMenuLayout.isExpanded())
-            spinerButtonMaker.setImageResource(R.drawable.ic_pull_down_arrow);
-        else spinerButtonMaker.setImageResource(R.drawable.ic_pull_up_arrow);
-        makerMenuLayout.toggle();
-    }
-
-    public void doModelMenu(View view) {
-        if (modelMenuLayout.isExpanded())
-            spinerButtonModel.setImageResource(R.drawable.ic_pull_down_arrow);
-        else spinerButtonModel.setImageResource(R.drawable.ic_pull_up_arrow);
-        modelMenuLayout.toggle();
-    }
-
-    public void doSizeMenu(View view) {
-        if (sizeMenuLayout.isExpanded())
-            spinerButtonSize.setImageResource(R.drawable.ic_pull_down_arrow);
-        else spinerButtonSize.setImageResource(R.drawable.ic_pull_up_arrow);
-        sizeMenuLayout.toggle();
     }
 
     public void doToDateOption(View view) {
@@ -674,26 +584,33 @@ public class ResultActivity extends AppCompatActivity implements ISimpleDialogLi
 
     public void setNumberofPages(int count) {
 
+        //initialized filter menulist it is putted here because this method is called after searches
+//        initFilterMenuList();
+
+
+        paginationLayout.setVisibility(View.VISIBLE);
+
         mSectionsPagerAdapter.setNumberofPage(count);
         mSectionsPagerAdapter.notifyDataSetChanged();
+
+
+        currentPageText.setText("Page " + (mViewPager.getCurrentItem() + 1));
+
+        lastPageText.setText(" of " + count);
 
     }
 
     public void setNavigation(int pages) {
-        if (pages == 1) nav_img.setVisibility(View.INVISIBLE);
-        else if (pages == 2) {
-            nav_img.setVisibility(View.VISIBLE);
-            nav_img.setImageResource(R.drawable.nav2_p1);
-        } else if (pages == 3) {
-            nav_img.setVisibility(View.VISIBLE);
-            nav_img.setImageResource(R.drawable.nav3_p1);
-        } else if (pages == 4) {
-            nav_img.setVisibility(View.VISIBLE);
-            nav_img.setImageResource(R.drawable.nav4_p1);
-        } else if (pages >= 5) {
-            nav_img.setVisibility(View.VISIBLE);
-            nav_img.setImageResource(R.drawable.nav_p_1);
-        }
+
+        if (pages == 1) {
+            paginationLayout.setVisibility(View.INVISIBLE);
+        } else paginationLayout.setVisibility(View.VISIBLE);
+
+    }
+
+    public void showSnackBarMsg(String msg) {
+        snackbar = Snackbar.make(coordinatorLayout, msg, Snackbar.LENGTH_INDEFINITE);
+        snackbar.show();
     }
 
 
@@ -709,10 +626,25 @@ public class ResultActivity extends AppCompatActivity implements ISimpleDialogLi
 
     @Override
     public void onPositiveButtonClicked(int requestCode) {
-        if (requestCode == DataHolder.logoutCode) {
-            credentials.clearCredentials(getBaseContext());
+        if (requestCode == DataHandler.logoutCode) {
+            credentials.clearCredentials();
             Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            finish();
             startActivity(intent);
         }
+    }
+
+
+    public void doNextpage(View view) {
+//        currentPageText.setText("Page " + (mViewPager.getCurrentItem() + 1));
+//        lastPageText.setText(" of " + mViewPager.getAdapter().getCount());
+        if (mViewPager.getCurrentItem() != mViewPager.getAdapter().getCount())
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1, true);
+    }
+
+    public void doPrevPage(View view) {
+        if (mViewPager.getCurrentItem() != 0)
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
     }
 }

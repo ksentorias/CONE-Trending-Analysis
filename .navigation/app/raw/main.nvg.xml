@@ -4,17 +4,15 @@
   <locations  
     class = "java.util.ArrayList">
     <statePointEntry>
-      <state      
-        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.example.paul.cone_trading.SearchActivity"/>
+      <state class="com.android.tools.idea.editors.navigation.model.ActivityState"
+          className="com.trendinganalysis.conetrading.SearchActivity" />
       <point      
         x = "1492"      
         y = "-4"/>
     </statePointEntry>
     <statePointEntry>
-      <state      
-        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.example.paul.cone_trading.MainActivity"/>
+      <state class="com.android.tools.idea.editors.navigation.model.ActivityState"
+          className="com.trendinganalysis.conetrading.MainActivity" />
       <point      
         x = "120"      
         y = "8"/>

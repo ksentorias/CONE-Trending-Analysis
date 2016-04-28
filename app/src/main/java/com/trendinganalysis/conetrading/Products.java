@@ -15,19 +15,96 @@ public class Products {
     private String category;
     private String series;
     private Date date;
+    private Date date_modified;
     private int day;
     private int year;
     private int month;
-    private float price_php;
-    private float price_jpy;
+    private double price_php;
+    private double price_jpy;
 
     private long totalDl;
     private int rating;
+    private int serverID;
+    private int dbID;
+    private int productID;
+
+    public Products() {
+
+    }
 
 
-    public String getEngine() {return engine;}
+    public Products(String engine, String desc, String type, String make, String model, String size, String category, String series, Date date, int day, int year, int month, float price_php, float price_jpy) {
+        this.engine = engine;
+        this.desc = desc;
+        this.type = type;
+        this.make = make;
+        this.model = model;
+        this.size = size;
+        this.category = category;
+        this.series = series;
+        this.date = date;
+        this.day = day;
+        this.year = year;
+        this.month = month;
+        this.price_php = price_php;
+        this.price_jpy = price_jpy;
+    }
 
-    public void setEngine(String engine) {this.engine = engine;}
+    public Products(String engine, String desc, String type, String make, String model, String size, String category, String series, Date date, float price_php, float price_jpy, int serverID) {
+        this.engine = engine;
+        this.desc = desc;
+        this.type = type;
+        this.make = make;
+        this.model = model;
+        this.size = size;
+        this.category = category;
+        this.series = series;
+        this.date = date;
+        this.price_php = price_php;
+        this.price_jpy = price_jpy;
+        this.serverID = serverID;
+    }
+
+
+    public Date getDate_modified() {
+        return date_modified;
+    }
+
+    public void setDate_modified(Date date_modified) {
+        this.date_modified = date_modified;
+    }
+
+    public int getProductID() {
+        return productID;
+    }
+
+    public void setProductID(int productID) {
+        this.productID = productID;
+    }
+
+    public int getDbID() {
+        return dbID;
+    }
+
+    public void setDbID(int dbID) {
+        this.dbID = dbID;
+    }
+
+    public int getServerID() {
+        return serverID;
+    }
+
+    public void setServerID(int serverID) {
+        this.serverID = serverID;
+    }
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
     public String getDesc() {
         return desc;
@@ -45,9 +122,13 @@ public class Products {
         this.type = type;
     }
 
-    public String getMake() {return make;}
+    public String getMake() {
+        return make;
+    }
 
-    public void setMake(String make) {this.make = make;}
+    public void setMake(String make) {
+        this.make = make;
+    }
 
     public String getModel() {
         return model;
@@ -73,6 +154,10 @@ public class Products {
         this.category = category;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
     public void setDate(Date date) {
         this.date = date;
         Calendar cal = Calendar.getInstance();
@@ -80,10 +165,6 @@ public class Products {
         year = cal.get(Calendar.YEAR);
         day = cal.get(Calendar.DAY_OF_MONTH);
         month = cal.get(Calendar.MONTH);
-    }
-
-    public Date getDate() {
-        return date;
     }
 
     public int getDay() {
@@ -99,14 +180,14 @@ public class Products {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
 
-        return cal.get(Calendar.MONTH)+1;
+        return cal.get(Calendar.MONTH) + 1;
     }
 
     public int getYear() {
         return year;
     }
 
-    public float getPrice_php() {
+    public double getPrice_php() {
         return price_php;
     }
 
@@ -114,7 +195,7 @@ public class Products {
         this.price_php = price_php;
     }
 
-    public float getPrice_jpy() {
+    public double getPrice_jpy() {
         return price_jpy;
     }
 

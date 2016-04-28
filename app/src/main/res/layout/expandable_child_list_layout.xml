@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.trendinganalysis.conetrading.RobotoTextViewRegular
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.trendinganalysis.conetrading.RobotoTextViewRegular xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
-    android:paddingTop="2dip"
-    android:paddingBottom="3dip"
-    android:paddingLeft="@dimen/result_filter_icons_marginRight"
-    android:text="HEAVY"
-    android:textColor="@color/white"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:paddingBottom="3dip"
+    android:paddingLeft="@dimen/result_filter_icons_marginRight"
+    android:paddingTop="2dip"
+    android:text="HEAVY"
+    android:textColor="@color/white"
     android:textSize="@dimen/micro_text" />

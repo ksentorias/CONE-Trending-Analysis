@@ -14,7 +14,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
 
     // Build a Constructor and assign the passed Values to appropriate values in the class
-    public ViewPagerAdapter(FragmentManager fm,CharSequence mTitles[], int mNumbOfTabsumb) {
+    public ViewPagerAdapter(FragmentManager fm, CharSequence mTitles[], int mNumbOfTabsumb) {
         super(fm);
 
         this.Titles = mTitles;
@@ -28,7 +28,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
         Fragment selected_tab = null;
 
-        switch (position){
+        switch (position) {
 
             case 0:
                 LocalAuctionsTabActivity local_auctions = new LocalAuctionsTabActivity();
@@ -37,22 +37,22 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
             case 1:
                 ForeignSupplierTabActivity foreign_supplier = new ForeignSupplierTabActivity();
-                selected_tab =  foreign_supplier;
+                selected_tab = foreign_supplier;
                 break;
+
+//            case 2:
+//                ForeignAuctionTabActivity foreign_auction = new ForeignAuctionTabActivity();
+//                selected_tab = foreign_auction;
+//                break;
 
             case 2:
-                ForeignAuctionTabActivity foreign_auction = new ForeignAuctionTabActivity();
-                selected_tab = foreign_auction;
-                break;
-
-            case 3:
                 LocalMarketTabActivity local_market = new LocalMarketTabActivity();
                 selected_tab = local_market;
                 break;
 
-            case 4:
+            case 3:
                 SoldTabActivity sold = new SoldTabActivity();
-                selected_tab =  sold;
+                selected_tab = sold;
                 break;
 
         }

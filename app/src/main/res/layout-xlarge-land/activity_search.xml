@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
                 android:layout_weight="1"
-                android:onClick="doSearchSettings"
+                android:onClick="doSettings"
                 android:orientation="horizontal"
                 android:paddingLeft="5dp">
 
@@ -50,11 +50,11 @@
 
             <LinearLayout
                 android:id="@+id/logOutIcon"
-                android:onClick="doSearchLogout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|right"
                 android:layout_weight="1"
+                android:onClick="doSearchLogout"
                 android:orientation="vertical"
                 android:paddingRight="5dp">
 
@@ -80,7 +80,6 @@
                 android:id="@+id/searchLogo"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/search_logo_height"
-                android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/search_logo_marginTop"
                 android:adjustViewBounds="true"
@@ -104,8 +103,6 @@
                         android:id="@+id/textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/ImageLogo"
-                        android:layout_centerHorizontal="true"
                         android:text="Trend"
                         android:textColor="@color/green_dark_theme"
                         android:textSize="@dimen/h3_text" />
@@ -114,8 +111,6 @@
                         android:id="@+id/textAnalyis"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/ImageLogo"
-                        android:layout_centerHorizontal="true"
                         android:layout_gravity="center_vertical"
                         android:text=" Analysis"
                         android:textColor="@color/green_light_theme"
@@ -141,10 +136,10 @@
                 <com.trendinganalysis.conetrading.RobotoEditTextViewRegular
                     android:id="@+id/search_searchField"
                     android:layout_width="fill_parent"
-                    android:imeOptions="actionSearch"
                     android:layout_height="@dimen/search_editTxt_height"
                     android:background="@drawable/rounded_corner"
                     android:hint="eg: Equipment maker, model, type, etc."
+                    android:imeOptions="actionSearch"
                     android:inputType="textAutoCorrect"
                     android:paddingLeft="@dimen/search_editText_padding_start"
                     android:paddingRight="@dimen/search_editText_padding_end"
@@ -154,7 +149,7 @@
                     android:textSize="@dimen/micro_text" />
 
                 <com.trendinganalysis.conetrading.RobotoButtonRegular
-                    android:id="@+id/id_search_button"
+                    android:id="@+id/syncButton"
                     android:layout_width="@dimen/search_btn_width"
                     android:layout_height="@dimen/search_btn_height"
                     android:layout_alignBottom="@+id/search_searchField"

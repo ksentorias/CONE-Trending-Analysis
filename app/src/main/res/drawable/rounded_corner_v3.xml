@@ -2,18 +2,17 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <!--<shape android:shape="rectangle">-->
-            <!--&lt;!&ndash;apply button background transparent, full opacity&ndash;&gt;-->
-            <!--<solid android:color="#00ffffff"/>-->
-            <!--&lt;!&ndash;make button border solid color, nontransparent&ndash;&gt;-->
-            <!--<stroke android:color="#C4BFBF" android:width="3dp"/>-->
-            <!--<corners android:radius="2dp"/>-->
+        <!--&lt;!&ndash;apply button background transparent, full opacity&ndash;&gt;-->
+        <!--<solid android:color="#00ffffff"/>-->
+        <!--&lt;!&ndash;make button border solid color, nontransparent&ndash;&gt;-->
+        <!--<stroke android:color="#C4BFBF" android:width="3dp"/>-->
+        <!--<corners android:radius="2dp"/>-->
         <!--</shape>-->
 
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
-            <solid android:color="#00ffffff"/>
-            <stroke android:width="2dip" android:color="@color/outline_color" />
-            <corners android:radius="30dip"/>
-            <padding android:left="0dip" android:top="0dip" android:right="0dip" android:bottom="0dip" />
+            <solid android:color="@color/white" />
+            <corners android:radius="30dip" />
+            <padding android:bottom="0dip" android:left="0dip" android:right="0dip" android:top="0dip" />
         </shape>
     </item>
 </selector>

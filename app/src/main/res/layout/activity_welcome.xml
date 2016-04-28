@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,7 +26,7 @@
             android:layout_below="@+id/ImageLogo"
             android:layout_centerHorizontal="true"
             android:layout_gravity="top|center"
-            android:layout_marginTop="110dp"
+            android:layout_marginTop="130dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -47,7 +46,7 @@
                     android:text="Trend"
                     android:textAlignment="textEnd"
                     android:textColor="@color/green_dark_theme"
-                    android:textSize="@dimen/h3_text" />
+                    android:textSize="@dimen/h4_text" />
 
                 <com.trendinganalysis.conetrading.RobotoTextViewRegular
                     android:id="@+id/appTextAnalysis"
@@ -57,18 +56,54 @@
                     android:layout_weight="1"
                     android:text=" Analysis"
                     android:textColor="@color/green_light_theme"
-                    android:textSize="@dimen/h3_text" />
+                    android:textSize="@dimen/h4_text" />
             </LinearLayout>
         </LinearLayout>
 
-        <com.trendinganalysis.conetrading.RobotoTextViewBold
+        <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <com.trendinganalysis.conetrading.RobotoTextViewBold
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Before we use the application,\n we need to configure the settings"
+                android:textAlignment="center"
+                android:textColor="@color/green_dark_theme"
+                android:textSize="@dimen/h5_text" />
+
+
+            <com.trendinganalysis.conetrading.RobotoButtonRegular
+                android:id="@+id/proceedButton"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="@dimen/search_btn_margin"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rounded_button"
+                android:onClick="doProceed"
+                android:text="Proceed"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/xx_large_text" />
+
+
+        </LinearLayout>
+
+
+        <com.trendinganalysis.conetrading.RobotoTextViewBold
+            android:id="@+id/warningText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="20dp"
+            android:text="We need internet connection to proceed"
             android:textAlignment="center"
-            android:text="Before we use the application,\n we need to configure the settings"
-            android:textSize="@dimen/h5_text"
-            android:textColor="@color/black"
-            android:layout_height="wrap_content" />
+            android:textColor="#910A07"
+            android:textSize="@dimen/h5_text" />
+
 
     </FrameLayout>
 

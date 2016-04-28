@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--suppress AndroidElementNotAllowed -->
+<?xml version="1.0" encoding="utf-8"?><!-- suppress AndroidElementNotAllowed -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-
     package="com.trendinganalysis.conetrading">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -15,8 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden">
-
-
 
         <fragment android:name=".LocalAuctionsTabActivity" />
         <fragment android:name=".ForeignSupplierTabActivity" />
@@ -34,7 +31,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".SearchActivity"
             android:label="@string/title_activity_search"
@@ -44,10 +40,28 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-
         <activity
             android:name=".ResultActivity"
+            android:label="@string/title_activity_result"
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".ReportActivity"
             android:label="@string/title_activity_report"
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".UpdateManager"
+            android:label="@string/title_activity_update_manager"
+            android:noHistory="true"
             android:parentActivityName=".MainActivity"
             android:windowSoftInputMode="stateHidden">
             <meta-data
@@ -56,8 +70,22 @@
         </activity>
 
         <activity
-            android:name=".ReportActivity"
-            android:label="@string/title_activity_report"
+            android:name=".WelcomeActivity"
+            android:label="Welcome Activity"
+            android:noHistory="true"
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
+        <service android:name=".NotificationService" />
+
+
+        <activity
+            android:name=".Settings"
+            android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity"
             android:windowSoftInputMode="stateHidden">
             <meta-data

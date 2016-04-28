@@ -35,7 +35,7 @@
     <dimen name="search_whole_layout_margin">5dp</dimen>
     <dimen name="search_header_logo_height">25dp</dimen>
     <dimen name="search_screen_title_marginTop">30dp</dimen>
-    <dimen name="search_logo_marginTop">80dp</dimen>
+    <dimen name="search_logo_marginTop">40dp</dimen>
     <dimen name="search_logo_height">120dp</dimen>
     <dimen name="search_icon_margin_left">10dp</dimen>
     <dimen name="search_icon_height">20dp</dimen>
@@ -108,7 +108,7 @@
     <!--Result Screen Filter Button-->
     <dimen name="filter_button_padding">5dp</dimen>
     <dimen name="filter_button_marginTop">5dp</dimen>
-    <dimen name="filter_button_marginBottom">30dp</dimen>
+    <dimen name="filter_button_marginBottom">40dp</dimen>
     <dimen name="filter_button_marginRight">0dp</dimen>
     <!--Result Screen Filter Button-->
     <!--Result Screen Filter-->

@@ -12,13 +12,12 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 /**
- * Created by Paul on 1/22/2016.
+ * Created by Ken on 1/22/2016.
  */
 public class GraphMarkerView extends MarkerView {
 
-    private TextView tvContent;
-
     NumberFormat formatter = new DecimalFormat("###,###,###.##");
+    private TextView tvContent;
 
     public GraphMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);
@@ -27,7 +26,7 @@ public class GraphMarkerView extends MarkerView {
     }
 
     // callbacks everytime the MarkerView is redrawn, can be used to update the
-    // content (user-interface)
+    // content (response-interface)
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
 

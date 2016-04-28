@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
                 android:layout_weight="1"
-                android:onClick="doSearchSettings"
+                android:onClick="doSettings"
                 android:orientation="horizontal"
                 android:paddingLeft="5dp">
 
@@ -38,7 +37,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/result_icon_height"
                     android:adjustViewBounds="true"
-                    android:onClick="doReportSettings"
                     android:src="@drawable/ic_settings" />
             </LinearLayout>
 
@@ -69,8 +67,6 @@
                         android:id="@+id/textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/ImageLogo"
-                        android:layout_centerHorizontal="true"
                         android:layout_gravity="center"
                         android:nestedScrollingEnabled="false"
                         android:text="Trend"
@@ -83,8 +79,6 @@
                         android:id="@+id/textAnalyis"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/ImageLogo"
-                        android:layout_centerHorizontal="true"
                         android:layout_gravity="center_vertical"
                         android:nestedScrollingEnabled="false"
                         android:text=" Analysis"
@@ -115,58 +109,6 @@
 
         </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/result_layout_margin">
-
-            <com.trendinganalysis.conetrading.RobotoEditTextViewRegular
-                android:id="@+id/report_searchField"
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/search_field_height"
-                android:background="@drawable/rounded_button"
-                android:hint="Search Keyword"
-                android:inputType="textAutoCorrect"
-                android:paddingLeft="@dimen/search_field_marginLeft"
-                android:paddingRight="@dimen/search_field_marginLeft"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="@dimen/micro_text" />
-
-            <ImageView
-                android:id="@+id/id_search_button"
-                android:layout_width="@dimen/search_field_ClearIcon_width"
-                android:layout_height="@dimen/search_field_icon_height"
-                android:layout_alignBottom="@+id/report_searchField"
-                android:layout_alignRight="@+id/report_searchField"
-                android:layout_alignTop="@+id/report_searchField"
-                android:layout_marginBottom="@dimen/search_field_icon_padding"
-                android:layout_marginRight="@dimen/search_field_icon_padding"
-                android:layout_marginTop="@dimen/search_field_icon_padding"
-                android:layout_toLeftOf="@+id/report_searchField"
-                android:background="@drawable/ic_clear"
-                android:onClick="onClearTextReport"
-                android:textAllCaps="false"
-                android:textSize="10sp" />
-
-            <ImageView
-                android:id="@+id/search_icon"
-                android:layout_width="@dimen/search_field_icon_width"
-                android:layout_height="@dimen/search_field_icon_height"
-                android:layout_alignBottom="@+id/report_searchField"
-                android:layout_alignLeft="@+id/report_searchField"
-                android:layout_marginBottom="@dimen/search_field_icon_padding"
-                android:layout_marginLeft="@dimen/search_field_icon_margin_left"
-                android:layout_marginRight="@dimen/search_field_icon_padding"
-                android:layout_marginTop="@dimen/search_field_icon_padding"
-                android:background="@drawable/ic_magnify_white"
-                android:onClick="doTest2"
-                android:textAllCaps="false"
-                android:textSize="10sp" />
-
-        </RelativeLayout>
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -177,7 +119,6 @@
                 android:id="@+id/analysisReportText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:text="Sales Analysis"
                 android:textColor="@color/black"
@@ -187,7 +128,6 @@
                 android:id="@+id/salesText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
                 android:text="Report"
@@ -219,7 +159,7 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/pager"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1">
 
             </android.support.v4.view.ViewPager>

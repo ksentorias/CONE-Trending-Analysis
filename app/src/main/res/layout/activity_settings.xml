@@ -1,25 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:fitsSystemWindows="true"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
     tools:context="com.trendinganalysis.conetrading.Settings">
 
-    <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
-        android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp">
 
-        <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
-            android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary" app:popupTheme="@style/AppTheme.PopupOverlay" />
+        <com.trendinganalysis.conetrading.RobotoTextViewBold
+            android:id="@+id/settingTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Network Settings"
+            android:textColor="@color/green_dark_theme"
+            android:textSize="@dimen/h4_text" />
 
-    </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_settings" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/settingTitle"
+            android:orientation="vertical">
 
-    <android.support.design.widget.FloatingActionButton android:id="@+id/fab"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end" android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <com.trendinganalysis.conetrading.RobotoTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Website Domain Name"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/large_text" />
+
+                <com.trendinganalysis.conetrading.RobotoEditTextViewRegular
+                    android:id="@+id/domain_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="c-onetrading.com"
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/brown_theme"
+                    android:textSize="@dimen/large_text" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <com.trendinganalysis.conetrading.RobotoTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Database Host"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/large_text" />
+
+                <com.trendinganalysis.conetrading.RobotoEditTextViewRegular
+                    android:id="@+id/host_field"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="leave empty for default"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/brown_theme"
+                    android:textSize="@dimen/large_text" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <com.trendinganalysis.conetrading.RobotoTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Database Name"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/large_text" />
+
+                <com.trendinganalysis.conetrading.RobotoEditTextViewRegular
+                    android:id="@+id/name_field"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="leave empty for default"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/brown_theme"
+                    android:textSize="@dimen/large_text" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <com.trendinganalysis.conetrading.RobotoTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Database Username"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/large_text" />
+
+                <com.trendinganalysis.conetrading.RobotoEditTextViewRegular
+                    android:id="@+id/user_field"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="leave empty for default"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/brown_theme"
+                    android:textSize="@dimen/large_text" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <com.trendinganalysis.conetrading.RobotoTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="User Password"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/large_text" />
+
+                <com.trendinganalysis.conetrading.RobotoEditTextViewRegular
+                    android:id="@+id/password_field"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="leave empty for default"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/brown_theme"
+                    android:textSize="@dimen/large_text" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/validationLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <com.trendinganalysis.conetrading.RobotoTextViewBold
+                    android:id="@+id/validationText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Website domain must be filled"
+                    android:textAlignment="center"
+                    android:textColor="#910A07"
+                    android:textSize="@dimen/large_text" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <com.trendinganalysis.conetrading.RobotoButtonRegular
+                android:layout_width="@dimen/btn_width_login"
+                android:layout_height="@dimen/btn_height_login"
+                android:layout_toLeftOf="@+id/buttonCancel"
+                android:background="@drawable/rounded_button"
+                android:onClick="doSaveSettings"
+                android:text="Save"
+                android:textSize="@dimen/xx_large_text" />
+
+            <com.trendinganalysis.conetrading.RobotoButtonRegular
+                android:id="@+id/buttonCancel"
+                android:layout_width="@dimen/btn_width_login"
+                android:layout_height="@dimen/btn_height_login"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_button_v3"
+                android:onClick="doCancelSettings"
+                android:text="Cancel"
+                android:textSize="@dimen/x_large_text" />
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>

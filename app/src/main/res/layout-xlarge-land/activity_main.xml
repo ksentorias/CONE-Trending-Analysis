@@ -17,6 +17,99 @@
         android:layout_gravity="center_horizontal|bottom"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:id="@+id/linearHeaderLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+
+            <LinearLayout
+                android:id="@+id/settingsIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_weight="1"
+                android:onClick="doSettings"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/result_icon_height"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_settings" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/result_logo_height"
+                    android:layout_gravity="center_horizontal"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/logo"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <com.trendinganalysis.conetrading.RobotoTextViewBold
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:nestedScrollingEnabled="false"
+                        android:text="Trend"
+                        android:textColor="@color/green_dark_theme"
+                        android:textSize="@dimen/h5_text"
+                        android:textStyle="bold"
+                        android:typeface="sans" />
+
+                    <com.trendinganalysis.conetrading.RobotoTextViewRegular
+                        android:id="@+id/textAnalyis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:nestedScrollingEnabled="false"
+                        android:text=" Analysis"
+                        android:textColor="@color/green_light_theme"
+                        android:textSize="@dimen/h5_text" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/logOutIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingRight="5dp">
+
+                <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="@dimen/result_icon_height"-->
+                <!--android:layout_gravity="right"-->
+                <!--android:adjustViewBounds="true"-->
+                <!--android:src="@drawable/ic_logout" />-->
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
 
         <ImageView
             android:id="@+id/ImageLogo"
@@ -61,7 +154,6 @@
                     android:id="@+id/appTextAnalysis"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/ImageLogo"
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text=" Analysis"
@@ -86,7 +178,6 @@
                 android:id="@+id/editTextUsername"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/standard_for_height"
-                android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/rounded_corner"
                 android:ellipsize="start"
@@ -101,7 +192,6 @@
                 android:id="@+id/editTextPassword"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/standard_for_height"
-                android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/mainScreen_fields_marginTop"
                 android:background="@drawable/rounded_corner"
@@ -130,7 +220,6 @@
                 android:id="@+id/rememberSwitchLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editTextPassword"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
                 android:onClick="doSwitchRemember"
@@ -150,7 +239,6 @@
                     android:id="@+id/rememberSwitch"
                     android:layout_width="@dimen/h4_text"
                     android:layout_height="@dimen/h4_text"
-                    android:layout_centerInParent="true"
                     android:layout_gravity="center_vertical"
                     android:checked="false"
                     android:src="@drawable/ic_toggle_on" />

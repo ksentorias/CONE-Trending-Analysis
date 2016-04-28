@@ -1,98 +1,265 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activityLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@color/white"
-    android:orientation="vertical">
+    tools:context=".UpdateManager">
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+    <LinearLayout
+        android:id="@+id/fullscreen_content_controls"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginLeft="@dimen/result_layout_margin"
+        android:layout_marginRight="@dimen/result_layout_margin"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_gravity="center"
-            android:padding="40dp"
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:id="@+id/linearHeaderLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/logo_margin_top"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:layout_gravity="center"
-                android:id="@+id/imageView"
-                android:layout_width="@dimen/image_logo_width"
-                android:layout_height="@dimen/image_logo_height"
-                android:layout_marginBottom="@dimen/large_text"
-                android:src="@drawable/logo" />
-
-
-
-            <com.trendinganalysis.conetrading.RobotoTextViewBold
+            <LinearLayout
+                android:id="@+id/settingsIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/h4_text"
-                android:text="Database Update"
-                android:textColor="@color/green_dark_theme"
+                android:layout_gravity="center|left"
+                android:layout_weight="1"
+                android:onClick="doSettings"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp">
 
-                android:layout_gravity="center"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/result_icon_height"
+                    android:layout_gravity="right"
+                    android:adjustViewBounds="true"
+                    android:onClick="doUpdateManagerLogout"
+                    android:src="@drawable/ic_settings" />
 
+            </LinearLayout>
 
+            <ImageView
+                android:id="@+id/ImageLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/search_header_logo_height"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:src="@drawable/logo" />
+
+            <LinearLayout
+                android:id="@+id/logOutIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:layout_weight="1"
+                android:onClick="doUpdateManagerLogoutLogout"
+                android:orientation="vertical"
+                android:paddingRight="5dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/result_icon_height"
+                    android:layout_gravity="right"
+                    android:adjustViewBounds="true"
+                    android:onClick="doUpdateManagerLogout"
+                    android:src="@drawable/ic_logout" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal">
 
 
-    </FrameLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <com.github.lzyzsd.circleprogress.DonutProgress
+                    android:id="@+id/syncProgress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    custom:donut_finished_color="@color/green_light_theme"
+                    custom:donut_progress="0"
+                    custom:donut_text_color="@color/green_light_theme" />
+
+                <LinearLayout
+                    android:id="@+id/bytesTrackLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <com.trendinganalysis.conetrading.RobotoTextViewLight
+                            android:id="@+id/remainingBytes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="0.00"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/small_text" />
+
+                        <com.trendinganalysis.conetrading.RobotoTextViewLight
+                            android:id="@+id/remainingBytesUnit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text=" kB / "
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/small_text" />
+
+                        <com.trendinganalysis.conetrading.RobotoTextViewLight
+                            android:id="@+id/maxBytes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text=" 0.00"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/small_text" />
+
+                        <com.trendinganalysis.conetrading.RobotoTextViewLight
+                            android:id="@+id/maxBytesUnit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text=" kB"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/small_text" />
+
+                    </LinearLayout>
 
 
-    <!--<Button-->
-    <!--android:id="@+id/button"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center_horizontal"-->
-    <!--android:onClick="synch"-->
-    <!--android:text="SYNCH!" />-->
+                </LinearLayout>
 
-    <!--<Button-->
-    <!--android:id="@+id/button2"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center_horizontal"-->
-    <!--android:onClick="check"-->
-    <!--android:text="check things ~~" />-->
 
-    <!--<Button-->
-    <!--android:id="@+id/button3"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center_horizontal"-->
-    <!--android:onClick="refresh"-->
-    <!--android:text="Refresh List" />-->
+                <com.trendinganalysis.conetrading.RobotoTextViewLight
+                    android:id="@+id/updateStatusTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="There are new updates available"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/h5_text" />
 
-    <!--<Button-->
-    <!--android:id="@+id/button4"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center_horizontal"-->
-    <!--android:onClick="truncate"-->
-    <!--android:text="truncate man" />-->
+                <LinearLayout
+                    android:id="@+id/dbSizeLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
 
-    <!--<LinearLayout-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:orientation="horizontal">-->
+                    <com.trendinganalysis.conetrading.RobotoTextViewBold
+                        android:id="@+id/dbSizeTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="000.00"
+                        android:textColor="@color/green_light_theme"
+                        android:textSize="@dimen/medium_text" />
 
-    <!--<ListView-->
-    <!--android:layout_weight="1"-->
-    <!--android:id="@+id/productList"-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:choiceMode="singleChoice" />-->
+                    <com.trendinganalysis.conetrading.RobotoTextViewBold
+                        android:id="@+id/dbSizeUnitTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text=" kB need to download"
+                        android:textColor="@color/green_light_theme"
+                        android:textSize="@dimen/medium_text" />
+                </LinearLayout>
 
-    <!--<ListView-->
-    <!--android:layout_weight="1"-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:id="@+id/reportList" />-->
-    <!--</LinearLayout>-->
 
-</LinearLayout>
+                <com.trendinganalysis.conetrading.RobotoTextViewBold
+                    android:id="@+id/updateMessageTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Click here to download updates"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/medium_text" />
+
+
+                <com.trendinganalysis.conetrading.RobotoButtonRegular
+                    android:id="@+id/syncButton"
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginRight="@dimen/search_btn_margin"
+                    android:layout_marginTop="@dimen/micro_text"
+                    android:background="@drawable/rounded_button"
+                    android:onClick="doSync"
+                    android:text="Download"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/xx_large_text" />
+
+
+                <!--<com.trendinganalysis.conetrading.RobotoButtonRegular-->
+                <!--android:id="@+id/truncate"-->
+                <!--android:layout_width="200dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:layout_marginRight="@dimen/search_btn_margin"-->
+                <!--android:layout_marginTop="@dimen/search_logo_marginTop"-->
+                <!--android:background="@drawable/rounded_button"-->
+                <!--android:onClick="dotruncate"-->
+                <!--android:text="truncate"-->
+                <!--android:textAllCaps="false"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textSize="@dimen/xx_large_text" />-->
+
+
+            </LinearLayout>
+
+            <com.trendinganalysis.conetrading.RobotoButtonRegular
+                android:id="@+id/skipButton"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="@dimen/search_btn_margin"
+                android:layout_marginTop="@dimen/micro_text"
+                android:background="@drawable/rounded_button"
+                android:onClick="doSkip"
+                android:text="Skip"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/large_text" />
+
+
+        </FrameLayout>
+
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
+

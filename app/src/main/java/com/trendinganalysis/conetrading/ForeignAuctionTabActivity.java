@@ -29,12 +29,11 @@ import java.util.List;
 public class ForeignAuctionTabActivity extends Fragment {
 
     public LineChart mChart;
-    DataHolder dataholder = SearchActivity.dataHolder;
     public int[] CONECOLORS = {
-            Color.rgb(254,150,1), Color.rgb(204,0,99), Color.rgb(134,38,155),
-            Color.rgb(0,210,241), Color.rgb(0,183,150),Color.rgb(247,249,96),
-            Color.rgb(43,35,1), Color.rgb(177,235,0)};
-
+            Color.rgb(254, 150, 1), Color.rgb(204, 0, 99), Color.rgb(134, 38, 155),
+            Color.rgb(0, 210, 241), Color.rgb(0, 183, 150), Color.rgb(247, 249, 96),
+            Color.rgb(43, 35, 1), Color.rgb(177, 235, 0)};
+    DataHandler datahandler = MainActivity.dataHandler;
     private int[] mColors = new int[]{
             CONECOLORS[0],
             CONECOLORS[1],
@@ -63,7 +62,7 @@ public class ForeignAuctionTabActivity extends Fragment {
 
         //        create a custom MarkerView (extend MarkerView) and specify the layout
 //         to use for it
-        MyMarkerView mv = new MyMarkerView(getContext(), R.layout.custom_marker_view);
+        GraphMarkerView mv = new GraphMarkerView(getContext(), R.layout.graph_marker);
 
         // set the marker to the chart
         mChart.setMarkerView(mv);
@@ -73,7 +72,7 @@ public class ForeignAuctionTabActivity extends Fragment {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
         if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) <= Configuration.SCREENLAYOUT_SIZE_NORMAL) {
-            xAxis.setTextSize(getResources().getDimension(R.dimen.nano_plus_text) -10f);
+            xAxis.setTextSize(getResources().getDimension(R.dimen.nano_plus_text) - 10f);
         } else xAxis.setTextSize(getResources().getDimension(R.dimen.nano_plus_text));
         xAxis.setDrawGridLines(false);
 
@@ -85,7 +84,7 @@ public class ForeignAuctionTabActivity extends Fragment {
         yAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         yAxis.setDrawGridLines(true);
         if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) <= Configuration.SCREENLAYOUT_SIZE_NORMAL) {
-            yAxis.setTextSize(getResources().getDimension(R.dimen.nano_plus_text) -10f);
+            yAxis.setTextSize(getResources().getDimension(R.dimen.nano_plus_text) - 10f);
         } else yAxis.setTextSize(getResources().getDimension(R.dimen.nano_plus_text));
         yAxis.setDrawAxisLine(false);
 
@@ -108,8 +107,8 @@ public class ForeignAuctionTabActivity extends Fragment {
         l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
         l.setForm(Legend.LegendForm.SQUARE);
         if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) <= Configuration.SCREENLAYOUT_SIZE_NORMAL) {
-            l.setFormSize(getResources().getDimension(R.dimen.nano_plus_text) -10f);
-            l.setTextSize(getResources().getDimension(R.dimen.nano_plus_text) -10f);
+            l.setFormSize(getResources().getDimension(R.dimen.nano_plus_text) - 10f);
+            l.setTextSize(getResources().getDimension(R.dimen.nano_plus_text) - 10f);
         } else {
             l.setFormSize(getResources().getDimension(R.dimen.nano_plus_text));
             l.setTextSize(getResources().getDimension(R.dimen.nano_plus_text));
@@ -118,7 +117,7 @@ public class ForeignAuctionTabActivity extends Fragment {
         l.setDirection(Legend.LegendDirection.LEFT_TO_RIGHT);
 
 
-        setData(dataholder.getReportFAProducts());
+        setData(datahandler.getReportFAProducts());
         mChart.animateXY(2000, 2000);
 
         return v;
@@ -129,34 +128,34 @@ public class ForeignAuctionTabActivity extends Fragment {
         if (!productData.isEmpty()) {
             mChart.resetTracking();
 
-            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
 
             int productCounter = 1;
             int colorNumber = 0;
             int maxMonth = 0;
 
 
-            ArrayList<Entry> values = new ArrayList<Entry>();
+            ArrayList<Entry> values = new ArrayList<>();
 
             for (Products products : productData) {
 
                 //heighest month for the chart
-                if(products.getIntMonth()>maxMonth) maxMonth = products.getIntMonth();
+                if (products.getIntMonth() > maxMonth) maxMonth = products.getIntMonth();
 
-                values.add(new Entry(products.getPrice_php(), products.getIntMonth()));
+                values.add(new Entry((float) products.getPrice_php(), products.getIntMonth()));
 
-                if(products != productData.get(productData.size()-1)){
-                    if(!products.getEngine().equals(productData.get(productCounter).getEngine())){
 
-                        createLineData(products.getEngine(), values, dataSets,colorNumber, maxMonth);
-                        values = new ArrayList<Entry>();
+                if (products != productData.get(productData.size() - 1)) {
+                    if (products.getProductID() != productData.get(productCounter).getProductID()) {
+
+                        createLineData(products.getEngine(), values, dataSets, colorNumber, maxMonth);
+                        values = new ArrayList<>();
                         colorNumber++;
 
                     }
-                }
-                else{
-                    createLineData(products.getEngine(), values, dataSets,colorNumber,maxMonth);
-                    values = new ArrayList<Entry>();
+                } else {
+                    createLineData(products.getEngine(), values, dataSets, colorNumber, maxMonth);
+                    values = new ArrayList<>();
                     colorNumber++;
                 }
 
@@ -166,7 +165,7 @@ public class ForeignAuctionTabActivity extends Fragment {
         } else textPriceXAxis.setVisibility(View.INVISIBLE);
     }
 
-    public void createLineData(String title,ArrayList<Entry> values, ArrayList<ILineDataSet> dataSets, int colorNumber,int maxMonth){
+    public void createLineData(String title, ArrayList<Entry> values, ArrayList<ILineDataSet> dataSets, int colorNumber, int maxMonth) {
 
         LineDataSet d = new LineDataSet(values, title);
         d.setLineWidth(5f);
@@ -183,13 +182,12 @@ public class ForeignAuctionTabActivity extends Fragment {
         //set max month
         List<String> months;
 
-        if(maxMonth<12){
-            months = getMonths().subList(0,maxMonth+1);
+        if (maxMonth < 12) {
+            months = getMonths().subList(0, maxMonth + 1);
             //if month is less than DEC, add space and the end of list
             months.add("");
 
-        }
-        else months = getMonths();
+        } else months = getMonths();
 
         LineData data = new LineData(months, dataSets);
         mChart.setData(data);
@@ -198,7 +196,7 @@ public class ForeignAuctionTabActivity extends Fragment {
 
     private ArrayList<String> getMonths() {
 
-        ArrayList<String> m = new ArrayList<String>();
+        ArrayList<String> m = new ArrayList<>();
         m.add("");
         m.add("Jan");
         m.add("Feb");

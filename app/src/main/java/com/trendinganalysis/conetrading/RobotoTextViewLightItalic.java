@@ -6,12 +6,12 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 /**
- * Created by Paul on 12/3/2015.
+ * Created by Ken on 12/3/2015.
  */
 public class RobotoTextViewLightItalic extends TextView {
 
-    public RobotoTextViewLightItalic(Context context, AttributeSet attrs){
+    public RobotoTextViewLightItalic(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/RobotoCondensed-LightItalic.ttf"));
+        this.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/RobotoCondensed-LightItalic.ttf"));
     }
 }
